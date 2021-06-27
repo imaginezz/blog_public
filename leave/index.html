@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.7.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/favicon/safari-pinned-tab.svg" color="#222">
+  <link rel="manifest" href="/images/favicon/site.webmanifest">
+  <meta name="msapplication-config" content="/images/favicon/browserconfig.xml">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="baidu-site-verification" content="5x8DHwr7y8">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1/themes/blue/pace-theme-minimal.css">
+  <script src="//cdn.jsdelivr.net/npm/pace-js@1/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":true,"nav":null,"activeClass":"valine"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":true,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="离开2016 年 2 月 26 日 23:41，戴上耳机，摘下，再戴上，切歌，闭眼，后仰，《回梦游仙》，斟酌第一段的用词，距离开家不到 24h，回忆离开。 假期算是从莫名其妙决定参加 MCM 开始的吧。几日的思考，建模，不断写代码逐渐让我产生了对《秦时明月》莫名的好感，所以到家之后的第一件事就是把那部动漫从头看到了尾，蓉姑娘还是没有醒来。 离校时自己在火车上被一位年轻的母亲让孩子叫大叔。想想可不是">
+<meta name="keywords" content="生活">
+<meta property="og:type" content="article">
+<meta property="og:title" content="离">
+<meta property="og:url" content="/leave/index.html">
+<meta property="og:site_name" content="政子的博客">
+<meta property="og:description" content="离开2016 年 2 月 26 日 23:41，戴上耳机，摘下，再戴上，切歌，闭眼，后仰，《回梦游仙》，斟酌第一段的用词，距离开家不到 24h，回忆离开。 假期算是从莫名其妙决定参加 MCM 开始的吧。几日的思考，建模，不断写代码逐渐让我产生了对《秦时明月》莫名的好感，所以到家之后的第一件事就是把那部动漫从头看到了尾，蓉姑娘还是没有醒来。 离校时自己在火车上被一位年轻的母亲让孩子叫大叔。想想可不是">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2021-06-27T05:07:37.373Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="离">
+<meta name="twitter:description" content="离开2016 年 2 月 26 日 23:41，戴上耳机，摘下，再戴上，切歌，闭眼，后仰，《回梦游仙》，斟酌第一段的用词，距离开家不到 24h，回忆离开。 假期算是从莫名其妙决定参加 MCM 开始的吧。几日的思考，建模，不断写代码逐渐让我产生了对《秦时明月》莫名的好感，所以到家之后的第一件事就是把那部动漫从头看到了尾，蓉姑娘还是没有醒来。 离校时自己在火车上被一位年轻的母亲让孩子叫大叔。想想可不是">
+
+<link rel="canonical" href="/leave/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>离 | 政子的博客</title>
+  
+
+
+  <script data-pjax>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?590a1bfeac720e6a29c58f70ab77a9a3";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">政子的博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">技术|学习|随笔</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-书单">
+
+    <a href="/booklist/" rel="section"><i class="fa fa-fw fa-book"></i>书单</a>
+
+  </li>
+        <li class="menu-item menu-item-算法">
+
+    <a href="/algorithm/" rel="section"><i class="fa fa-fw fa-code"></i>算法</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="/leave/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Jason Bian">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="政子的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          离
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2016-02-27 01:37:36" itemprop="dateCreated datePublished" datetime="2016-02-27T01:37:36+08:00">2016-02-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-27 13:07:37" itemprop="dateModified" datetime="2021-06-27T13:07:37+08:00">2021-06-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/随笔/" itemprop="url" rel="index"><span itemprop="name">随笔</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/随笔/生活/" itemprop="url" rel="index"><span itemprop="name">生活</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/leave/" class="post-meta-item leancloud_visitors" data-flag-title="离" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/leave/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/leave/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.2k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>2 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="离开"><a href="#离开" class="headerlink" title="离开"></a>离开</h1><p>2016 年 2 月 26 日 23:41，戴上耳机，摘下，再戴上，切歌，闭眼，后仰，《回梦游仙》，斟酌第一段的用词，距离开家不到 24h，回忆离开。</p>
+<p>假期算是从莫名其妙决定参加 MCM 开始的吧。几日的思考，建模，不断写代码逐渐让我产生了对《秦时明月》莫名的好感，所以到家之后的第一件事就是把那部动漫从头看到了尾，蓉姑娘还是没有醒来。</p>
+<p>离校时自己在火车上被一位年轻的母亲让孩子叫大叔。想想可不是，这就到了奔三的年纪，不过当时也没想那么多，大睡了一觉，就到了家里，也半睡半醒半梦中写下了“太阳已经落山，我们迎来的是无边际的夜幕，跌倒盲目不知所措地等待白昼的到来”。也许这里用“我们”是不恰当的，“我”在此处更加情真意切。</p>
+<p>一抹悠悠兰州从嘴边，从眼前慢慢腾起的时候，心情就像赶上了最后一片枯叶从树杈上摇曳而下。</p>
+<h1 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h1><p>借着放假，重新拿起了 PHP 和 Python，写了点儿爬虫和一些应用后台，也说做就做了一回——和志鹏一起做了一个公共代码库（这样我就名正言顺地可以把他的代码直接拿来自己用了）。coding，commit，debug，coding，commit，debug，……这样的日子真心觉得得不错，我想这个假期以后可能会有怀念的地方吧。</p>
+<p>代码以前也写了不少，但都没有实际的用处，而很多的时间被无聊的微信 qq 绑架，也没写出个名堂，反而造成了许多心理负担，熬不过就把代码放到一边，快活逍遥去也。之后不能再这样。十年磨一剑，我没有磨剑，只是几乎虚度了近三年。我要反省和努力了。</p>
+<a id="more"></a>
+<h1 id="反省"><a href="#反省" class="headerlink" title="反省"></a>反省</h1><p>三年来貌似做过许多事情，但能记住的人和事儿都不多。记忆力差是一方面，另一方面应该是没有全身心投入去做吧。之前从 kcuua 和 vliner 中没有得到太多的教训，反而造成了在一些事情上的固定的不好的模式——不够踏实，只会画饼，给别人，也给自己。一直都是在忙碌，却很少思考，当忙碌快要有结果的时候，突然累了，弃之。对，这种想法出现的时候，就是在浪费生命。</p>
+<p>上学期末，我有意放下了许多之前的包袱，重新开始，至少可以专心专注，不再喜新厌旧，认真积累，做好沉淀，去掉浮躁，虚心去学，踏实去做，不再去讲大道理，做一个让自己满意的人。</p>
+<p>时间走得太快，追上它。</p>
+<h1 id="读书"><a href="#读书" class="headerlink" title="读书"></a>读书</h1><p>自去年年末买了 kindle 之后，一直心想读书却没有好好利用，书单里面的书越攒越多，却没有读过几本。</p>
+<p>可以让自己内省的最佳方式就是读书。从小时候，一直想有一个专门成年累月的时间让我阅读，越长大越知道这是天方夜谭。利用碎片时间，刷朋友圈的时间，看 QQ 空间的时间去阅读，对，就这样去阅读。</p>
+<p>假期开始实践，效果还好，读完了几本书，感觉就如囫囵吞枣，却也吃饱了肚子。笔记心得也只待枣儿能消化掉再来总结。我确信是可以消化掉的，因为今天和妈妈谈天的时候已经可以运用一些书中所见，但一点儿都不流畅。</p>
+<h1 id="天空之城"><a href="#天空之城" class="headerlink" title="天空之城"></a>天空之城</h1><p>不知觉，已经循环了很久《天空之城》了，就以它为小标题。</p>
+<p>每每听到这首曲子，我可以安静下来，静的可以听见脉搏在跳，所以我有时候也用这首曲子确认我还活着。在内心极度狂躁的时候，即使是全世界禁播这首曲子我也要翻出来听，还要去听各种版本。</p>
+<p>21 岁（至少马上就是了），已经离开了弱冠走向而立。亲人们对我的好却丝毫没有减少。我察觉得到他们没有变，但我变了，承受力开始变差，或者是我更希望他们可以有一些自己可以为之痴迷沉醉的事情，而不仅仅是关心我。我不能再无尽地索取不去报答，要做事不要再做梦了。</p>
+<p>朋友们很多，哥们却没几个，但是他们每个人都让我感觉到“有这个哥们，值了”。用歌儿里面的话讲，就是“也许会，有一天，世界真的有终点，也要和你举起回忆酿的甜，和你再乾一杯”。我想，如果当彗星划满半边天，我相信大家都会在身边。只是，彗星还没有来，假期却非常短，我已经开始怀念假期里每一次聊天约饭甚至是压马路的时间。</p>
+<p>对于感情，我确也思考过，只是远在天空之城，我看不清。从刚上大学时候的坦率直接，到之前的迷茫谨慎以及揣摩不定，和现在的不作为。不好也很好。就像一把古琴扬起，曲高和寡，虽无人会，却也自己有兴。</p>
+<p>现在去想，自己可能真的成了大叔，坐定看对面的两个女生边吃火锅边打闹，有了欣慰和轻松之感；一路爬山，聊聊无关紧要的话题，也找到了放空般轻松的状态。</p>
+<h1 id="唱口香糖的那个女生"><a href="#唱口香糖的那个女生" class="headerlink" title="唱口香糖的那个女生"></a>唱口香糖的那个女生</h1><p>模糊了，我记得是这首歌儿，在她生日，也是她唱的唯一一首歌儿。</p>
+<p>潇潇说的没错，现在的三中初三还几乎是当年的原班人马，除了她。</p>
+<p>周二，永和源，十一点半，是她，没有变，一切都没变。她还记得当年的所有细节，用当年惊人的记忆力。</p>
+<p>我也很好奇，不知都聊了些什么，却不知觉地过了一个下午。只是她不再严厉，而像一个许久未见知心的朋友似的，她知道你想的一切，关心着你的一切，你却怎么也做不到如此去关心她。她也很有精力，不像从前，而像从前的从前。</p>
+<p>学生安心了。大恩不言谢，只希望您可以健康快乐地看着我们成长。</p>
+<h1 id="旅行"><a href="#旅行" class="headerlink" title="旅行++"></a>旅行++</h1><p>我想去台湾，踏着《旅行的意义》。</p>
+<p>当然，第一步要有存款，存款要是自己赚的。所以，我想用一年的时间，争取做到可以跨入经济独立。先用大半年的时间来沉淀自己，多学习有用的知识，准备考研，弥补本科错过的时光。等考研之后要去找实习。不论如何，都要跨出这一步。</p>
+<p>还有，既然想好了以后的方向，那么就要付诸努力。看一些 coursera 上面的课程，重新定位数学在心中的地位，学好英语，学习一些大数据&amp;机器学习方面的算法，开始阅读一些相关的源码。</p>
+<p>就这样，晚安。</p>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/21_year_old_life/" rel="bookmark">21岁的你在过怎样的生活|来自知乎</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/something_only_happen_now/" rel="bookmark">有些事现在不做一辈子都不会做了</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/waves_of_snow/" rel="bookmark">浪雪</a></div>
+    </li>
+  </ul>
+
+        <div class="reward-container">
+  <div>请鼓励我的原创文章</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="Jason Bian 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="Jason Bian 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Jason Bian
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="/leave/" title="离">/leave/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/生活/" rel="tag"><i class="fa fa-tag"></i> 生活</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/python3_pip/" rel="prev" title="Python3下使用Pip">
+      <i class="fa fa-chevron-left"></i> Python3下使用Pip
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/ten_top_of_byr_bbs/" rel="next" title="北邮人论坛每日十大检索">
+      北邮人论坛每日十大检索 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+      <div class="tabs tabs-comment">
+        <ul class="nav-tabs">
+            <li class="tab"><a href="#comment-gitalk">gitalk</a></li>
+            <li class="tab"><a href="#comment-valine">valine</a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane gitalk" id="comment-gitalk">
+              <div class="comments" id="gitalk-container"></div>
+            </div>
+            <div class="tab-pane valine" id="comment-valine">
+              <div class="comments" id="valine-comments"></div>
+            </div>
+        </div>
+      </div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#离开"><span class="nav-number">1.</span> <span class="nav-text">离开</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#代码"><span class="nav-number">2.</span> <span class="nav-text">代码</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#反省"><span class="nav-number">3.</span> <span class="nav-text">反省</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#读书"><span class="nav-number">4.</span> <span class="nav-text">读书</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#天空之城"><span class="nav-number">5.</span> <span class="nav-text">天空之城</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#唱口香糖的那个女生"><span class="nav-number">6.</span> <span class="nav-text">唱口香糖的那个女生</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#旅行"><span class="nav-number">7.</span> <span class="nav-text">旅行++</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Jason Bian"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Jason Bian</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">83</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">112</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/imaginezz" title="GitHub → https://github.com/imaginezz" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto://Jason_Bian@outlook.com" title="E-Mail → mailto://Jason_Bian@outlook.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.facebook.com/Bianzizheng.Jason" title="Facebook → https://www.facebook.com/Bianzizheng.Jason" rel="noopener" target="_blank"><i class="fa fa-fw fa-facebook"></i>Facebook</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/zhengzigege" title="Weibo → https://weibo.com/zhengzigege" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>Weibo</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.danmakupie.com/" title="https://www.danmakupie.com/" rel="noopener" target="_blank">弹幕派</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.oursparkspace.cn/" title="https://www.oursparkspace.cn/" rel="noopener" target="_blank">火花空间</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.joyreserve.com" title="http://www.joyreserve.com" rel="noopener" target="_blank">乐享其约</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://bbss.zhengzi.me/" title="http://bbss.zhengzi.me/" rel="noopener" target="_blank">北邮人每日十大查询</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://gaocegege.com/" title="http://gaocegege.com/" rel="noopener" target="_blank">高策 江湖小虾米</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://yian.me/blog/" title="https://yian.me/blog/" rel="noopener" target="_blank">Y!an's Blog</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.cyprestar.com/" title="http://www.cyprestar.com/" rel="noopener" target="_blank">Cyprestar Blog</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://yicodes.com/" title="http://yicodes.com/" rel="noopener" target="_blank">易极</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://merrier.wang/" title="https://merrier.wang/" rel="noopener" target="_blank">Merrier说</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://博客.胡鼎原.中国" title="https://博客.胡鼎原.中国" rel="noopener" target="_blank">小勤奋爱学习</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://lfhacks.com" title="https://lfhacks.com" rel="noopener" target="_blank">LFhacks</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://study4.fun/" title="https://study4.fun/" rel="noopener" target="_blank">学而时思之</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn" rel="noopener" target="_blank">陇 ICP 备 15003463 号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jason Bian</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">220k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">3:20</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-pjax@0/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '.languages',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.dataset.pjax !== undefined) {
+      script.dataset.pjax = '';
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+
+
+  
+  <script data-pjax>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="pjax">
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '9c022a847ecc01650469',
+      clientSecret: '3c6fae6a3119943e381c2682b0a40f84573463b4',
+      repo        : 'blog_public',
+      owner       : 'imaginezz',
+      admin       : ['imaginezz'],
+      id          : '559c9dd253d9577b1a0e7ebd548f2715',
+        language: 'zh-CN',
+      distractionFreeMode: false
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : true,
+      notify     : true,
+      appId      : 'NKvm6nI2opr0SJphBQ9QylxP-gzGzoHsz',
+      appKey     : '4YegDjIQzYchFFEJXjKOVCYM',
+      placeholder: "留下你的印记吧~",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : true,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+    </div>
+</body>
+</html>

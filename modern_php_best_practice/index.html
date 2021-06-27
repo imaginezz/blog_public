@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.7.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/favicon/safari-pinned-tab.svg" color="#222">
+  <link rel="manifest" href="/images/favicon/site.webmanifest">
+  <meta name="msapplication-config" content="/images/favicon/browserconfig.xml">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="baidu-site-verification" content="5x8DHwr7y8">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1/themes/blue/pace-theme-minimal.css">
+  <script src="//cdn.jsdelivr.net/npm/pace-js@1/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":true,"nav":null,"activeClass":"valine"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":true,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="先放本中文版封面镇楼 值得一读在市面上各种 PHP 21 天从入门到精通的书已经漫天飞舞的情况下，《Modern PHP》一定是一本值得一读的从国内各大论坛/网站/课堂经历过以后的 PHP 进阶书籍。 《Modern PHP》是由 O’Reilly 推出，作者是大名鼎鼎的 Slim 框架的开发者。这本书推出的时间很有意思——2015 年 12 月，这也是 PHP7.0 正式发布的时间，同时——也">
+<meta name="keywords" content="Python,PHP,ModernPHP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="《Modern PHP》——关于PHP的最佳实践和最新进展">
+<meta property="og:url" content="/modern_php_best_practice/index.html">
+<meta property="og:site_name" content="政子的博客">
+<meta property="og:description" content="先放本中文版封面镇楼 值得一读在市面上各种 PHP 21 天从入门到精通的书已经漫天飞舞的情况下，《Modern PHP》一定是一本值得一读的从国内各大论坛/网站/课堂经历过以后的 PHP 进阶书籍。 《Modern PHP》是由 O’Reilly 推出，作者是大名鼎鼎的 Slim 框架的开发者。这本书推出的时间很有意思——2015 年 12 月，这也是 PHP7.0 正式发布的时间，同时——也">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2021-06-27T05:07:37.373Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="《Modern PHP》——关于PHP的最佳实践和最新进展">
+<meta name="twitter:description" content="先放本中文版封面镇楼 值得一读在市面上各种 PHP 21 天从入门到精通的书已经漫天飞舞的情况下，《Modern PHP》一定是一本值得一读的从国内各大论坛/网站/课堂经历过以后的 PHP 进阶书籍。 《Modern PHP》是由 O’Reilly 推出，作者是大名鼎鼎的 Slim 框架的开发者。这本书推出的时间很有意思——2015 年 12 月，这也是 PHP7.0 正式发布的时间，同时——也">
+
+<link rel="canonical" href="/modern_php_best_practice/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>《Modern PHP》——关于PHP的最佳实践和最新进展 | 政子的博客</title>
+  
+
+
+  <script data-pjax>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?590a1bfeac720e6a29c58f70ab77a9a3";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">政子的博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">技术|学习|随笔</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-书单">
+
+    <a href="/booklist/" rel="section"><i class="fa fa-fw fa-book"></i>书单</a>
+
+  </li>
+        <li class="menu-item menu-item-算法">
+
+    <a href="/algorithm/" rel="section"><i class="fa fa-fw fa-code"></i>算法</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="/modern_php_best_practice/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Jason Bian">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="政子的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          《Modern PHP》——关于PHP的最佳实践和最新进展
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2017-01-20 00:52:46" itemprop="dateCreated datePublished" datetime="2017-01-20T00:52:46+08:00">2017-01-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-27 13:07:37" itemprop="dateModified" datetime="2021-06-27T13:07:37+08:00">2021-06-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/技术/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/技术/PHP/" itemprop="url" rel="index"><span itemprop="name">PHP</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/modern_php_best_practice/" class="post-meta-item leancloud_visitors" data-flag-title="《Modern PHP》——关于PHP的最佳实践和最新进展" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/modern_php_best_practice/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/modern_php_best_practice/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>3.3k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>3 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><a href="/wp-content/uploads/2017/01/2498b4df325b54cb37c28e094e695d57-1.jpg"><img data-src="/wp-content/uploads/2017/01/2498b4df325b54cb37c28e094e695d57-1.jpg" alt=""></a></p>
+<p>先放本中文版封面镇楼</p>
+<h1 id="值得一读"><a href="#值得一读" class="headerlink" title="值得一读"></a>值得一读</h1><p>在市面上各种 PHP 21 天从入门到精通的书已经漫天飞舞的情况下，《Modern PHP》一定是一本值得一读的从国内各大论坛/网站/课堂经历过以后的 PHP 进阶书籍。</p>
+<p>《Modern PHP》是由 O’Reilly 推出，作者是大名鼎鼎的 Slim 框架的开发者。这本书推出的时间很有意思——2015 年 12 月，这也是 PHP7.0 正式发布的时间，同时——也就是从那时间开始，越来越多“PHP 药丸”的言论开始大行其道。所以，我一直在使用 PHP 的时候心情非常复杂。</p>
+<p>不过，我想这本书是可以为 PHP 正名的，而且不仅仅是正名——这本书介绍了一个崭新的 PHP 和一个全新的 PHP 时代。 所以本文的题目差点被我起成卫庄体——“给我两个小时，还你一个崭新的 PHP”。</p>
+<a id="more"></a>
+<h1 id="PHP-不是没有问题"><a href="#PHP-不是没有问题" class="headerlink" title="PHP 不是没有问题"></a>PHP 不是没有问题</h1><p>首先，由于 PHP 的历史非常曲折悠久，所以网上有许许多多的 PHP 教程，但是教程良莠不齐，有许多陈旧的实践方式，又由于 PHP 变态的向下兼容性，那些实践方式都可以完美地不加出错地运行起来，这样便造就了无数的又慢又冗余又不安全的 PHP 应用。而许多 PHP 新的有用的特性又完全没有被很好地介绍给开发者。</p>
+<p>特别是，有许多新进入 Web 开发领域的人都可以是用 PHP 轻易地写出虽然很脏很烂很难维护，但是又看起来运行起来没有什么太大问题的代码（比如我）。所以 PHP 开发人员入门门槛低是 PHP 的一个优势，但随之而来的开发人员素质无法保证也是 PHP 的一个劣势。</p>
+<p>再加之国内一些 PHP 培训机构或者培训视频、社区、教程（这里就点名 w3school.com.cn 吧，里面的数据库连接方式全都是 PHP5，也就是 2004 年之前使用的方式）和开发框架（这里就只点名 ThinkPHP3 系列吧）所倡导的“能用就行”的 PHP 实践方式的误导…… 这些都让国内的众多开发者人为 PHP 已经垂垂暮矣，没有前途。</p>
+<h1 id="最差实践、最佳实践、最新现状"><a href="#最差实践、最佳实践、最新现状" class="headerlink" title="最差实践、最佳实践、最新现状"></a>最差实践、最佳实践、最新现状</h1><p>通过《Modern PHP》这本书的介绍，和我关于 PHP 的一些最新实践，让我看到了 PHP 的希望。</p>
+<p>首先想罗列一下看起来恐怖（因为可能许多 PHP 开发者也都不知道）的 PHP 的新特性和新实践标准的名词——命名空间、接口、性状、迭代器、生成器、闭包、字节码缓存、反射、内置服务器、CLI 运行方式、PHP-FIG、PSR、组件化、PHP-FPM、XDebug、单元测试、持续测试、JIT 引擎、静态类型…… 俨然，PHP 现在已经变成了一门几乎无所不包（就像以前那样）的全新的语言。</p>
+<p>说一下之前（或者说是很多教程里常见）的开发模式吧，首先用 PHP 的各种集成包在 Windows 下面搭建一个环境，如果想用框架的话就直接从官网下载框架的代码，拷贝到网站目录，然后新建一个 PHP 文件就直接开撸，磁盘的目录结构就是网站的 URL 路由，调试全靠满屏的 echo，遇到不会的东西就从百度随便搜索一个方案之后把代码拷贝进去直接去用（很多时候还和框架不兼容，所以就直接脱开框架自己开写原生代码），上线的时候打开 FTP 软件，直接把网站拷贝进去齐活。 简单，的确非常简单，而且粗暴。但是这里面藏匿着很多问题，比如文件引用、路由配置、定位 bug、单元测试、性能分析、自动化部署、版本控制、包管理与更新、性能优化、日后维护……这种各自为战的方法，也同样很不利于社区的发展。</p>
+<p>而这本书里讲述了一种完全不同，甚至优雅程度不亚于现在比较流行的语言的 PHP 实践方法，这里就类比 Python 吧。</p>
+<ul>
+<li>使用统一的代码风格，类似于 Python 的 PyLint，PHP 有了使代码符合 PSR 规范的 PHPLint</li>
+<li>优秀的包管理，类似于 pip，PHP 可以使用更加优雅的更加细化 Composer 进行包管理（而且 Composer 还有插件可以顺便充当前端的 bower 或者 nmp 包管理器）</li>
+<li>统一的 autoloader，在 Composer 中自带了符合 PSR-4 规范的 autoloader，终于结束了各种 autoloader 版本的时代，而 Python 则需要在<strong>init</strong>.py 中做些手脚</li>
+<li>迭代器/生成器，使用起来就和 python 的 yield 一样</li>
+<li>匿名函数/闭包，就像 Python 的闭包和 lambda 表达式一样（但是闭包的作用域需要 use，不是很习惯）</li>
+<li>内置服务器，就像 Django 或 Flask 一样可以直接以 CLI 的形式启动内置服务器进行测试</li>
+<li>PHP-FPM，就像 uwsgi 一样是一个 fast-cgi 的托管器</li>
+<li>CLI 运行方式，只要愿意，PHP 可以写出像 Python 一样好用的命令行脚本</li>
+<li>版本控制，PHP 也可以使用 Git 或者 Subversion 等软件进行版本控制</li>
+<li>流的概念，这里很像 C#中的 stream，可以有多级 Pipeline，也可以通过继承让不同的流支持统一的接口</li>
+<li>性状的支持，这个在 Python 里似乎没见到过，比较有意思，不过 Python 可以有多继承来完成和性状类似的事情</li>
+<li>Zend OPcache，完成了类似 Python 对 pyc 文件的缓存</li>
+<li>Travis CI 也支持 PHP，可以完成持续测试</li>
+<li>JIT 引擎——HHVM，性能提升很高，Python 也有类似的解释器（据说 PHP8 的 Zend 引擎也会加入对 JIT 的支持，拭目以待吧）</li>
+<li>静态类型，Hack 和 PHP7 均支持，（可以选择声明类型 or 不声明类型），这使得 PHP 更加类似强类型语言，Python 目前应该还没有相关特性（但 Python 是强类型语言），这和 C#目前的思路有写相对应（C#可以使用 var 或 Object 做类型推断，实现一些感觉像是弱类型的功能）</li>
+<li>性能提升——HHVM 和 PHP7，理论上的说，都比 CPython 快得多</li>
+<li>……</li>
+</ul>
+<p>所以，PHP 完全可以继续作为一门可以和现代大多数语言媲美（甚至更加完善）的 Web 开发语言（甚至可以是命令行脚本开发），而且 PHP 依旧具有旺盛的生命力。</p>
+<h1 id="GitHub-中一些有趣的-PHP-项目"><a href="#GitHub-中一些有趣的-PHP-项目" class="headerlink" title="GitHub 中一些有趣的 PHP 项目"></a>GitHub 中一些有趣的 PHP 项目</h1><ul>
+<li>ReactPHP——PHP 版本的 NodeJS：<a href="https://github.com/reactphp/react" target="_blank" rel="noopener">https://github.com/reactphp/react</a></li>
+<li>Swoole——使用 C 语言拓展的 PHP 异步、并行、高性能框架：<a href="https://github.com/swoole/swoole-src" target="_blank" rel="noopener">https://github.com/swoole/swoole-src</a></li>
+<li>WorkerMan——一个纯 PHP 开发的高性能 Socket 框架（完全可以当做 WebServer 来使用）：<a href="https://github.com/walkor/Workerman" target="_blank" rel="noopener">https://github.com/walkor/Workerman</a></li>
+<li>Yaf——使用 C 语言拓展的高性能的 PHP 框架：<a href="https://github.com/laruence/yaf" target="_blank" rel="noopener">https://github.com/laruence/yaf</a></li>
+<li>Hprose for PHP——使用 PHP 语言开发的跨语言远程通信中间件：<a href="https://github.com/hprose/hprose-php" target="_blank" rel="noopener">https://github.com/hprose/hprose-php</a>（当然不仅仅有 PHP，还有各种语言，和 Thrift 非常像）</li>
+</ul>
+<h1 id="放弃旧的思路，开始新的-PHP-之旅"><a href="#放弃旧的思路，开始新的-PHP-之旅" class="headerlink" title="放弃旧的思路，开始新的 PHP 之旅"></a>放弃旧的思路，开始新的 PHP 之旅</h1><p>试着使用《Modern PHP》中的最新实践，多去看看国外的 PHP 社区和一些主流的 PHP 框架的 PHP 实践方法。 如果无从下手，建议抛弃陈旧的 PHP 教程，从使用 Composer 和写符合 PSR 规范的代码开始吧！在那里，会见到一个全新的有生命力的 PHP 社区。</p>
+<h1 id="一些资料"><a href="#一些资料" class="headerlink" title="一些资料"></a>一些资料</h1><ul>
+<li>作者 Josh 维护的社区——PHP 之道：<a href="https://laravel-china.github.io/php-the-right-way/" target="_blank" rel="noopener">https://laravel-china.github.io/php-the-right-way/</a></li>
+<li>ModernPHP——豆瓣：<a href="https://book.douban.com/subject/26635862/" target="_blank" rel="noopener">https://book.douban.com/subject/26635862/</a></li>
+<li>ModernPHP——O’Reilly：<a href="http://shop.oreilly.com/product/0636920033868.do" target="_blank" rel="noopener">http://shop.oreilly.com/product/0636920033868.do</a></li>
+<li>PHP 包社区：<a href="https://packagist.org/" target="_blank" rel="noopener">https://packagist.org/</a></li>
+<li>PHP 官方手册：<a href="http://php.net/manual/zh/" target="_blank" rel="noopener">http://php.net/manual/zh/</a></li>
+<li>PHP-FIG 官网：<a href="http://www.php-fig.org/" target="_blank" rel="noopener">http://www.php-fig.org/</a></li>
+<li>一些流行的 PHP 框架：Laravel，Symfony，Yii，Slim</li>
+<li>正版 W3School（可能需要梯子）：<a href="http://www.w3schools.com/php/" target="_blank" rel="noopener">http://www.w3schools.com/php/</a></li>
+<li>Laravel China 社区：<a href="https://laravel-china.org/" target="_blank" rel="noopener">https://laravel-china.org/</a></li>
+<li>鸟哥（PHP7 主要开发者）的博客：<a href="http://www.laruence.com/" target="_blank" rel="noopener">http://www.laruence.com/</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/ten_top_of_byr_bbs/" rel="bookmark">北邮人论坛每日十大检索</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/apache_wsgi_flask/" rel="bookmark">搭建Apache+Wsgi+Flask的环境</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/azure_ss/" rel="bookmark">使用Azure快速搭建SS服务器</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/centos7_python3/" rel="bookmark">CentOS7下安装Python3</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/information_theory_huffam/" rel="bookmark">信息论中对于定长编码和哈夫曼编码效率的比较</a></div>
+    </li>
+  </ul>
+
+        <div class="reward-container">
+  <div>请鼓励我的原创文章</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="Jason Bian 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="Jason Bian 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Jason Bian
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="/modern_php_best_practice/" title="《Modern PHP》——关于PHP的最佳实践和最新进展">/modern_php_best_practice/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Python/" rel="tag"><i class="fa fa-tag"></i> Python</a>
+              <a href="/tags/PHP/" rel="tag"><i class="fa fa-tag"></i> PHP</a>
+              <a href="/tags/ModernPHP/" rel="tag"><i class="fa fa-tag"></i> ModernPHP</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/p4_github_resp/" rel="prev" title="来聊聊P4的GitHub仓库吧">
+      <i class="fa fa-chevron-left"></i> 来聊聊P4的GitHub仓库吧
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/west_world_host_and_human/" rel="next" title="《西部世界》的Host，人类世界的外乡人">
+      《西部世界》的Host，人类世界的外乡人 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+      <div class="tabs tabs-comment">
+        <ul class="nav-tabs">
+            <li class="tab"><a href="#comment-gitalk">gitalk</a></li>
+            <li class="tab"><a href="#comment-valine">valine</a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane gitalk" id="comment-gitalk">
+              <div class="comments" id="gitalk-container"></div>
+            </div>
+            <div class="tab-pane valine" id="comment-valine">
+              <div class="comments" id="valine-comments"></div>
+            </div>
+        </div>
+      </div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#值得一读"><span class="nav-number">1.</span> <span class="nav-text">值得一读</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#PHP-不是没有问题"><span class="nav-number">2.</span> <span class="nav-text">PHP 不是没有问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#最差实践、最佳实践、最新现状"><span class="nav-number">3.</span> <span class="nav-text">最差实践、最佳实践、最新现状</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GitHub-中一些有趣的-PHP-项目"><span class="nav-number">4.</span> <span class="nav-text">GitHub 中一些有趣的 PHP 项目</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#放弃旧的思路，开始新的-PHP-之旅"><span class="nav-number">5.</span> <span class="nav-text">放弃旧的思路，开始新的 PHP 之旅</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#一些资料"><span class="nav-number">6.</span> <span class="nav-text">一些资料</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Jason Bian"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Jason Bian</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">83</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">112</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/imaginezz" title="GitHub → https://github.com/imaginezz" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto://Jason_Bian@outlook.com" title="E-Mail → mailto://Jason_Bian@outlook.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.facebook.com/Bianzizheng.Jason" title="Facebook → https://www.facebook.com/Bianzizheng.Jason" rel="noopener" target="_blank"><i class="fa fa-fw fa-facebook"></i>Facebook</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/zhengzigege" title="Weibo → https://weibo.com/zhengzigege" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>Weibo</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.danmakupie.com/" title="https://www.danmakupie.com/" rel="noopener" target="_blank">弹幕派</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.oursparkspace.cn/" title="https://www.oursparkspace.cn/" rel="noopener" target="_blank">火花空间</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.joyreserve.com" title="http://www.joyreserve.com" rel="noopener" target="_blank">乐享其约</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://bbss.zhengzi.me/" title="http://bbss.zhengzi.me/" rel="noopener" target="_blank">北邮人每日十大查询</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://gaocegege.com/" title="http://gaocegege.com/" rel="noopener" target="_blank">高策 江湖小虾米</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://yian.me/blog/" title="https://yian.me/blog/" rel="noopener" target="_blank">Y!an's Blog</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.cyprestar.com/" title="http://www.cyprestar.com/" rel="noopener" target="_blank">Cyprestar Blog</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://yicodes.com/" title="http://yicodes.com/" rel="noopener" target="_blank">易极</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://merrier.wang/" title="https://merrier.wang/" rel="noopener" target="_blank">Merrier说</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://博客.胡鼎原.中国" title="https://博客.胡鼎原.中国" rel="noopener" target="_blank">小勤奋爱学习</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://lfhacks.com" title="https://lfhacks.com" rel="noopener" target="_blank">LFhacks</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://study4.fun/" title="https://study4.fun/" rel="noopener" target="_blank">学而时思之</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn" rel="noopener" target="_blank">陇 ICP 备 15003463 号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jason Bian</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">220k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">3:20</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-pjax@0/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '.languages',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.dataset.pjax !== undefined) {
+      script.dataset.pjax = '';
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+
+
+  
+  <script data-pjax>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="pjax">
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '9c022a847ecc01650469',
+      clientSecret: '3c6fae6a3119943e381c2682b0a40f84573463b4',
+      repo        : 'blog_public',
+      owner       : 'imaginezz',
+      admin       : ['imaginezz'],
+      id          : '66ea84386f5497b60eaf8d97cfeef6bc',
+        language: 'zh-CN',
+      distractionFreeMode: false
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : true,
+      notify     : true,
+      appId      : 'NKvm6nI2opr0SJphBQ9QylxP-gzGzoHsz',
+      appKey     : '4YegDjIQzYchFFEJXjKOVCYM',
+      placeholder: "留下你的印记吧~",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : true,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+    </div>
+</body>
+</html>
