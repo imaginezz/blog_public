@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)">
+<meta name="generator" content="Hexo 6.3.0">
+
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/favicon/safari-pinned-tab.svg" color="#222">
+  <link rel="manifest" href="/images/favicon/site.webmanifest">
+  <meta name="baidu-site-verification" content="5x8DHwr7y8">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.bootcdn.net/ajax/libs/pace/1.2.4/pace.min.js"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.zhengi.me","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":true,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":true,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="使用Qemu对Linux内核进行调试是一种较为便捷的方式，近日进行了一番实践，并将大致步骤与其中一些小坑记录了下来。 环境由于放长假赋闲在家，所以手头只有一台装有MacOS的MBP可用，而Linux内核的开发与调试使用Linux环境下会比较方便，所以就使用VMware Fusion创建了一台安装有Ubuntu 18.04系统的虚拟机。由于编译Linux内核及相关软件需要的资源较多，所以为虚拟机配置">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用Qemu和GDB对Linux内核进行调试">
+<meta property="og:url" content="https://blog.zhengi.me/debug-linux-kernel-with-qemu-and-gdb/index.html">
+<meta property="og:site_name" content="政子的博客">
+<meta property="og:description" content="使用Qemu对Linux内核进行调试是一种较为便捷的方式，近日进行了一番实践，并将大致步骤与其中一些小坑记录了下来。 环境由于放长假赋闲在家，所以手头只有一台装有MacOS的MBP可用，而Linux内核的开发与调试使用Linux环境下会比较方便，所以就使用VMware Fusion创建了一台安装有Ubuntu 18.04系统的虚拟机。由于编译Linux内核及相关软件需要的资源较多，所以为虚拟机配置">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-05-02T09:11:29.000Z">
+<meta property="article:modified_time" content="2024-03-23T06:03:16.943Z">
+<meta property="article:author" content="Jason Bian">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="Kernel">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://blog.zhengi.me/debug-linux-kernel-with-qemu-and-gdb/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://blog.zhengi.me/debug-linux-kernel-with-qemu-and-gdb/","path":"debug-linux-kernel-with-qemu-and-gdb/","title":"使用Qemu和GDB对Linux内核进行调试"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>使用Qemu和GDB对Linux内核进行调试 | 政子的博客</title>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?590a1bfeac720e6a29c58f70ab77a9a3"></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="政子的博客" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">政子的博客</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">技术|学习|随笔</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa  fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+        <li class="menu-item menu-item-书单"><a href="/booklist/" rel="section"><i class="fa fa-book fa-fw"></i>书单</a></li>
+        <li class="menu-item menu-item-算法"><a href="/algorithm/" rel="section"><i class="fa fa-code fa-fw"></i>算法</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83"><span class="nav-number">1.</span> <span class="nav-text">环境</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BC%96%E8%AF%91Linux%E5%86%85%E6%A0%B8"><span class="nav-number">2.</span> <span class="nav-text">编译Linux内核</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8B%E8%BD%BD%E5%86%85%E6%A0%B8%E6%BA%90%E7%A0%81"><span class="nav-number">2.1.</span> <span class="nav-text">下载内核源码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E5%86%85%E6%A0%B8"><span class="nav-number">2.2.</span> <span class="nav-text">配置内核</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%E5%86%85%E6%A0%B8"><span class="nav-number">2.3.</span> <span class="nav-text">编译内核</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85GDB%E5%92%8CQemu"><span class="nav-number">3.</span> <span class="nav-text">编译安装GDB和Qemu</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85GDB"><span class="nav-number">3.1.</span> <span class="nav-text">编译安装GDB</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85Qemu"><span class="nav-number">3.2.</span> <span class="nav-text">编译安装Qemu</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%88%B6%E4%BD%9CROOTFS"><span class="nav-number">4.</span> <span class="nav-text">制作ROOTFS</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%84%E5%BB%BA%E5%9F%BA%E4%BA%8Einitrd%E7%9A%84rootfs"><span class="nav-number">4.1.</span> <span class="nav-text">构建基于initrd的rootfs</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%84%E5%BB%BA%E5%9F%BA%E4%BA%8E%E7%A1%AC%E7%9B%98%E9%95%9C%E5%83%8F%E7%9A%84rootfs"><span class="nav-number">4.2.</span> <span class="nav-text">构建基于硬盘镜像的rootfs</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8B%E8%BD%BD%E7%BC%96%E8%AF%91busybox"><span class="nav-number">4.2.1.</span> <span class="nav-text">下载编译busybox</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8busybox%E5%88%9B%E5%BB%BArootfs"><span class="nav-number">4.2.2.</span> <span class="nav-text">使用busybox创建rootfs</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8Qemu%E5%92%8CGDB%E8%B0%83%E8%AF%95%E5%86%85%E6%A0%B8"><span class="nav-number">5.</span> <span class="nav-text">使用Qemu和GDB调试内核</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8Qemu%E5%90%AF%E5%8A%A8%E5%86%85%E6%A0%B8"><span class="nav-number">5.1.</span> <span class="nav-text">使用Qemu启动内核</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8GDB%E8%B0%83%E8%AF%95%E5%86%85%E6%A0%B8"><span class="nav-number">5.2.</span> <span class="nav-text">使用GDB调试内核</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%90%8E%E8%AE%B0"><span class="nav-number">6.</span> <span class="nav-text">后记</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E6%A0%B8%E6%96%87%E6%A1%A3"><span class="nav-number">6.1.</span> <span class="nav-text">内核文档</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%9D%A5%E6%BA%90"><span class="nav-number">6.2.</span> <span class="nav-text">参考来源</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Jason Bian"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Jason Bian</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">86</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">108</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/imaginezz" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;imaginezz" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto://Jason_Bian@outlook.com" title="E-Mail → mailto:&#x2F;&#x2F;Jason_Bian@outlook.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.danmakupie.com/" title="https:&#x2F;&#x2F;www.danmakupie.com&#x2F;" rel="noopener" target="_blank">弹幕派</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.oursparkspace.cn/" title="https:&#x2F;&#x2F;www.oursparkspace.cn&#x2F;" rel="noopener" target="_blank">火花空间</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.joyreserve.com/" title="http:&#x2F;&#x2F;www.joyreserve.com" rel="noopener" target="_blank">乐享其约</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://gaocegege.com/" title="http:&#x2F;&#x2F;gaocegege.com&#x2F;" rel="noopener" target="_blank">高策 江湖小虾米</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://yian.me/blog/" title="https:&#x2F;&#x2F;yian.me&#x2F;blog&#x2F;" rel="noopener" target="_blank">Y!an's Blog</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.cyprestar.com/" title="http:&#x2F;&#x2F;www.cyprestar.com&#x2F;" rel="noopener" target="_blank">Zhilong's Blog</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://yicodes.com/" title="http:&#x2F;&#x2F;yicodes.com&#x2F;" rel="noopener" target="_blank">易极</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://merrier.wang/" title="https:&#x2F;&#x2F;merrier.wang&#x2F;" rel="noopener" target="_blank">Merrier说</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://博客.胡鼎原.中国/" title="https:&#x2F;&#x2F;博客.胡鼎原.中国" rel="noopener" target="_blank">小勤奋爱学习</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://lfhacks.com/" title="https:&#x2F;&#x2F;lfhacks.com" rel="noopener" target="_blank">LFhacks</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://study4.fun/" title="https:&#x2F;&#x2F;study4.fun&#x2F;" rel="noopener" target="_blank">学而时思之</a>
+        </li>
+    </ul>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.zhengi.me/debug-linux-kernel-with-qemu-and-gdb/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Jason Bian">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="政子的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          使用Qemu和GDB对Linux内核进行调试
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-05-02 17:11:29" itemprop="dateCreated datePublished" datetime="2020-05-02T17:11:29+08:00">2020-05-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/Kernel/" itemprop="url" rel="index"><span itemprop="name">Kernel</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>5.7k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>5 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>使用Qemu对Linux内核进行调试是一种较为便捷的方式，近日进行了一番实践，并将大致步骤与其中一些小坑记录了下来。</p>
+<h1 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h1><p>由于放长假赋闲在家，所以手头只有一台装有MacOS的MBP可用，而Linux内核的开发与调试使用Linux环境下会比较方便，所以就使用VMware Fusion创建了一台安装有Ubuntu 18.04系统的虚拟机。由于编译Linux内核及相关软件需要的资源较多，所以为虚拟机配置了双核CPU、2GB内存和20GB磁盘空间（笔记本本身资源有限），但实际使用（特别是物理内存和硬盘）捉襟见肘，于是又在系统中添加了3GB的SWAP内存并扩容了20GB的磁盘空间（其实还是不太够）才解决问题。</p>
+<h1 id="编译Linux内核"><a href="#编译Linux内核" class="headerlink" title="编译Linux内核"></a>编译Linux内核</h1><p>首先，尝试对内核进行编译，在编译前需要使用通过KConfig启动内核的调试配置。</p>
+<h2 id="下载内核源码"><a href="#下载内核源码" class="headerlink" title="下载内核源码"></a>下载内核源码</h2><p>由于Linux内核代码量非常大，且由于国内网络大家都懂的原因，所以的下载内核源码是一项较为复杂的体力活动。</p>
+<span id="more"></span>
+
+<p>第一种方法是直接Clone Linux源码的Git仓库，当前，其仓库大约为3.7GB。在通过内核官网(<a target="_blank" rel="noopener" href="https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/">https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/</a>)或者GitHub(<a target="_blank" rel="noopener" href="https://github.com/torvalds/linux">https://github.com/torvalds/linux</a>)进行Clone的过程中，经常会遇到连接断开的情况，非常捉急。而如果通过国内镜像源，如<a target="_blank" rel="noopener" href="https://mirror.tuna.tsinghua.edu.cn/help/linux.git/">清华Kernel Git镜像</a>进行Clone的时候，最开始速度飞快，但是后面速度会越来越慢。因此，如果不像我这样头铁的话，不建议使用这样的方式下载Kernel的源码。</p>
+<p>另一种较为简单的方式是下载特定版本的源码，这些源码的tarball包可以从<a target="_blank" rel="noopener" href="https://www.kernel.org/">内核官网</a>或者镜像站获得。我在实验中使用的内核版本为4.19，gz压缩包的大小约为150MB。</p>
+<h2 id="配置内核"><a href="#配置内核" class="headerlink" title="配置内核"></a>配置内核</h2><p>如果是使用Git Clone的方式获取的内核源码，需要通过<code>git checkout v4.19</code>将内核源码置位4.19版本。</p>
+<p>在编译之前，首先需要安装相关的依赖（如果提示缺少其它依赖按需安装即可）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install libncurses5-dev libssl-dev bison flex libelf-dev gcc make openssl libc6-dev</span><br></pre></td></tr></table></figure>
+
+<p>在编译之前，需要使用KConfig对内核编译选项进行配置，在内核文件夹下，使用<code>make menuconfig</code>（命令行界面）或<code>make gconfig</code>（基于gtk的图形化界面）对内核进行配置。在配置时，需要打开如下选项：</p>
+<figure class="highlight xl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">K<span class="function"><span class="title">ernel</span> hacking -&gt;</span> Kernel debugging</span><br><span class="line">K<span class="function"><span class="title">ernel</span> hacking -&gt;</span> KGDB:kernel debugger</span><br><span class="line">K<span class="function"><span class="title">ernel</span> hacking -&gt;</span> C<span class="function"><span class="title">ompile</span> <span class="built_in">time</span> checks <span class="built_in">and</span> compiler options -&gt;</span> Provide GDB scripts <span class="keyword">for</span> kernel debugging</span><br></pre></td></tr></table></figure>
+<p>并保证如下选项没有开启：</p>
+<figure class="highlight xl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">K<span class="function"><span class="title">ernel</span> hacking -&gt;</span> C<span class="function"><span class="title">ompile</span> <span class="built_in">time</span> checks <span class="built_in">and</span> compiler options -&gt;</span> Reduce debugging information</span><br></pre></td></tr></table></figure>
+
+<p>在退出配置后，可以发现内核目录中生成了一个名为<code>.config</code>的配置文件。</p>
+<h2 id="编译内核"><a href="#编译内核" class="headerlink" title="编译内核"></a>编译内核</h2><p>配置完成后，就可以使用<code>make</code>编译内核，在多核CPU中可以使用<code>make -jx</code>启动多线程编译（x为启动的线程数）。</p>
+<p>如果一切正常，在漫长的等待后，内核将编译完成。编译会在内核根目录下生成<code>vmlinux  </code>文件，它是编译出的原始内核文件（含有调试信息），而会在<code>arch/x86/boot/bzImage</code>目录下生成压缩后的内核文件（当然是在编译的体系结构为x86的情况下）。</p>
+<h1 id="编译安装GDB和Qemu"><a href="#编译安装GDB和Qemu" class="headerlink" title="编译安装GDB和Qemu"></a>编译安装GDB和Qemu</h1><p>由于内核调试所需的GDB和Qemu版本可能会比apt源中的版本高，所以，最好自行编译安装这些软件。</p>
+<h2 id="编译安装GDB"><a href="#编译安装GDB" class="headerlink" title="编译安装GDB"></a>编译安装GDB</h2><p>首先，从官网(<a target="_blank" rel="noopener" href="http://www.gnu.org/software/gdb/download/">http://www.gnu.org/software/gdb/download/</a>)下载GDB的源码并解压（这里使用的是官网中最新的GDB 9.1），需要注意的是，网上有些博客中提到需要修改GDB的源码，其实是不必要的，报错的原因是没有自动检测到目标体系结构的类型，所以只需设置该类型即可。</p>
+<p>解压后进入GDB文件夹，执行下列指令，即可完成编译安装：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> build </span><br><span class="line"><span class="built_in">cd</span> build</span><br><span class="line">../configure</span><br><span class="line">make -j4</span><br><span class="line">sudo make install</span><br></pre></td></tr></table></figure>
+
+<p>最后，通过使用<code>gdb -v</code>确定gdb的版本是否为9.1，如果是，则说明安装成功。</p>
+<h2 id="编译安装Qemu"><a href="#编译安装Qemu" class="headerlink" title="编译安装Qemu"></a>编译安装Qemu</h2><p>首先，从官网下载(<a target="_blank" rel="noopener" href="https://www.qemu.org/download/#source">https://www.qemu.org/download/#source</a>)Qemu的源码并解压（这里使用的是Qemu 5.0.0）。</p>
+<p>由于在Ubuntu GUI中使用Qemu还需要多媒体图形库SDL，所以需要首先使用apt安装sdl：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install libsdl2-2.0-0 libsdl2-dev libsdl2-gfx-1.0-0 libsdl2-gfx-dev libsdl2-image-2.0-0 libsdl2-image-dev </span><br></pre></td></tr></table></figure>
+
+<p>进入Qemu目录后，执行<code>./configure</code>检查系统配置并生成Makefile，需要注意检查的时候是否检测到了SDL的支持，其输出的部分内容如下所示：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">profiler          no</span><br><span class="line">static build      no</span><br><span class="line">SDL support       <span class="built_in">yes</span> (2.0.8)</span><br><span class="line">SDL image support <span class="built_in">yes</span></span><br><span class="line">GTK support       no </span><br><span class="line">GTK GL support    no</span><br><span class="line">VTE support       no </span><br><span class="line">TLS priority      NORMAL</span><br></pre></td></tr></table></figure>
+
+<p>然后执行<code>make &amp;&amp; make install</code>即可完成Qemu的编译与安装。</p>
+<p>在安装完Qemu后，会生成如<code>qemu-xxx</code>和<code>qemu-system-xxx</code>的一系列命令，用于仿真不同体系结构的用户态应用和操作系统，可以通过如<code>qemu-system-x86_64 --version</code>命令确认Qemu是否安装成功。</p>
+<h1 id="制作ROOTFS"><a href="#制作ROOTFS" class="headerlink" title="制作ROOTFS"></a>制作ROOTFS</h1><p>在内核启动后需要一个带有init程序的rootfs，所以在调试内核前需要制作一个rootfs。</p>
+<h2 id="构建基于initrd的rootfs"><a href="#构建基于initrd的rootfs" class="headerlink" title="构建基于initrd的rootfs"></a>构建基于initrd的rootfs</h2><p>initrd是一种位于内存的根文件系统，它可以在硬盘被驱动之前载入系统。这里为了方便，只将一个简单的程序写入initrd，并将其作为init程序（即系统启动后的第一个用户态进程）。除此之外，也可以使用busybox作为initrd中的init程序。</p>
+<p>创建一下简单的c程序，命名为<code>fakeinit.c</code>。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;hello world!&quot;</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;hello linux!&quot;</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;hello world!&quot;</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;hello linux!&quot;</span>);</span><br><span class="line">    fflush(<span class="built_in">stdout</span>);</span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后使用gcc编译这段代码，在编译的时候需要使用静态链接，并且如果如果在配置内核的时候没有启用64位支持（64-bit kernel），则需要将代码编译为32位程序，方法是在gcc命令行中添加<code>-m32</code>选项。</p>
+<p>编译命令如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">gcc --static -o fakeinit fakeinit.c</span><br><span class="line">gcc --static -o fakeinit fakeinit.c -m32 (编译为32位可执行程序)</span><br></pre></td></tr></table></figure>
+
+<p>在编译后，使用cpio程序进行打包：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> fakeinit | cpio -o --format=newc &gt; initrd_rootfs.img</span><br></pre></td></tr></table></figure>
+
+<p>这样，一个基于initrd的rootfs即制作完成。</p>
+<h2 id="构建基于硬盘镜像的rootfs"><a href="#构建基于硬盘镜像的rootfs" class="headerlink" title="构建基于硬盘镜像的rootfs"></a>构建基于硬盘镜像的rootfs</h2><p>这里使用busybox构建基于硬盘镜像的rootfs。其中，busybox是一个集成了数百个Linux常用命令和工具的单个软件，在对内核进行测试的时候非常方便，号称“The Swiss Army Knife of Embedded Linux”。</p>
+<h3 id="下载编译busybox"><a href="#下载编译busybox" class="headerlink" title="下载编译busybox"></a>下载编译busybox</h3><p>首先，从官网(<a target="_blank" rel="noopener" href="https://busybox.net/downloads/">https://busybox.net/downloads/</a>)下载busybox的源码并解压（这里使用的是最新的busybox-1.31.1）。</p>
+<p>在解压并进入busybox文件夹后，首先使用<code>make gconfig</code>或<code>make menuconfig</code>对其进行配置，需要启用如下选项：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Settings -&gt; Build Options -&gt; Build static binary (no shared libs)</span><br></pre></td></tr></table></figure>
+
+<p>如果需要将其编译为32位版本，则需要将<code>-m32</code>命令填入如下选项：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Settings -&gt; Build Options -&gt; Additional CFLAGS</span><br><span class="line">Settings -&gt; Build Options -&gt; Additional LDFLAGS</span><br></pre></td></tr></table></figure>
+
+<p>与内核相同，在退出后，会在目录中生成一个名为<code>.config</code>的配置文件。</p>
+<p>然后，使用<code>make</code>命令编译busybox。</p>
+<h3 id="使用busybox创建rootfs"><a href="#使用busybox创建rootfs" class="headerlink" title="使用busybox创建rootfs"></a>使用busybox创建rootfs</h3><p>首先，创建一个空的磁盘镜像文件，然后将其格式化：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">dd</span> <span class="keyword">if</span>=/dev/zero of=./busybox_rootfs.img bs=1M count=10</span><br><span class="line">mkfs.ext3 ./busybox_rootfs.img</span><br></pre></td></tr></table></figure>
+
+<p>然后，挂载刚刚创建的磁盘镜像（需要使用loop设备）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> rootfs_mount</span><br><span class="line">sudo mount -t ext3 -o loop ./busybox_rootfs.img ./rootfs_mount</span><br></pre></td></tr></table></figure>
+
+<p>接着，在busybox源码目录中，将编译好的busybox目标文件安装到rootfs文件夹：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make install CONFIG_PREFIX=/path/to/rootfs_mount/</span><br></pre></td></tr></table></figure>
+
+<p>最后，配置busybox的init，并卸载rootfs：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> /path/to/rootfs_mount/proc</span><br><span class="line"><span class="built_in">mkdir</span> /path/to/rootfs_mount/dev</span><br><span class="line"><span class="built_in">mkdir</span> /path/to/rootfs_mount/etc</span><br><span class="line"><span class="built_in">cp</span> busybox-source-code/examples/bootfloppy/* /path/to/rootfs_mount/etc/</span><br><span class="line">sudo umount /path/to/rootfs_mount</span><br></pre></td></tr></table></figure>
+
+<p>现在，一个基于busybox的rootfs磁盘镜像就制作成功了。</p>
+<h1 id="使用Qemu和GDB调试内核"><a href="#使用Qemu和GDB调试内核" class="headerlink" title="使用Qemu和GDB调试内核"></a>使用Qemu和GDB调试内核</h1><h2 id="使用Qemu启动内核"><a href="#使用Qemu启动内核" class="headerlink" title="使用Qemu启动内核"></a>使用Qemu启动内核</h2><p>由于编译的内核体系结构为x86，所以使用<code>qemu-system-x86_64</code>程序来载入并启动内核。</p>
+<p>如果使用intird作为rootfs，则具体命令为：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">qemu-system-x86_64 \</span><br><span class="line">  -kernel ./linux/arch/x86/boot/bzImage \  <span class="comment"># 指定编译好的内核镜像</span></span><br><span class="line">  -initrd ./rootfs/initrd_rootfs.img \  <span class="comment"># 指定rootfs</span></span><br><span class="line">  -serial stdio \ <span class="comment">#指定使用stdio作为输入输出</span></span><br><span class="line">  -append <span class="string">&quot;root=/dev/ram rdinit=/fakeinit console=ttyS0 nokaslr&quot;</span> \ <span class="comment"># 内核参数，指定使用initrd作为rootfs，禁止地址空间布局随机化</span></span><br><span class="line">  -s -S <span class="comment"># 指定Qemu在启动时暂停并启动gdb server，等待gdb的连入（端口默认为1234）</span></span><br></pre></td></tr></table></figure>
+
+<p>如果使用磁盘镜像作为rootfs，则具体命令为：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">qemu-system-x86_64 \</span><br><span class="line">  -kernel ./linux/arch/x86/boot/bzImage \</span><br><span class="line">  -hda ./rootfs/busybox_rootfs.img \ <span class="comment"># 指定磁盘镜像</span></span><br><span class="line">  -serial stdio \</span><br><span class="line">  -append <span class="string">&quot;root=/dev/sda console=ttyS0 nokaslr&quot;</span> \ <span class="comment"># 内核参数，指定root磁盘，禁止地址空间布局随机化</span></span><br><span class="line">  -s -S</span><br></pre></td></tr></table></figure>
+
+<h2 id="使用GDB调试内核"><a href="#使用GDB调试内核" class="headerlink" title="使用GDB调试内核"></a>使用GDB调试内核</h2><p>最后一步，由于刚刚Qemu开启了远程调试，所以只需要将gdb通过连入即可：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gdb ./linux/vmlinux <span class="comment"># 指定调试文件为包含调试信息的内核文件</span></span><br></pre></td></tr></table></figure>
+
+<p>如果此时直接在gdb调试器中使用<code>target remote:1234</code>连入Qemu的gdb server，则会出现报错<code>Remote ‘g’ packet reply is too long</code>，这是由于gdb没有正确识别调试目标的体系结构造成的（有些博客认为需要修改源代码屏蔽这个错误，实际上是不必要的），所以只需要在远程attach之前使用<code>set arch i386:x86-64:intel</code>设置目标体系结构即可。</p>
+<p>例如，你希望在start_kernel函数设置断点进行调试，则在启动Qemu后，gdb的命令如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">gdb ~/linux/vmlinux</span><br><span class="line">(gdb) <span class="built_in">set</span> <span class="built_in">arch</span> i386:x86-64:intel</span><br><span class="line">(gdb) add-auto-load-safe-path ~/linux</span><br><span class="line">(gdb) target remote:1234</span><br><span class="line">(gdb) b start_kernel</span><br><span class="line">(gdb) c</span><br></pre></td></tr></table></figure>
+
+<p>可以发现，内核在启动后被中断在start_kernel函数上。</p>
+<h1 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h1><h2 id="内核文档"><a href="#内核文档" class="headerlink" title="内核文档"></a>内核文档</h2><p>在内核的文档中，有一篇详细讲解了如何使用GDB调试内核。</p>
+<p>该文档的最新版本可见于内核的官网：<a target="_blank" rel="noopener" href="https://www.kernel.org/doc/html/latest/dev-tools/gdb-kernel-debugging.html">https://www.kernel.org/doc/html/latest/dev-tools/gdb-kernel-debugging.html</a>。</p>
+<p>而具体的版本就需要在内核源码中编译文档了，例如html版本的文档可以使用<code>make htmldocs</code>进行编译，在启动HTTP服务器后，可以在浏览器中进行访问，例如，<a target="_blank" rel="noopener" href="http://127.0.0.1:8000/dev-tools/gdb-kernel-debugging.html">http://127.0.0.1:8000/dev-tools/gdb-kernel-debugging.html</a>。</p>
+<h2 id="参考来源"><a href="#参考来源" class="headerlink" title="参考来源"></a>参考来源</h2><p>本文参考了两篇较为优质的博客：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://freemandealer.github.io/2015/10/04/debug-kernel-with-qemu-2/">用QEMU来调试内核 – 亲身体验篇 </a></li>
+<li><a target="_blank" rel="noopener" href="http://rainlin.top/archives/201">利用VS Code+Qemu+GDB调试Linux内核</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/debug-linux-kernel-with-vscode/" rel="bookmark">使用VSCode对Linux内核进行调试</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/apache_sub_domain_name/" rel="bookmark">Apache下子域名设置方法</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/centos_7_ftp/" rel="bookmark">CentOS 7 下安装Ftp服务</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/centos_7_iptables/" rel="bookmark">CentOS 7下使用iptables代替FireWall防火墙</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/chromebook_ubuntu/" rel="bookmark">记在ChromeBook中装入Ubuntu</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请鼓励我的原创文章</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.png" alt="Jason Bian 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="Jason Bian 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Jason Bian
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://blog.zhengi.me/debug-linux-kernel-with-qemu-and-gdb/" title="使用Qemu和GDB对Linux内核进行调试">https://blog.zhengi.me/debug-linux-kernel-with-qemu-and-gdb/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Linux/" rel="tag"><i class="fa fa-tag"></i> Linux</a>
+              <a href="/tags/Kernel/" rel="tag"><i class="fa fa-tag"></i> Kernel</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/communicate_with_cpp_code_in_node/" rel="prev" title="在NodeJS中与C++代码通信">
+                  <i class="fa fa-chevron-left"></i> 在NodeJS中与C++代码通信
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/debug-linux-kernel-with-vscode/" rel="next" title="使用VSCode对Linux内核进行调试">
+                  使用VSCode对Linux内核进行调试 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">陇 ICP 备 15003463 号 </a>
+  </div>
+
+<div class="copyright">
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jason Bian</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">235k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">3:33</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/lozad.js/1.16.0/lozad.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/pangu/4.0.7/pangu.min.js"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/pjax.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://cdn.jsdelivr.net/npm/pdfobject@2.2.7/pdfobject.min.js","integrity":"sha256-ph3Dk89VmuTVXG6x/RDzk53SU9LPdAh1tpv0UvnDZ2I="},"url":"/lib/pdf/web/viewer.html"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdn.jsdelivr.net/npm/mermaid@8.13.8/dist/mermaid.min.js","integrity":"sha256-QmSAc2kIaUjleIJ46X7qPW2zrpCbXlMz3YIGgWpQ1Jo="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"imaginezz","repo":"blog_public","client_id":"9c022a847ecc01650469","client_secret":"3c6fae6a3119943e381c2682b0a40f84573463b4","admin_user":"imaginezz","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js","integrity":"sha256-Pmj85ojLaPOWwRtlMJwmezB/Qg8BzvJp5eTzvXaYAfA="},"path_md5":"5b6e9fc6d0898c5f12749bf4f2b546cb"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>

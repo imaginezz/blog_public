@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)">
+<meta name="generator" content="Hexo 6.3.0">
+
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/favicon/safari-pinned-tab.svg" color="#222">
+  <link rel="manifest" href="/images/favicon/site.webmanifest">
+  <meta name="baidu-site-verification" content="5x8DHwr7y8">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.bootcdn.net/ajax/libs/pace/1.2.4/pace.min.js"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.zhengi.me","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":true,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":true,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="喂，开始行动了“喂，子政！我下午要给学弟学妹们办一场讲座，你知道怎么在 PPT 里播放弹幕码？”惠东急匆匆打来一通电话。”你说的就是像小米发布会那样吧？我还真没研究过。”我摊摊手道。 电话过后，恰赶上北邮 MSC 举办 Hackathon@BPUT。于是我和志龙一拍即合，在 MSRA 花了一个下午的时间，搞定了弹幕派 V0.1。 弹幕从此有了派最开始，弹幕派的功能简单到令人发指——扫码打开网页，输">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如果弹幕不曾有派">
+<meta property="og:url" content="https://blog.zhengi.me/if_theres_no_danmakupie/index.html">
+<meta property="og:site_name" content="政子的博客">
+<meta property="og:description" content="喂，开始行动了“喂，子政！我下午要给学弟学妹们办一场讲座，你知道怎么在 PPT 里播放弹幕码？”惠东急匆匆打来一通电话。”你说的就是像小米发布会那样吧？我还真没研究过。”我摊摊手道。 电话过后，恰赶上北邮 MSC 举办 Hackathon@BPUT。于是我和志龙一拍即合，在 MSRA 花了一个下午的时间，搞定了弹幕派 V0.1。 弹幕从此有了派最开始，弹幕派的功能简单到令人发指——扫码打开网页，输">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2016-09-01T04:04:06.000Z">
+<meta property="article:modified_time" content="2024-03-23T06:03:16.943Z">
+<meta property="article:author" content="Jason Bian">
+<meta property="article:tag" content="应用">
+<meta property="article:tag" content="Danmakupie">
+<meta property="article:tag" content="弹幕派">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://blog.zhengi.me/if_theres_no_danmakupie/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://blog.zhengi.me/if_theres_no_danmakupie/","path":"if_theres_no_danmakupie/","title":"如果弹幕不曾有派"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>如果弹幕不曾有派 | 政子的博客</title>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?590a1bfeac720e6a29c58f70ab77a9a3"></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="政子的博客" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">政子的博客</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">技术|学习|随笔</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa  fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+        <li class="menu-item menu-item-书单"><a href="/booklist/" rel="section"><i class="fa fa-book fa-fw"></i>书单</a></li>
+        <li class="menu-item menu-item-算法"><a href="/algorithm/" rel="section"><i class="fa fa-code fa-fw"></i>算法</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%96%82%EF%BC%8C%E5%BC%80%E5%A7%8B%E8%A1%8C%E5%8A%A8%E4%BA%86"><span class="nav-number">1.</span> <span class="nav-text">喂，开始行动了</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BC%B9%E5%B9%95%E4%BB%8E%E6%AD%A4%E6%9C%89%E4%BA%86%E6%B4%BE"><span class="nav-number">2.</span> <span class="nav-text">弹幕从此有了派</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E2%80%9C%E6%88%91%E4%BB%AC%E5%86%8D%E6%94%B9%E6%94%B9%EF%BC%9F%E2%80%9D"><span class="nav-number">3.</span> <span class="nav-text">“我们再改改？”</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%94%A8%E6%88%B7%E6%98%AF%E5%8A%A8%E5%8A%9B"><span class="nav-number">4.</span> <span class="nav-text">用户是动力</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BD%BF%E5%91%BD%E4%B8%BA%E5%BC%80%E6%BA%90"><span class="nav-number">5.</span> <span class="nav-text">使命为开源</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BC%B9%E5%B9%95%E5%A5%B3%E7%A5%9E"><span class="nav-number">6.</span> <span class="nav-text">弹幕女神</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%A7%E5%93%81%E8%A6%81%E8%A7%A3%E5%86%B3%E9%97%AE%E9%A2%98"><span class="nav-number">7.</span> <span class="nav-text">产品要解决问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A6%82%E6%9E%9C%E5%BC%B9%E5%B9%95%E4%B8%8D%E6%9B%BE%E6%9C%89%E6%B4%BE"><span class="nav-number">8.</span> <span class="nav-text">如果弹幕不曾有派</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Jason Bian"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Jason Bian</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">86</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">108</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/imaginezz" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;imaginezz" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto://Jason_Bian@outlook.com" title="E-Mail → mailto:&#x2F;&#x2F;Jason_Bian@outlook.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.danmakupie.com/" title="https:&#x2F;&#x2F;www.danmakupie.com&#x2F;" rel="noopener" target="_blank">弹幕派</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.oursparkspace.cn/" title="https:&#x2F;&#x2F;www.oursparkspace.cn&#x2F;" rel="noopener" target="_blank">火花空间</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.joyreserve.com/" title="http:&#x2F;&#x2F;www.joyreserve.com" rel="noopener" target="_blank">乐享其约</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://gaocegege.com/" title="http:&#x2F;&#x2F;gaocegege.com&#x2F;" rel="noopener" target="_blank">高策 江湖小虾米</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://yian.me/blog/" title="https:&#x2F;&#x2F;yian.me&#x2F;blog&#x2F;" rel="noopener" target="_blank">Y!an's Blog</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.cyprestar.com/" title="http:&#x2F;&#x2F;www.cyprestar.com&#x2F;" rel="noopener" target="_blank">Zhilong's Blog</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://yicodes.com/" title="http:&#x2F;&#x2F;yicodes.com&#x2F;" rel="noopener" target="_blank">易极</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://merrier.wang/" title="https:&#x2F;&#x2F;merrier.wang&#x2F;" rel="noopener" target="_blank">Merrier说</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://博客.胡鼎原.中国/" title="https:&#x2F;&#x2F;博客.胡鼎原.中国" rel="noopener" target="_blank">小勤奋爱学习</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://lfhacks.com/" title="https:&#x2F;&#x2F;lfhacks.com" rel="noopener" target="_blank">LFhacks</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://study4.fun/" title="https:&#x2F;&#x2F;study4.fun&#x2F;" rel="noopener" target="_blank">学而时思之</a>
+        </li>
+    </ul>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.zhengi.me/if_theres_no_danmakupie/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Jason Bian">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="政子的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          如果弹幕不曾有派
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2016-09-01 12:04:06" itemprop="dateCreated datePublished" datetime="2016-09-01T12:04:06+08:00">2016-09-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E9%9A%8F%E7%AC%94/" itemprop="url" rel="index"><span itemprop="name">随笔</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.6k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="喂，开始行动了"><a href="#喂，开始行动了" class="headerlink" title="喂，开始行动了"></a>喂，开始行动了</h1><p>“喂，子政！我下午要给学弟学妹们办一场讲座，你知道怎么在 PPT 里播放弹幕码？”惠东急匆匆打来一通电话。”你说的就是像小米发布会那样吧？我还真没研究过。”我摊摊手道。</p>
+<p>电话过后，恰赶上北邮 MSC 举办 Hackathon@BPUT。于是我和志龙一拍即合，在 MSRA 花了一个下午的时间，搞定了弹幕派 V0.1。</p>
+<h1 id="弹幕从此有了派"><a href="#弹幕从此有了派" class="headerlink" title="弹幕从此有了派"></a>弹幕从此有了派</h1><p>最开始，弹幕派的功能简单到令人发指——扫码打开网页，输入弹幕，点击发送，弹幕就立刻出现在 PPT 上了。网页没有前端，独有一个输入框；桌面不能更改字体字号，只有一条弹幕轨道。不出意外，它并没有受到评委们的青睐——只是一个自娱自乐的小玩具，没有技术含量，没有商业前景。除了，演示完毕时同学们突如其来的掌声和过后晨曦姐对我们的鼓励。</p>
+<h1 id="“我们再改改？”"><a href="#“我们再改改？”" class="headerlink" title="“我们再改改？”"></a>“我们再改改？”</h1><p>冬去春来，志龙和我的聊天记录里最多的就是这句话。由于想要的功能太多，思路三天两头变化，短短三个月，后端代码就重构了两次——从最开始的面向过程，逐渐引入了设计模式。</p>
+<span id="more"></span>
+
+<p>改变是可以看见的。我们拥有了官方微信号，可以使用微信发送弹幕；我们有了房间管理，可以供多人同时使用；我们有了弹幕控制，UI 变得更加 Modern；我们的软件走向绿色化，下载就立即可用……</p>
+<p>在我们天马行空的想象中，不断对项目提出新的要求，不断修改提交代码，往复循环，并乐在其中。</p>
+<h1 id="用户是动力"><a href="#用户是动力" class="headerlink" title="用户是动力"></a>用户是动力</h1><p>三月里，京城的春花渐次苏醒。弹幕派终于有了自己的网站——<a target="_blank" rel="noopener" href="http://www.danmakupie.com,有了自己的新/">www.danmakupie.com，有了自己的新</a> LOGO，有了第一篇帮助文档，有了后台控制面板，也开启了第一轮公测。惠东当然是我们的第一位公测用户。</p>
+<p>试用过后，他提出了很多不错的看法和建议，比如弹幕的样式应该和 PPT 可以有所区分，后台应该可以绑定使用者自己的公众号，用户注册流程不能这么莫名其妙，等等。我们悉数记下，承诺其中大部分问题会在下一个版本中得到解决或者改进。与此同时，也有一些好友通过微信和微博向我们表达了他们的使用感受和改进建议。</p>
+<p>我们决定通过 OneNote 来不断记录用户的建议，找出需要改进的方向并分出优先级，每天花一两个小时来改进我们的程序。我们依旧乐此不疲。就这样，弹幕派在许多用户的指引下，不断引入新功能（和新 BUG），不断根据需求调整产品的思路，一路走到了今天。</p>
+<h1 id="使命为开源"><a href="#使命为开源" class="headerlink" title="使命为开源"></a>使命为开源</h1><p>派团队没有忘记半年前在 Hackathon 上我们对于开源的承诺。代码重构完成以后，我们就在 GitHub 上公开了几乎所有的源代码。我们不仅仅获得了网友 Fork 和 Star，更收获了一批新的用户。</p>
+<p>一位广东的同学在 GitHub 中找到了弹幕派。非常幸运，他成为了弹幕派的第 45 位用户，也让弹幕派第一次被应用到了实际场景。在他们的职协成果展中，参加的同学使用弹幕派进行留言，并取得了很好的效果。他还为弹幕派找到了一些 BUG，并且提供了很多新的建议。</p>
+<p>还有一位高中的小弟弟，也通过 GitHub 找到了弹幕派。别看他年纪不大，代码水平可一点都不差。他告诉我，以前使用 GDI+技术实现过类似于我们的弹幕效果，并且在配置不高的电脑上表现不错。他只用了一个下午把他的代码移植到了弹幕派中并提交了 Pull Request，我们正在考虑将这些代码变成低配电脑的兼容性模式。</p>
+<h1 id="弹幕女神"><a href="#弹幕女神" class="headerlink" title="弹幕女神"></a>弹幕女神</h1><p>20 日，5 月 20 日。2016 年 5 月 20 日下午三点半的前一分钟弹幕派在大创展上同马歆姐和 Tracy 姐在一起。因为她们，我们会记住这一分钟。从那时开始，弹幕派就和女神密不可分，这是事实，谁也改变不了，因为已经过去了。女神还会到来。</p>
+<p>不久之后，弹幕派团队开始扩招。我们从两个人的小工坊变成了十个人的小团队，团队颜值更是提升百倍有余。有了女生的加入，弹幕派的程序员们写 Feature，改 BUG 自然更加给力。</p>
+<p>而且<del>女生们的能力可一点儿都并不比男生差。晓丹从零开始学习，和设计师乐山积极配合，只用了两周的时间，就把我们的主页从原来浓浓的程序员风格改变得轻盈灵动起来（不信？自己去看</del>）。晓宇更是成为了团队现在的 Leader，不论讲技术、带团队还是拼颜值，一样都没有落下！</p>
+<p>现在我们可以自信地说，Pie Team 是一支有技术有能力更有颜值的团队！</p>
+<h1 id="产品要解决问题"><a href="#产品要解决问题" class="headerlink" title="产品要解决问题"></a>产品要解决问题</h1><p>在信息与通信工程学院毕业晚会的彩排现场，硝烟四起。只是这硝烟不为舞台效果，而是来自一位赞助商。</p>
+<p>跟学院沟通确认以后，弹幕派将被用于毕业晚会的现场互动和现场抽奖，除了绑定赞助商的微信号外其余工作都已经准备就绪。直到——赞助商到达现场以后，认为我们的产品不行。因为他们和某微信墙有”公司战略级”的合作，只有那款微信墙才能达到他想要的效果。话还没着地，他就掏出电脑，开始向大家证明。</p>
+<p>然后，”咦？这里的文字怎么不能修改？””弹幕派可以呀！””这个背景和你们的 PPT 风格不搭，你们赶紧给我换 PPT””但是弹幕派百搭！””我们要宣传公众号二维码这么小扫不到怎么能行！””弹幕派可以帮你随时放大置顶！”然后，就像我前面铺垫的那样，他只能气呼呼（但是又乖乖地）把公众号绑定到弹幕派上。晚会一切顺利。</p>
+<p>如今，我们团队也即将引入一位产品经理，他会以更加深刻的产品思维来定位弹幕派，挖掘用户痛点，让它在竞品中脱颖而出，更精确更直接地解决在多人沟通场景中所遇到的问题。</p>
+<h1 id="如果弹幕不曾有派"><a href="#如果弹幕不曾有派" class="headerlink" title="如果弹幕不曾有派"></a>如果弹幕不曾有派</h1><p>如果弹幕不曾有派，志龙就不会在大创展上坦言，虽然他的另一个项目作为明星项目被众多评委青睐，可他还是喜欢待在弹幕派的展位，和俱乐部的同学一起给往来的观众介绍弹幕派。</p>
+<p>如果弹幕不曾有派，在毕业晚会上，就不会有王阳带着下一场考试的复习资料面对嘈杂的晚会一面监视着程序一面复习，也不会见证弹幕派第一次在大型晚会上的出色表现。</p>
+<p>如果弹幕不曾有派，在新官网上线的那个晚上，我不会和晓宇聊到很晚，我们也不会都兴奋得像小孩子第二天要参加六一演出那样期待菁英计划终期路演，更不会听到邹欣老师引人深思的精彩点评。</p>
+<p>如果弹幕不曾有派，我们也就不会相遇，这篇文章也便不复存在。</p>
+<p>我们每个人都还在活着，也终会老去，也都在不断地拷问生活的意义。人人都会迷茫，也还有彷徨。我们唯独缺少了为同一个目标努力奋斗的心情，没有了从凌晨遇到一个问题变成去香山赏雪的情景，丢失了一起努力终于改变世界的一丢丢可能性。</p>
+<p>但正因为我们在茫茫人海中的相遇，让弹幕终有了派。</p>
+<p>我们在这条幽幽小径上如履薄冰地走下去时更会彼此珍惜，彼此支持，续写这篇令人无限遐想的故事。</p>
+<p>Pie Team 边子政 写于 2016 年 9 月 1 日凌晨</p>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/danmakupie_so_cool/" rel="bookmark">弹幕派——原来弹幕可以这样玩</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/devday_asia_2016/" rel="bookmark">记DevDays Asia 2016 @Beijing</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/ten_top_of_byr_bbs/" rel="bookmark">北邮人论坛每日十大检索</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/thinking_about_college_innovation/" rel="bookmark">大创乱谈</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请鼓励我的原创文章</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.png" alt="Jason Bian 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="Jason Bian 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Jason Bian
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://blog.zhengi.me/if_theres_no_danmakupie/" title="如果弹幕不曾有派">https://blog.zhengi.me/if_theres_no_danmakupie/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E5%BA%94%E7%94%A8/" rel="tag"><i class="fa fa-tag"></i> 应用</a>
+              <a href="/tags/Danmakupie/" rel="tag"><i class="fa fa-tag"></i> Danmakupie</a>
+              <a href="/tags/%E5%BC%B9%E5%B9%95%E6%B4%BE/" rel="tag"><i class="fa fa-tag"></i> 弹幕派</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/hololens_developement/" rel="prev" title="HoloLens开发初体验">
+                  <i class="fa fa-chevron-left"></i> HoloLens开发初体验
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/c_sharp_uwp_http_get_and_post/" rel="next" title="使用C#封装一个UWP的HTTP Get和Post的类">
+                  使用C#封装一个UWP的HTTP Get和Post的类 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">陇 ICP 备 15003463 号 </a>
+  </div>
+
+<div class="copyright">
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jason Bian</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">235k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">3:33</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/lozad.js/1.16.0/lozad.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/pangu/4.0.7/pangu.min.js"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/pjax.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://cdn.jsdelivr.net/npm/pdfobject@2.2.7/pdfobject.min.js","integrity":"sha256-ph3Dk89VmuTVXG6x/RDzk53SU9LPdAh1tpv0UvnDZ2I="},"url":"/lib/pdf/web/viewer.html"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdn.jsdelivr.net/npm/mermaid@8.13.8/dist/mermaid.min.js","integrity":"sha256-QmSAc2kIaUjleIJ46X7qPW2zrpCbXlMz3YIGgWpQ1Jo="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"imaginezz","repo":"blog_public","client_id":"9c022a847ecc01650469","client_secret":"3c6fae6a3119943e381c2682b0a40f84573463b4","admin_user":"imaginezz","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js","integrity":"sha256-Pmj85ojLaPOWwRtlMJwmezB/Qg8BzvJp5eTzvXaYAfA="},"path_md5":"fe6e7ac42e60fe428ed1fac8ea64a478"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)">
+<meta name="generator" content="Hexo 6.3.0">
+
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/favicon/safari-pinned-tab.svg" color="#222">
+  <link rel="manifest" href="/images/favicon/site.webmanifest">
+  <meta name="baidu-site-verification" content="5x8DHwr7y8">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.bootcdn.net/ajax/libs/pace/1.2.4/pace.min.js"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.zhengi.me","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":true,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":true,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="想来已学通信三载之久，却也未习得多少皮毛。在此，我想将自己这几年来对通信的浅见写下一二。文中可能会有一些观点但我可能因为能力精力有限无力举出太多示例论述之，之后有能力和时间我会在 blog 中给予补充说明。如果文中有不对地方，希望可以给予批评指正，我不胜荣幸。 缘起小时候，爷爷有一台自制的电子管收音机，虽然已经年久失修无法使用，但是我还是以此为乐，经常想看看摸摸，问爷爷里面的构造。有时候还会从外面">
+<meta property="og:type" content="article">
+<meta property="og:title" content="我眼中的“通信”">
+<meta property="og:url" content="https://blog.zhengi.me/telecommunications_in_my_mind/index.html">
+<meta property="og:site_name" content="政子的博客">
+<meta property="og:description" content="想来已学通信三载之久，却也未习得多少皮毛。在此，我想将自己这几年来对通信的浅见写下一二。文中可能会有一些观点但我可能因为能力精力有限无力举出太多示例论述之，之后有能力和时间我会在 blog 中给予补充说明。如果文中有不对地方，希望可以给予批评指正，我不胜荣幸。 缘起小时候，爷爷有一台自制的电子管收音机，虽然已经年久失修无法使用，但是我还是以此为乐，经常想看看摸摸，问爷爷里面的构造。有时候还会从外面">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2016-05-15T19:21:48.000Z">
+<meta property="article:modified_time" content="2024-03-23T06:03:16.947Z">
+<meta property="article:author" content="Jason Bian">
+<meta property="article:tag" content="通信">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://blog.zhengi.me/telecommunications_in_my_mind/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://blog.zhengi.me/telecommunications_in_my_mind/","path":"telecommunications_in_my_mind/","title":"我眼中的“通信”"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>我眼中的“通信” | 政子的博客</title>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?590a1bfeac720e6a29c58f70ab77a9a3"></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="政子的博客" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">政子的博客</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">技术|学习|随笔</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa  fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+        <li class="menu-item menu-item-书单"><a href="/booklist/" rel="section"><i class="fa fa-book fa-fw"></i>书单</a></li>
+        <li class="menu-item menu-item-算法"><a href="/algorithm/" rel="section"><i class="fa fa-code fa-fw"></i>算法</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BC%98%E8%B5%B7"><span class="nav-number">1.</span> <span class="nav-text">缘起</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E2%80%9C%E8%80%83%E5%8F%A4%E2%80%9D%E4%BF%A1%E6%81%AF%E5%92%8C%E9%80%9A%E4%BF%A1"><span class="nav-number">2.</span> <span class="nav-text">“考古”信息和通信</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%AB%E5%8D%A6"><span class="nav-number">2.1.</span> <span class="nav-text">八卦</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%93%E7%BB%B3%E8%AE%B0%E4%BA%8B"><span class="nav-number">2.2.</span> <span class="nav-text">结绳记事</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9B%B4%E5%A4%9A%E7%9A%84%E5%8F%91%E7%8E%B0%E2%80%94%E2%80%94%E7%A4%BE%E4%BC%9A%E7%9A%84%E5%8F%91%E5%B1%95%E4%B8%8E%E9%80%9A%E4%BF%A1%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="nav-number">2.3.</span> <span class="nav-text">更多的发现——社会的发展与通信的关系</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C"><span class="nav-number">3.</span> <span class="nav-text">网络</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9E%E6%8E%A5%E7%BA%A2%E5%88%A9%E4%B8%8E%E4%BC%A0%E7%BB%9F%E9%80%9A%E4%BF%A1%E8%A1%8C%E4%B8%9A"><span class="nav-number">3.1.</span> <span class="nav-text">连接红利与传统通信行业</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E6%80%A7%E8%B4%A8%E4%B8%8E%E8%B7%A8%E5%AD%A6%E7%A7%91%E5%BA%94%E7%94%A8"><span class="nav-number">3.2.</span> <span class="nav-text">网络性质与跨学科应用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B9%82%E5%BE%8B"><span class="nav-number">3.2.1.</span> <span class="nav-text">幂律</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9B%B8%E5%85%B3%E6%80%A7"><span class="nav-number">3.2.2.</span> <span class="nav-text">相关性</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BF%A1%E6%81%AF%E7%90%86%E8%AE%BA"><span class="nav-number">4.</span> <span class="nav-text">信息理论</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%88%91%E7%9C%BC%E4%B8%AD%E7%9A%84%E3%80%8A%E4%BF%A1%E6%81%AF%E8%AE%BA%E3%80%8B%E5%92%8C%E3%80%8A%E4%BF%A1%E5%8F%B7%E4%B8%8E%E7%B3%BB%E7%BB%9F%E3%80%8B"><span class="nav-number">4.1.</span> <span class="nav-text">我眼中的《信息论》和《信号与系统》</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%A1%E6%81%AF%E5%9C%BA"><span class="nav-number">4.2.</span> <span class="nav-text">信息场</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%91%E5%B1%95"><span class="nav-number">5.</span> <span class="nav-text">发展</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Jason Bian"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Jason Bian</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">86</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">108</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/imaginezz" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;imaginezz" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto://Jason_Bian@outlook.com" title="E-Mail → mailto:&#x2F;&#x2F;Jason_Bian@outlook.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.danmakupie.com/" title="https:&#x2F;&#x2F;www.danmakupie.com&#x2F;" rel="noopener" target="_blank">弹幕派</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.oursparkspace.cn/" title="https:&#x2F;&#x2F;www.oursparkspace.cn&#x2F;" rel="noopener" target="_blank">火花空间</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.joyreserve.com/" title="http:&#x2F;&#x2F;www.joyreserve.com" rel="noopener" target="_blank">乐享其约</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://gaocegege.com/" title="http:&#x2F;&#x2F;gaocegege.com&#x2F;" rel="noopener" target="_blank">高策 江湖小虾米</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://yian.me/blog/" title="https:&#x2F;&#x2F;yian.me&#x2F;blog&#x2F;" rel="noopener" target="_blank">Y!an's Blog</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.cyprestar.com/" title="http:&#x2F;&#x2F;www.cyprestar.com&#x2F;" rel="noopener" target="_blank">Zhilong's Blog</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://yicodes.com/" title="http:&#x2F;&#x2F;yicodes.com&#x2F;" rel="noopener" target="_blank">易极</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://merrier.wang/" title="https:&#x2F;&#x2F;merrier.wang&#x2F;" rel="noopener" target="_blank">Merrier说</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://博客.胡鼎原.中国/" title="https:&#x2F;&#x2F;博客.胡鼎原.中国" rel="noopener" target="_blank">小勤奋爱学习</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://lfhacks.com/" title="https:&#x2F;&#x2F;lfhacks.com" rel="noopener" target="_blank">LFhacks</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://study4.fun/" title="https:&#x2F;&#x2F;study4.fun&#x2F;" rel="noopener" target="_blank">学而时思之</a>
+        </li>
+    </ul>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.zhengi.me/telecommunications_in_my_mind/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Jason Bian">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="政子的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          我眼中的“通信”
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2016-05-16 03:21:48" itemprop="dateCreated datePublished" datetime="2016-05-16T03:21:48+08:00">2016-05-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E9%9A%8F%E7%AC%94/" itemprop="url" rel="index"><span itemprop="name">随笔</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>5.6k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>5 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>想来已学通信三载之久，却也未习得多少皮毛。在此，我想将自己这几年来对通信的浅见写下一二。文中可能会有一些观点但我可能因为能力精力有限无力举出太多示例论述之，之后有能力和时间我会在 blog 中给予补充说明。如果文中有不对地方，希望可以给予批评指正，我不胜荣幸。</p>
+<h1 id="缘起"><a href="#缘起" class="headerlink" title="缘起"></a>缘起</h1><p>小时候，爷爷有一台自制的电子管收音机，虽然已经年久失修无法使用，但是我还是以此为乐，经常想看看摸摸，问爷爷里面的构造。有时候还会从外面捡回家别人废弃的电路板，把零件拆下来看，爷爷用我拆下来的这些零件修好了很多家电。</p>
+<p>家里第一次上网，刚可以访问 google 的时候，我非常兴奋，就拿起 modem 的线，想看看拨号连接的时候会有什么变化发生。可是没有发现任何变化，只知道了电话线里面有电，来电话的时候摸的话会被打得很痛。回想起来，那应该是我第一次对通信提起兴趣。</p>
+<p>到了高中，一次偶然机会，我接触到了《无线电》杂志。看着里面的各种稀奇古怪的电路原理图，虽然很晕，但好奇心还是强迫我去了解这到底是什么原理。从志鹏那里得到了一本《小功率的力量》，还从他那里学习到了基尔霍夫定律和一些交流电的相量算法，但是那时候不怎么看懂微积分，所以只照猫画虎马马虎虎做过一个简单的无线电收发器，拿去跟朋友玩，发现只能听见模模糊糊的声音，根本不知道对方是谁更不知道说的是什么。</p>
+<p>之后，我又自学了 C 语言，碰巧又在《无线电》中看到了有关 51 单片机和 Arduino 的介绍，发现了使用软件编程方式来实现硬件逻辑会如此简单，也明白了原来通信还有遵循章法——通信协议（比如串口通信和 IIC 协议）。</p>
+<p>中学生活愉快地结束之后，志愿不怎么犹豫就填写了北京邮电大学的通信工程专业。</p>
+<p>那时候，想法很天真，认为通信就是可以愉快地学习电路原理，做个芯片啥的，知道怎么把信息传给别人，还可以写出来像 QQ 一样厉害的软件。</p>
+<p>回忆赘述地有些多，不过亦可以作为一个对比，看看这几年我到底有何长进。</p>
+<p>下文我想就我见到的几个方面来说说现在我眼中看见的通信。</p>
+<span id="more"></span>
+
+<h1 id="“考古”信息和通信"><a href="#“考古”信息和通信" class="headerlink" title="“考古”信息和通信"></a>“考古”信息和通信</h1><p>许多时候提起通信，大家会认为这是一个近代社会，特别是电报发明之后才有的事情。如果说可以想得更远一些，那么很可能会想到古时候还有书信、飞鸽传书甚至还有烽火戏诸侯。</p>
+<p>可是追溯到这里就应该停止了么？我先说说我理解的通信，再继续沿着历史的脉络去溯源。</p>
+<p>我看来，通信就是通过某种媒质（信道）将某种信息从信源传到信宿的一个过程。</p>
+<p>现在来思考更早之前的古人都做了些什么。</p>
+<h2 id="八卦"><a href="#八卦" class="headerlink" title="八卦"></a>八卦</h2><p>八卦相传起源于伏羲，他通过八卦代表的”阴阳五行”的推演关系来解释这个世界。如果熟悉二进制的话，由八卦中的”8”可以很快联想到。观察八个卦象，果不其然，卦象都是由三位二进制的符号表示而来，这不就是一个原始的三八译码器？而卦象的推演，和 lambda 演算有些相似，所以这不也就可以将八卦理解为一个原始的图灵机么？所以八卦的本质是计算，作为卦象，也就是作为二进制信号，是当时人们发明的一种信息记录的手段。</p>
+<h2 id="结绳记事"><a href="#结绳记事" class="headerlink" title="结绳记事"></a>结绳记事</h2><p>在文字发明之前，古人已经想到了用结绳记事的形式来表示信息，他们用不同的绳结表示不同的含义，已经可以将现实中的事物转化为抽象的符号表示。</p>
+<p>那怎么完成通信呢？很简单，信道就是视距的光线传播。大家都看一眼那根绳子，就知道之前发生了什么事情，比如打到了几头野兽，部落里现在还有多少人。这不也是一种更加古老的通信方式？</p>
+<p>在这里，我必须要感谢纪阳老师的一节课上他在时空的维度上对我对通信的认识进行的启发。</p>
+<h2 id="更多的发现——社会的发展与通信的关系"><a href="#更多的发现——社会的发展与通信的关系" class="headerlink" title="更多的发现——社会的发展与通信的关系"></a>更多的发现——社会的发展与通信的关系</h2><p>每次人类的发展无不伴随着通信的进展，说得更深入一些，是通信所带来的连接的进展，这是一个有趣现象。</p>
+<p>可以观察到，先秦诸子百家争鸣的时候，人们的连接水平（也可以说是通信方式）较之以前，已经有了一些进展，人们可以乘坐交通工具（比如马车）进行大范围迁徙（全国范围），借此，有许多文人可以四处游学传播思想，思想之间的到碰撞，产生了许多哲学观点，构建了中华文明世界观和价值观的基础。</p>
+<p>再来看看近一些的事情，大航海时代，西班牙人跨过大洋，走向了世界各地，将信息传播的范围扩展到了全球，人们知道了国家以外还有许多文明的存在，于是刺激了商业贸易，和殖民主义，客观上加强了文化的传播与交流，创造了长达将近两百年的繁荣的时代。现在，信息的传播已经从大陆内部迁移到了更广阔的大陆之间。将更多的人拉入了一个协作之网。</p>
+<p>之后的第一次工业革命，机器印刷品让信息的保存传播范围更广，失真更小；第二次工业革命发明的电报电话更是将整个世界联系成为了一个紧密的协作共同体，使得跨国公司成为了可能，这促使了人类工业文明的极大进步。</p>
+<p>到了现在，全球的互联网用户已经超过了 33 亿，大约占全球人口的一半，这个是多么恐怖的一个数字！将如此多的人拉入了一个全球协作的大网之中，人与人之间的交流共同变得极为便捷，生产力得到前所未有的解放和发展。</p>
+<p>通信与发展孰因孰果我不确定，但我更愿意相信是通信技术和距离的不断发展，引领了人类社会的发展，创造了如此多的价值和财富。</p>
+<h1 id="网络"><a href="#网络" class="headerlink" title="网络"></a>网络</h1><p>提到现代通信，不得不说的事情就是网络。我想这是我们现代通信人为全世界各行各业做出的一个不可磨灭的贡献。在我看来，互联网如今的发展，并不是一般认为的我们通信行业遭受了前所未有的打击，而是一次绝好的发展机遇。</p>
+<h2 id="连接红利与传统通信行业"><a href="#连接红利与传统通信行业" class="headerlink" title="连接红利与传统通信行业"></a>连接红利与传统通信行业</h2><p>前文所述，随着人类连接水平的不断发展，人们的各行各业都在享受着连接所带来的巨大红利，互联网第一次把几乎整个人类社会拉入了一个全球共同协作的大网中，我们的通信行业更是如此，在发展的前几年，获取了巨大红利。中国移动已经跻身世界五百强第 55 名，中国电信位于第 154 名，AT&amp;T 位于第 34 名，沃达丰位于 141 名（2015 年 7 月数据），所以，在商业世界中，传统通信企业有自己一片不小的领地。</p>
+<p>但是，传统通信运营商的排名为何不在最前呢？排名最前的依旧是能源和金融企业。我看来，是因为通信行业提供的基础网络支持是连接的一个基础设施，当基础设施建设基本成型之后，其产生的巨大价值会被各行各业加以利用，因为稍加利用得到非常大的链接红利（从硅谷和中关村互联网创业浪潮中可见一斑）。但是基础设施建设的企业因为并未完全利用其自己搭建的基础设施，所以并不能从中得到很高的利润。比如说，在第二次工业革命中，美国铁路的建设带来了巨大的链接红利，但是最终铁路公司并没有获取最大的利润，而是依旧让能源与金融巨头夺得风头。而现在微信的快速发展以及前几年和运营商之间因利益分成不均导致的冲突也是一个很好的例证。</p>
+<p>所以对于所谓的传统运营商，我想可能有两种办法来解决现在存在的问题。</p>
+<p>第一，缩小业务范围，放弃一些获利较少的业务（比如语音通信和短消息），将这些顶层业务交给虚拟运营商，将自己变成一个提供专业通信连接解决方案的寡头，利用资金和成本优势，建立大型的数据和交换中心，依靠其他企业在自己平台上的发展，以获取利润；另外，可以加速自己的转型，利用广大的用户基数，形成一种具有”无处不在”优势的面向企业的内容分发平台，并提供数据支持和分析业务。</p>
+<p>在我看来，第一种思路虽然有些保守，但在一个自己拿手的细分领域完成这次转变会更容易成功。</p>
+<h2 id="网络性质与跨学科应用"><a href="#网络性质与跨学科应用" class="headerlink" title="网络性质与跨学科应用"></a>网络性质与跨学科应用</h2><p>互联网给世界的另一大贡献就是将一个人为可控而且鲁棒性好的网络摆在了科学家们面前。</p>
+<p>以前许多无法研究的网络问题，现在可以通过计算机模拟的方法研究；甚至互联网不仅仅本身是一个大的物理网络，它更是由许许多多大大小小的逻辑网络组成，这些逻辑网络虽然性质各异，但都符合网络的基本规律。</p>
+<p>一些社会学、经济学、表面物理学、分子生物学的问题，归结起来都是网络问题。但是因为之前没有很好的工具去跟踪定量地研究，所以只能不断去研究分解论，对于还原论的研究没有很好的工具和理论支持。但现如今，有了这个非常方便科学研究的庞大的互联网络，让许多网络的客观规律呈现在科学家面前，层出不穷的网络模型和分析方法就是很好的证明。对这些模型和规律加以推广和外延，就可以在交叉学科得到应用，这是多么美妙的一件事情。</p>
+<h3 id="幂律"><a href="#幂律" class="headerlink" title="幂律"></a>幂律</h3><p>我认为幂律是网络研究中一个无法回避的问题。</p>
+<p>人们从无尺度网络模型中意识到了幂律在网络中的存在。不论是每个网络站点的连接数或者是某条新闻的访问量以及社交网络的关注人数，都符合此规律。更广泛地，在任何一个无标度的网络之中，都会出现幂律现象。比如在商业竞争中，公司的市场占有份额中，幂律（亦称 80/20 法则）有着非常明显地体现；而地震规模大小的分布（古登堡-里希特定律）居然也符合此规律。</p>
+<p>表面看起来两个活动（一个是人为的经济活动，一个自然的地质活动）几乎没有关联，但仔细思考，这两种活动皆是许许多多的因素（节点）一同构建成为一个复杂网络进行协作的结果，不论是否有人参与，规律都摆在那里，不为所动。</p>
+<h3 id="相关性"><a href="#相关性" class="headerlink" title="相关性"></a>相关性</h3><p>互联网带给科学研究视角的另一个转变就是从追求因果到追求相关性。</p>
+<p>在很长一段时间，人们都相信世界中万物都是强因果关系（大概可能是从鬼神的传说开始到宗教时代再到以近代科学为支撑的社会都是如此）。不论是那种现象，都需要有一个因果解释。</p>
+<p>但是网络因为其复杂程度，很难分析出（也可能根本没有）许多事件发生因果关系，但是可以找到许多事件都有非常大的相关性（一般指的是线性相关）。越来越多的相关性信息摆在人们面前，人们对世界的看法很可能也在一点点地发生转变。</p>
+<p>没错，买雪糕的小女孩的收入和游泳馆人数是正相关的关系，可能有许多版本的因果解释，我们无法真正确定究竟哪种版本是对的，但相关的事实就摆在那里。所以现代借助统计学的方法进行的大数据分析多是在相关关系的基础上进行的，我们靠着这一思维的转变，得到了不少有用的结论。</p>
+<p>就实用性而言，相关关系的确似乎更加实用（这里用似乎也是因为只是具有相关性而非因果性），就人们的思维观念而言，转变可能就在不知不觉中悄然发生。</p>
+<h1 id="信息理论"><a href="#信息理论" class="headerlink" title="信息理论"></a>信息理论</h1><h2 id="我眼中的《信息论》和《信号与系统》"><a href="#我眼中的《信息论》和《信号与系统》" class="headerlink" title="我眼中的《信息论》和《信号与系统》"></a>我眼中的《信息论》和《信号与系统》</h2><p>在这几年的课程中，对我世界观和思维方式影响最大的两门课程莫过于《信息论》和《信号与系统》。</p>
+<p>我对《信息论》的认识自认非常浅显。在我的理解中，信息是一种概率存在（它是客观存在，而不是主观定义的），可以进行量化。并且根据香农公式，我们的信息最大传输速率和信道容量与信噪比存在数学和物理上的约束关系，不能无限提升。我们能做的事情，就是找出信息这种概率存在的存在形式的规律和不断逼近香农的信道容量曲线。</p>
+<p>我对《信号与系统》的理解也只是在:只要信号和经过的系统可以近似等效为线性，那么我们就可以在时域或者变换域（信号和系统的存在不仅仅是时间，还在频率）求解信号和系统在不同域值时的不同性质。并且信号和它所经历所有的转换都可以看作是种一组线性方程在一个线性系统构成的线性空间内进行的一系列线性转换。它也打开了物理世界和数学世界之间相通的大门。</p>
+<p>我的认识虽然还非常浅显，但我已然被前人的智慧深深地震撼。我想，随着我长年累月的思考，我的理解可能会越来越深刻。</p>
+<h2 id="信息场"><a href="#信息场" class="headerlink" title="信息场"></a>信息场</h2><p>根据我少得可怜的物理知识看来，将信息类比成熵，是说明了两点：信息具有传播方向，信息传播不可逆。如此看来，将信息比作一个”场”会不会也可以解释些什么？</p>
+<p>“场”从定义上看来，场是用来描述物理量在空间上的分布而被定义的。从分布上来说，场都有一个场源，而场中其他的物质和它的相互作用的规律就是它所产生的场的规律。</p>
+<p>那么假设信源作为一个场源，而所有信道之和就是场所表示的空间，最后信宿就是场中的可以与信源相互作用的物质。</p>
+<p>那么按照这样的推理，会有什么样的结果呢？</p>
+<p>首先，信息场是可以测量的，而且它有物质属性。我们可以知道信源的信息量，再测量信宿所得到的信息量，相减之后，就可以得到信道中损失的信息量，那么如果这个信道的性质不变，信息量的衰减规律也不会改变。</p>
+<p>然后，由上面推测，可以得出信息场具有衰减性。信息场的衰减系数可能与信道和信源的性质有关。</p>
+<p>通过上面两条推理，可以发现信息场可以类比引力场作为一个有散无旋场。</p>
+<p>那么，信息场可能会像重力场一样具有势能场强。我猜想信息势能可能符合平方反比规律。</p>
+<p>但是限于数学知识的匮乏，以上的推理我都无法建立一个可用的数学模型进行印证并且进行演算证明。</p>
+<p>如果以上的推理成立，那么也就印证了信息的物质属性，那么它是否可以同质量和能量去转换，形成一个更大的统一场，我已经无法继续思考下去。</p>
+<p>我不知这样的思考是否有理可依。放在这里，当是呓语罢了。</p>
+<h1 id="发展"><a href="#发展" class="headerlink" title="发展"></a>发展</h1><p>最后，我还想再大胆猜猜以后通信会如何去发展。</p>
+<p>先说出一个自己的观点:通信的发展是人类社会不断发展中，社会分工不断细化而不得不出现的一个代偿性的结果。</p>
+<p>我来解释一下：因为事物的发展是按照一定方向的，按照一个系统演进的规律可归纳总结出人类社会的发展方向是朝着从集体主义但每个人的存在都很独立，向个人主义但每个人的存在都需要依存于大量的社会关系而发展的。每个人的价值越来越得到重视，但是每个人的社会分工也越来越被细化，人与人之间的知识分割和思维分割越来越大，为了维系人类社会连接这张大网的存在，就必须要有通信不断地快速发展，使得人与人之间可以通过一种途径在各种感官层面直连起来，而代偿原来的社会那样人与人之间没有什么联系就可以拥有人类共通的基础认识的情况。所以，通信一定会发展得越来越快，在社会中的地位也会越来越重要。但是不论通信如何发展，社会可能再也无法像原来那样因为人类的知识量很小而不用怎么连接就可以拥有相似的共通知识作为共通的认知而维系住这张人类社会关系的网络。最后很可能会因为网络失衡导致很多的社会问题。</p>
+<p>当然这些猜想可能都是很久以后的事情了。</p>
+<p>就最近而看，因为我没有深入一线通信产业，所以可能无法看个究竟，只是认为一点：硬件的软件化可能是现在的通信运营商的一个演进方向。</p>
+<p>让网络硬件设备可以编程控制。这一努力可能会让许多本来属性与作用不同的网络被重新组合在一起，形成一套通用的运行环境。划分网络和网络管理的形式将由以前的必须通过通信设备的更迭来解决的问题变为只需通过通用的软件配置就可以解决的问题。</p>
+
+    </div>
+
+    
+    
+    
+      
+
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请鼓励我的原创文章</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.png" alt="Jason Bian 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="Jason Bian 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Jason Bian
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://blog.zhengi.me/telecommunications_in_my_mind/" title="我眼中的“通信”">https://blog.zhengi.me/telecommunications_in_my_mind/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E9%80%9A%E4%BF%A1/" rel="tag"><i class="fa fa-tag"></i> 通信</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/21_year_old_life/" rel="prev" title="21岁的你在过怎样的生活|来自知乎">
+                  <i class="fa fa-chevron-left"></i> 21岁的你在过怎样的生活|来自知乎
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/thinking_about_college_innovation/" rel="next" title="大创乱谈">
+                  大创乱谈 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">陇 ICP 备 15003463 号 </a>
+  </div>
+
+<div class="copyright">
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jason Bian</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">235k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">3:33</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/lozad.js/1.16.0/lozad.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/pangu/4.0.7/pangu.min.js"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/pjax.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://cdn.jsdelivr.net/npm/pdfobject@2.2.7/pdfobject.min.js","integrity":"sha256-ph3Dk89VmuTVXG6x/RDzk53SU9LPdAh1tpv0UvnDZ2I="},"url":"/lib/pdf/web/viewer.html"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdn.jsdelivr.net/npm/mermaid@8.13.8/dist/mermaid.min.js","integrity":"sha256-QmSAc2kIaUjleIJ46X7qPW2zrpCbXlMz3YIGgWpQ1Jo="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"imaginezz","repo":"blog_public","client_id":"9c022a847ecc01650469","client_secret":"3c6fae6a3119943e381c2682b0a40f84573463b4","admin_user":"imaginezz","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js","integrity":"sha256-Pmj85ojLaPOWwRtlMJwmezB/Qg8BzvJp5eTzvXaYAfA="},"path_md5":"5042f74508fd7be0f67b127e041a93ce"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>

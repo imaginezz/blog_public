@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)">
+<meta name="generator" content="Hexo 6.3.0">
+
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/favicon/safari-pinned-tab.svg" color="#222">
+  <link rel="manifest" href="/images/favicon/site.webmanifest">
+  <meta name="baidu-site-verification" content="5x8DHwr7y8">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.bootcdn.net/ajax/libs/pace/1.2.4/pace.min.js"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.zhengi.me","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":true,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":true,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="认识数据挖掘类似挖矿–&gt;找出事先不知道的潜在的有用知识 更多是要挖掘出模式，而不只是知识，所以数据挖掘–&gt;机器学习 过程：数据–清洗–集成–选择（指标、算法模型）–找到知识 与统计学：关系： 统计学与数据挖掘目标类似，方法类似（回归、聚类、分类等等）； 区别：统计学：统计分析建模；数据挖掘：融合计算机">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据挖掘基本概念框架">
+<meta property="og:url" content="https://blog.zhengi.me/dataming_notes/index.html">
+<meta property="og:site_name" content="政子的博客">
+<meta property="og:description" content="认识数据挖掘类似挖矿–&gt;找出事先不知道的潜在的有用知识 更多是要挖掘出模式，而不只是知识，所以数据挖掘–&gt;机器学习 过程：数据–清洗–集成–选择（指标、算法模型）–找到知识 与统计学：关系： 统计学与数据挖掘目标类似，方法类似（回归、聚类、分类等等）； 区别：统计学：统计分析建模；数据挖掘：融合计算机">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2016-06-01T16:35:20.000Z">
+<meta property="article:modified_time" content="2024-03-23T06:03:16.943Z">
+<meta property="article:author" content="Jason Bian">
+<meta property="article:tag" content="数据挖掘">
+<meta property="article:tag" content="算法">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://blog.zhengi.me/dataming_notes/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://blog.zhengi.me/dataming_notes/","path":"dataming_notes/","title":"数据挖掘基本概念框架"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>数据挖掘基本概念框架 | 政子的博客</title>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?590a1bfeac720e6a29c58f70ab77a9a3"></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="政子的博客" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">政子的博客</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">技术|学习|随笔</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa  fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+        <li class="menu-item menu-item-书单"><a href="/booklist/" rel="section"><i class="fa fa-book fa-fw"></i>书单</a></li>
+        <li class="menu-item menu-item-算法"><a href="/algorithm/" rel="section"><i class="fa fa-code fa-fw"></i>算法</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AE%A4%E8%AF%86"><span class="nav-number">1.</span> <span class="nav-text">认识</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8E%E7%BB%9F%E8%AE%A1%E5%AD%A6%EF%BC%9A"><span class="nav-number">1.1.</span> <span class="nav-text">与统计学：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%EF%BC%9A"><span class="nav-number">1.2.</span> <span class="nav-text">与数据分析：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8E%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%9A"><span class="nav-number">1.3.</span> <span class="nav-text">与机器学习：</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%97%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">算法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%91%E7%9D%A3%E6%80%A7%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95"><span class="nav-number">2.1.</span> <span class="nav-text">监督性学习算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E7%B1%BB"><span class="nav-number">2.1.1.</span> <span class="nav-text">分类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%B3%E7%AD%96%E6%A0%91%E7%AE%97%E6%B3%95"><span class="nav-number">2.1.2.</span> <span class="nav-text">决策树算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B4%9D%E5%8F%B6%E6%96%AF%E5%88%86%E7%B1%BB%E6%B3%95"><span class="nav-number">2.1.3.</span> <span class="nav-text">贝叶斯分类法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Logistic-%E5%9B%9E%E5%BD%92%E7%AE%97%E6%B3%95%EF%BC%9A"><span class="nav-number">2.1.4.</span> <span class="nav-text">Logistic 回归算法：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%84%E6%B5%8B"><span class="nav-number">2.1.5.</span> <span class="nav-text">预测</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B7%A5%E5%85%B7"><span class="nav-number">3.</span> <span class="nav-text">工具</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Jason Bian"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Jason Bian</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">86</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">108</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/imaginezz" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;imaginezz" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto://Jason_Bian@outlook.com" title="E-Mail → mailto:&#x2F;&#x2F;Jason_Bian@outlook.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.danmakupie.com/" title="https:&#x2F;&#x2F;www.danmakupie.com&#x2F;" rel="noopener" target="_blank">弹幕派</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.oursparkspace.cn/" title="https:&#x2F;&#x2F;www.oursparkspace.cn&#x2F;" rel="noopener" target="_blank">火花空间</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.joyreserve.com/" title="http:&#x2F;&#x2F;www.joyreserve.com" rel="noopener" target="_blank">乐享其约</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://gaocegege.com/" title="http:&#x2F;&#x2F;gaocegege.com&#x2F;" rel="noopener" target="_blank">高策 江湖小虾米</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://yian.me/blog/" title="https:&#x2F;&#x2F;yian.me&#x2F;blog&#x2F;" rel="noopener" target="_blank">Y!an's Blog</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.cyprestar.com/" title="http:&#x2F;&#x2F;www.cyprestar.com&#x2F;" rel="noopener" target="_blank">Zhilong's Blog</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://yicodes.com/" title="http:&#x2F;&#x2F;yicodes.com&#x2F;" rel="noopener" target="_blank">易极</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://merrier.wang/" title="https:&#x2F;&#x2F;merrier.wang&#x2F;" rel="noopener" target="_blank">Merrier说</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://博客.胡鼎原.中国/" title="https:&#x2F;&#x2F;博客.胡鼎原.中国" rel="noopener" target="_blank">小勤奋爱学习</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://lfhacks.com/" title="https:&#x2F;&#x2F;lfhacks.com" rel="noopener" target="_blank">LFhacks</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://study4.fun/" title="https:&#x2F;&#x2F;study4.fun&#x2F;" rel="noopener" target="_blank">学而时思之</a>
+        </li>
+    </ul>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.zhengi.me/dataming_notes/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Jason Bian">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="政子的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          数据挖掘基本概念框架
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2016-06-02 00:35:20" itemprop="dateCreated datePublished" datetime="2016-06-02T00:35:20+08:00">2016-06-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/%E6%95%B0%E6%8D%AE%E6%8C%96%E6%8E%98/" itemprop="url" rel="index"><span itemprop="name">数据挖掘</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.6k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="认识"><a href="#认识" class="headerlink" title="认识"></a>认识</h1><p>数据挖掘类似挖矿–&gt;找出事先不知道的潜在的有用知识</p>
+<p>更多是要挖掘出模式，而不只是知识，所以数据挖掘–&gt;机器学习</p>
+<p>过程：数据–清洗–集成–选择（指标、算法模型）–找到知识</p>
+<h2 id="与统计学："><a href="#与统计学：" class="headerlink" title="与统计学："></a>与统计学：</h2><p>关系： 统计学与数据挖掘目标类似，方法类似（回归、聚类、分类等等）；</p>
+<p>区别：统计学：统计分析建模；数据挖掘：融合计算机</p>
+<span id="more"></span>
+
+<h2 id="与数据分析："><a href="#与数据分析：" class="headerlink" title="与数据分析："></a>与数据分析：</h2><p>分析：假设–验证假设</p>
+<p>挖掘：事先不知道假设（发现驱动），前提是有充分的数据分析，所以是包含关系</p>
+<h2 id="与机器学习："><a href="#与机器学习：" class="headerlink" title="与机器学习："></a>与机器学习：</h2><p>机器学习：不仅包含数据挖掘，还有统计学、模式识别、自然语言处理；可以自动学习新知识</p>
+<p>数据挖掘：不具有自动学习的功能，它是机器学习的一些方法，只是从历史数据挖掘出一些模式</p>
+<p>流程：CRISP-DM</p>
+<p>商业理解-数据理解-数据准备-建立模型-数据评估-发布</p>
+<p>商业理解：从商业角度理解项目的目标和要求（类似需求分析）</p>
+<p>数据理解：数据质量检查、数据探索、找出分布和基本统计量（知道数据长什么样和一些规则）</p>
+<p>数据准备：样本和属性选择，按照建模工具要求对数据转换和清洗</p>
+<p>建模：模型选择和参数调优</p>
+<p>评估：模型是否满足商业目标，分析时一些问题是不是没有考虑到，结果的使用范围</p>
+<p>发布：根据项目的建设目标进行发布，软件集成和报告</p>
+<h1 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h1><h2 id="监督性学习算法"><a href="#监督性学习算法" class="headerlink" title="监督性学习算法"></a>监督性学习算法</h2><h3 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h3><p>预测分类标号（离散取值）</p>
+<p>根据数据集合标签模型，构建模型分类现有数据，并用生成的模型对新数据分类</p>
+<p>流程</p>
+<p>建立模型：描述预定数据类集合概念集</p>
+<p>训练样本，测试样本</p>
+<p>使用模型：将未来或未知的对象进行分类</p>
+<p>首先进行评估，常用指标包括准确率和召回率</p>
+<p>要注意：训练和测试的样本需要完全分离，否则会造成波动拟合的问题</p>
+<p>算法</p>
+<h3 id="决策树算法"><a href="#决策树算法" class="headerlink" title="决策树算法"></a>决策树算法</h3><p>模拟人类识别的问题</p>
+<p>每个树节点可以是叶节点，对应某一类，也可以对应一个划分</p>
+<p>将样本进行自上而下分而治之</p>
+<p>包含 C4.5 算法和 C5.0 算法</p>
+<p>核心是在决策树各级节点上选择属性，使得在每个非叶子节点上进行测试时，能获得被测试例子最大的类别信息</p>
+<p>选择方法有两种：</p>
+<p>C4.5：信息增益，所有的指标都是离散的</p>
+<p>C5.0：信息增益率，既可以适用于离散，也可以适用于连续，为了避免属性选择不准</p>
+<p>构造方法：</p>
+<p>计算信息量、计算信息期望、计算信息增益</p>
+<p>使用过程：训练过程–测试过程</p>
+<p>剪枝——提出无关紧要的分枝</p>
+<h3 id="贝叶斯分类法"><a href="#贝叶斯分类法" class="headerlink" title="贝叶斯分类法"></a>贝叶斯分类法</h3><p>用贝叶斯定律预测类成员的概率，给定类成员相关属性，计算该成员属于某类别的相关概率（后验概率）</p>
+<p>前提是假设每个属性都相互独立，假设每个属性对类别产生的影响都是等价的（朴素贝叶斯算法）</p>
+<p>网络贝叶斯算法：考虑属性之间的相关性（使用比较多）</p>
+<p>难点：需要概率的初始知识，或者一些背景知识；计算代价比较大</p>
+<h3 id="Logistic-回归算法："><a href="#Logistic-回归算法：" class="headerlink" title="Logistic 回归算法："></a>Logistic 回归算法：</h3><p>研究观测结果为分类变量与响应因素之间的回归关系的多因素统计分析算法</p>
+<p>通过计算因变量对目标变量的影响，分析目标变量的归类</p>
+<p>二分类回归、多分类回归（转化为二分类问题，进行组合）</p>
+<p>是神经网络和深度学习的核心算法</p>
+<p>分为一元和多元的逻辑回归</p>
+<p>参数确定：</p>
+<p>最大似然估计法，梯度下降法、EM 算法</p>
+<p>KNN 算法：（很少用）</p>
+<p>K 最近邻算法，最简单的算法之一，不需要训练可以直接计算，但输出的结果解释性不强</p>
+<p>如果一个样本在特征空间中的 K 个最相似的样本中的大多数属于某一个类别，则该样本也属于这个类别</p>
+<p>前提：所选的邻居样本已经正确分类</p>
+<p>核心思想：计算样本之间的距离：如欧氏距离、马氏距离等</p>
+<p>其他算法：SVM、神经网络</p>
+<h3 id="预测"><a href="#预测" class="headerlink" title="预测"></a>预测</h3><p>构造和使用模型评估无样本类，或评估给定样本可能的属性和值空间</p>
+<p>目标变量连续</p>
+<p>预测空缺值和价格等等</p>
+<p>算法</p>
+<p>回归预测算法</p>
+<p>线性回归</p>
+<p>多元回归</p>
+<p>非线性回归</p>
+<p>模型评估</p>
+<p>指标：准确率、召回率、平均绝对误差等</p>
+<p>分类：</p>
+<p>保持方法</p>
+<p>将给定数据划分为两个数据集合：训练集（2/3）和测试集（1/3）–&gt;严格来说，还会有验证集，用来调参</p>
+<p>随机子选样方法</p>
+<p>将保持方法重复 k 次，选取指标的平均值作为最终的评估结果</p>
+<p>比保持方法更科学</p>
+<p>k-折交叉确认</p>
+<p>将数据分为 k 个分类，一定比例选择测试集和训练集，不断迭代</p>
+<p>无监督性学习算法</p>
+<p>有监督学习算法有类标签，无监督学习算法没有类标签（不知道属于哪一类）</p>
+<p>聚类算法</p>
+<p>同一个类中样本相似度最大，不同类中样本差异度最大</p>
+<p>K-Means 算法（k-均值聚类）</p>
+<p>以最小化误差函数为基础</p>
+<p>需要定义聚类数目、迭代次数或者收敛条件，并指定 K 个中心点，根据一定的相似性度量准则进行聚类，反复迭代</p>
+<p>降维算法</p>
+<p>将几千个特征压缩为若干特征，去除冗余信息，减少特征数量，提高算法性能，便于可视化</p>
+<p>PCA 算法（分解矩阵）、SVD 算法（分解矩阵）、张量分解算法（更高维度分解）–&gt;将数据压缩成少数几个维度</p>
+<p>特殊算法</p>
+<p>智能推荐算法</p>
+<p>和搜索引擎</p>
+<p>相同：帮助用户快速发现有用信息</p>
+<p>不同：搜索引擎需要用户主动获取关键词；推荐算法不需要用户明确提出需求，而是分析历史行为</p>
+<p>两者是互补关系</p>
+<p>算法</p>
+<p>关联规则算法</p>
+<p>从信息存储中发现有趣的隐藏的频繁出现的模式</p>
+<p>算法：Apriori 算法等</p>
+<p>计算支持度和置信度，指定阈值，生成规则</p>
+<p>支持度：事务集中，同时包含 A 和 B 的百分比</p>
+<p>置信度：事务集中，包含 A 的情况下也包含 B 的概率</p>
+<p>k-项集</p>
+<p>顶集的频率：包含指定项集的事务数的占比</p>
+<p>根据最小支持度阈值，找到频繁项集</p>
+<p>协同过滤算法</p>
+<p>新上线的推荐系统，第一个算法就是协同过滤算法</p>
+<p>基于用户的协同过滤</p>
+<p>假设：如果用户对一些物品的评分比较相似，那么他们对其他物品的评分也很相似</p>
+<p>基于物品的协同过滤</p>
+<p>假设：用户对项目的评分和用户对其他相似项目的评分很相似</p>
+<p>问题：数据的稀疏性（很难找到相似用户），数据的扩展性（相似度关系代码需要很长的计算时间）</p>
+<p>计算相似度</p>
+<p>余弦相似度</p>
+<p>修正的余弦相似性</p>
+<p>相关相似性</p>
+<p>评分估算公式</p>
+<p>其他：内容推荐、标签推荐、社交网络推荐、位置推荐</p>
+<p>半监督性学习算法：机器学习应用很多</p>
+<p>一部分数据有标签，另一部分没有，用一部分有标签的数据来扩展没有标签的数据</p>
+<h1 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h1><p>Python</p>
+<p>工具包 Numpy Pandas Matplotlib Scipy Sklearn NLTK（自然语言处理） NetworkX</p>
+<p>集成工具 Anaconda</p>
+<p>参考书 《利用 Python 进行数据分析》《Python 数据分析基础教程》《利用 Python 机型自然语言处理》</p>
+<p>《数据挖掘导论》（一定看，翻译很烂） 《机器学习实战》 《python 数据分析与挖掘实战》 《大嘴巴漫谈数据挖掘》 <a target="_blank" rel="noopener" href="http://www.36dsj.com/">www.36dsj.com</a> 《数据挖掘与数据化运营实战》（比较初级） 机器学习基石（台湾大学？）</p>
+<p>实际应用：过拟合（应用中过度透视数据，忽略数据的一些不可预测性）</p>
+
+    </div>
+
+    
+    
+    
+      
+
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请鼓励我的原创文章</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.png" alt="Jason Bian 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="Jason Bian 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Jason Bian
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://blog.zhengi.me/dataming_notes/" title="数据挖掘基本概念框架">https://blog.zhengi.me/dataming_notes/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E6%8C%96%E6%8E%98/" rel="tag"><i class="fa fa-tag"></i> 数据挖掘</a>
+              <a href="/tags/%E7%AE%97%E6%B3%95/" rel="tag"><i class="fa fa-tag"></i> 算法</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/thinking_about_college_innovation/" rel="prev" title="大创乱谈">
+                  <i class="fa fa-chevron-left"></i> 大创乱谈
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/vim_tab_four_space/" rel="next" title="VIM中tab和4个空格之间的转换">
+                  VIM中tab和4个空格之间的转换 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">陇 ICP 备 15003463 号 </a>
+  </div>
+
+<div class="copyright">
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jason Bian</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">235k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">3:33</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/lozad.js/1.16.0/lozad.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/pangu/4.0.7/pangu.min.js"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/pjax.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://cdn.jsdelivr.net/npm/pdfobject@2.2.7/pdfobject.min.js","integrity":"sha256-ph3Dk89VmuTVXG6x/RDzk53SU9LPdAh1tpv0UvnDZ2I="},"url":"/lib/pdf/web/viewer.html"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdn.jsdelivr.net/npm/mermaid@8.13.8/dist/mermaid.min.js","integrity":"sha256-QmSAc2kIaUjleIJ46X7qPW2zrpCbXlMz3YIGgWpQ1Jo="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"imaginezz","repo":"blog_public","client_id":"9c022a847ecc01650469","client_secret":"3c6fae6a3119943e381c2682b0a40f84573463b4","admin_user":"imaginezz","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js","integrity":"sha256-Pmj85ojLaPOWwRtlMJwmezB/Qg8BzvJp5eTzvXaYAfA="},"path_md5":"467fda33bb4579c195a22a6c988b232d"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>

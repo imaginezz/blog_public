@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)">
+<meta name="generator" content="Hexo 6.3.0">
+
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/favicon/safari-pinned-tab.svg" color="#222">
+  <link rel="manifest" href="/images/favicon/site.webmanifest">
+  <meta name="baidu-site-verification" content="5x8DHwr7y8">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.bootcdn.net/ajax/libs/pace/1.2.4/pace.min.js"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.zhengi.me","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":true,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":true,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="最近在项目中遇到需要在 NodeJS 中调用 C++代码的问题，在此略作总结。 主要方案在 NodeJS 中，和其他语言编写的代码通信主要有两种方案：  使用 AddOn 技术，使用 C++为 NodeJS 编写一个拓展，然后在代码中调用其他语言所编写的源码 or 动态库 使用 FFI（Foreign Function Interface）技术，直接在 Node 中引入其他语言所编写的动态链接库">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在NodeJS中与C++代码通信">
+<meta property="og:url" content="https://blog.zhengi.me/communicate_with_cpp_code_in_node/index.html">
+<meta property="og:site_name" content="政子的博客">
+<meta property="og:description" content="最近在项目中遇到需要在 NodeJS 中调用 C++代码的问题，在此略作总结。 主要方案在 NodeJS 中，和其他语言编写的代码通信主要有两种方案：  使用 AddOn 技术，使用 C++为 NodeJS 编写一个拓展，然后在代码中调用其他语言所编写的源码 or 动态库 使用 FFI（Foreign Function Interface）技术，直接在 Node 中引入其他语言所编写的动态链接库">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-10-22T15:24:34.000Z">
+<meta property="article:modified_time" content="2024-03-23T06:03:16.943Z">
+<meta property="article:author" content="Jason Bian">
+<meta property="article:tag" content="C++">
+<meta property="article:tag" content="NodeJS">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://blog.zhengi.me/communicate_with_cpp_code_in_node/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://blog.zhengi.me/communicate_with_cpp_code_in_node/","path":"communicate_with_cpp_code_in_node/","title":"在NodeJS中与C++代码通信"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>在NodeJS中与C++代码通信 | 政子的博客</title>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?590a1bfeac720e6a29c58f70ab77a9a3"></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="政子的博客" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">政子的博客</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">技术|学习|随笔</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa  fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+        <li class="menu-item menu-item-书单"><a href="/booklist/" rel="section"><i class="fa fa-book fa-fw"></i>书单</a></li>
+        <li class="menu-item menu-item-算法"><a href="/algorithm/" rel="section"><i class="fa fa-code fa-fw"></i>算法</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%BB%E8%A6%81%E6%96%B9%E6%A1%88"><span class="nav-number">1.</span> <span class="nav-text">主要方案</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#FFI-%E4%BD%BF%E7%94%A8%E5%87%86%E5%A4%87"><span class="nav-number">2.</span> <span class="nav-text">FFI 使用准备</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85-NodeJS"><span class="nav-number">2.1.</span> <span class="nav-text">安装 NodeJS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85-Windows-%E7%9A%84-C-%E5%B7%A5%E5%85%B7%E9%93%BE"><span class="nav-number">2.2.</span> <span class="nav-text">安装 Windows 的 C++工具链</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85-node-gyp"><span class="nav-number">2.3.</span> <span class="nav-text">安装 node-gyp</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85-FFI-%E5%8F%8A-REF"><span class="nav-number">2.4.</span> <span class="nav-text">安装 FFI 及 REF</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85-electron-rebuild-%E5%8C%85"><span class="nav-number">2.5.</span> <span class="nav-text">安装 electron-rebuild 包</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%96%B9%E5%BC%8F"><span class="nav-number">3.</span> <span class="nav-text">使用方式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E5%8D%95%E6%A6%82%E8%A7%88"><span class="nav-number">3.1.</span> <span class="nav-text">简单概览</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B1%BB%E5%9E%8B"><span class="nav-number">3.2.</span> <span class="nav-text">类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B0%83%E7%94%A8%E5%A4%96%E9%83%A8%E7%AC%A6%E5%8F%B7"><span class="nav-number">3.3.</span> <span class="nav-text">调用外部符号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9E%E8%B0%83%E5%87%BD%E6%95%B0"><span class="nav-number">3.4.</span> <span class="nav-text">回调函数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E4%BA%9B-Tips"><span class="nav-number">4.</span> <span class="nav-text">一些 Tips</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#DLL-%E7%9A%84%E8%B0%83%E8%AF%95%E6%96%B9%E6%B3%95"><span class="nav-number">4.1.</span> <span class="nav-text">DLL 的调试方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E8%BD%BD%E5%85%A5%E5%9C%A8%E5%85%B6%E4%BB%96%E6%96%87%E4%BB%B6%E5%A4%B9%E4%B8%AD%E7%9A%84-DLL"><span class="nav-number">4.2.</span> <span class="nav-text">如何载入在其他文件夹中的 DLL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E4%BA%9B%E9%93%BE%E6%8E%A5%E6%97%B6%E5%80%99%E7%9A%84%E9%94%99%E8%AF%AF%E6%8F%90%E7%A4%BA"><span class="nav-number">4.3.</span> <span class="nav-text">一些链接时候的错误提示</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8-Electron-%E4%B8%AD%E4%BD%BF%E7%94%A8-FFI"><span class="nav-number">4.4.</span> <span class="nav-text">在 Electron 中使用 FFI</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E4%BA%9B%E8%B5%84%E6%BA%90"><span class="nav-number">5.</span> <span class="nav-text">一些资源</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Jason Bian"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Jason Bian</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">86</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">108</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/imaginezz" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;imaginezz" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto://Jason_Bian@outlook.com" title="E-Mail → mailto:&#x2F;&#x2F;Jason_Bian@outlook.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.danmakupie.com/" title="https:&#x2F;&#x2F;www.danmakupie.com&#x2F;" rel="noopener" target="_blank">弹幕派</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.oursparkspace.cn/" title="https:&#x2F;&#x2F;www.oursparkspace.cn&#x2F;" rel="noopener" target="_blank">火花空间</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.joyreserve.com/" title="http:&#x2F;&#x2F;www.joyreserve.com" rel="noopener" target="_blank">乐享其约</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://gaocegege.com/" title="http:&#x2F;&#x2F;gaocegege.com&#x2F;" rel="noopener" target="_blank">高策 江湖小虾米</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://yian.me/blog/" title="https:&#x2F;&#x2F;yian.me&#x2F;blog&#x2F;" rel="noopener" target="_blank">Y!an's Blog</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.cyprestar.com/" title="http:&#x2F;&#x2F;www.cyprestar.com&#x2F;" rel="noopener" target="_blank">Zhilong's Blog</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://yicodes.com/" title="http:&#x2F;&#x2F;yicodes.com&#x2F;" rel="noopener" target="_blank">易极</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://merrier.wang/" title="https:&#x2F;&#x2F;merrier.wang&#x2F;" rel="noopener" target="_blank">Merrier说</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://博客.胡鼎原.中国/" title="https:&#x2F;&#x2F;博客.胡鼎原.中国" rel="noopener" target="_blank">小勤奋爱学习</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://lfhacks.com/" title="https:&#x2F;&#x2F;lfhacks.com" rel="noopener" target="_blank">LFhacks</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://study4.fun/" title="https:&#x2F;&#x2F;study4.fun&#x2F;" rel="noopener" target="_blank">学而时思之</a>
+        </li>
+    </ul>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.zhengi.me/communicate_with_cpp_code_in_node/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Jason Bian">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="政子的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          在NodeJS中与C++代码通信
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-10-22 23:24:34" itemprop="dateCreated datePublished" datetime="2019-10-22T23:24:34+08:00">2019-10-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/NodeJS/" itemprop="url" rel="index"><span itemprop="name">NodeJS</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>9.1k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>8 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>最近在项目中遇到需要在 NodeJS 中调用 C++代码的问题，在此略作总结。</p>
+<h1 id="主要方案"><a href="#主要方案" class="headerlink" title="主要方案"></a>主要方案</h1><p>在 NodeJS 中，和其他语言编写的代码通信主要有两种方案：</p>
+<ul>
+<li>使用 AddOn 技术，使用 C++为 NodeJS 编写一个拓展，然后在代码中调用其他语言所编写的源码 or 动态库</li>
+<li>使用 FFI（Foreign Function Interface）技术，直接在 Node 中引入其他语言所编写的动态链接库</li>
+</ul>
+<p>在对这两种方式进行比较后，发现这两种方式各有优劣。</p>
+<p>首先，AddOn 技术比较通用，它可以使用 C++代码来拓展 Node 的行为，很多库都是使用这种方式来完成一些比较底层操作（比如和操作系统的一些通信）的。但是它写起来比较麻烦，要编写一个 C++项目，还要按照 NodeJS 的规范 export 相应的函数，而且每次安装的时候都需要进行编译（以适应本地 Node 的版本）。如果只是调用一个 DLL，那就还需要在项目里重新包装一遍 DLL 的接口。</p>
+<p>如果使用 FFI 技术，限制就会比较多,首先，它只能调用其他动态库，如果你想使用 C/C++完成更多功能的话，还需要再封装一层 DLL，另外，它只支持<code>_cdecl</code>调用约定（也就是 DLL 在导出的时候一定要标记用<code>_cdecl</code>编译命令），不支持<code>_stdcall</code>或者<code>_fastcall</code>调用。但是调用起来就会很方便，可以直接在 JS 代码中声明 DLL 的接口就可以了。</p>
+<p>综上比较，如果只调用第三方 DLL（而且恰好是<code>_cdecl</code>导出），使用 FFI 就再合适不过了（虽然性能可能会有一定的损失，而且调试起来会有困难）。</p>
+<p>其实，从理论上来讲，FFI 也是基于 AddOn 技术的，只是它可以帮你把在 JS 中定义的接口直接转换成 C 语言的接口，并利用 NodeJS 的 Buffer 内存，将其同载入的 DLL 共享。当然由于 FFI 的这种通用性，也导致了一定的性能损失。</p>
+<p>下面就以在 Windows 平台上使用 FFI 为例，简单聊一下如何使用 NodeJS 和 C++编译而成的 DLL 通信吧。</p>
+<span id="more"></span>
+
+<h1 id="FFI-使用准备"><a href="#FFI-使用准备" class="headerlink" title="FFI 使用准备"></a>FFI 使用准备</h1><h2 id="安装-NodeJS"><a href="#安装-NodeJS" class="headerlink" title="安装 NodeJS"></a>安装 NodeJS</h2><p>可能你的环境中已经有 NodeJS 了，但是，如果是最新版本，在安装 FFI 的时候会出现各种兼容性的问题（比如编译无法通过，虽然已经有人提供了 patch，但是还没有被 merge 进主分支，为了避免出现 bug，还是暂时不用为妙）。所以可以安装 LTS 版本代替。</p>
+<p>另外，还需要注意要调用的 DLL 是 32 位还是 64 位的，Node 的版本需要和 DLL 的版本匹配。因为如果 64 位 Node 调用了 32 位的 DLL，是无法成功装载的，反之亦然。</p>
+<h2 id="安装-Windows-的-C-工具链"><a href="#安装-Windows-的-C-工具链" class="headerlink" title="安装 Windows 的 C++工具链"></a>安装 Windows 的 C++工具链</h2><p>这里有两种方案：</p>
+<ul>
+<li>安装 Visual Studio，并安装相应的工具链。如果使用 VS 2019 版本的话，需要安装 C++桌面开发和 Windows SDK 相关的工具（Node v10 现在只支持 v141 版本的 MSVC），这种方式便于后续的调试工作（虽然也很艰难）</li>
+<li>在安装 Node 之后，使用管理员权限运行 Powershell，并全局安装 windows-build-tools，参考命令 <code>npm install --global --production windows-build-tools</code></li>
+</ul>
+<h2 id="安装-node-gyp"><a href="#安装-node-gyp" class="headerlink" title="安装 node-gyp"></a>安装 node-gyp</h2><p>node-gyp 是一个 Node 中基于 gyp 的跨平台的编译工具，用于编译其他库。</p>
+<p>在安装的时候，需要使用 VC 的工具链，所以如果没有把工具链放在全局变量中，需要打开 VS 的<code>Developer Powershell</code>安装，该命令行一般在开始菜单的 Visual Studio 文件夹中。</p>
+<p>参考命令：<code>npm install -g node-gyp</code></p>
+<h2 id="安装-FFI-及-REF"><a href="#安装-FFI-及-REF" class="headerlink" title="安装 FFI 及 REF"></a>安装 FFI 及 REF</h2><p>下面的步骤依旧需要 VC 工具链，所以可能依旧需要在<code>Developer Powershell</code>中执行（建议常备该窗口，后面只要涉及到编译安装的命令都需要用到）。</p>
+<p>安装 FFI 及相关工具的时候如果没有 VC 工具链，则会直接安装二进制代码，这样可能会出现包的 ABI 版本和 NodeJS 的 ABI 版本不符合的情况（在下面的 Tips 中会提到）。</p>
+<p>现在，切换到项目的文件夹中，安装下面的包。其中，ffi 包是用以支持 FFI 功能的，ref 包是用以支持指针功能（原理是通过 Node 的 Buffer 内存，将 JS 的结构和 C 结构相互转换的）的，ref-*是用以支持高级结构的（比如数组和结构体）</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">npm install ffi <span class="literal">-s</span></span><br><span class="line">npm install ref <span class="literal">-s</span></span><br><span class="line">npm install ref<span class="literal">-array</span> <span class="literal">-s</span></span><br><span class="line">npm install ref<span class="literal">-struct</span> <span class="literal">-s</span></span><br></pre></td></tr></table></figure>
+
+<p>除此之外，如果想支持 VC 中常见的 wchar 类型，还可以安装 ref-wchar 包。</p>
+<h2 id="安装-electron-rebuild-包"><a href="#安装-electron-rebuild-包" class="headerlink" title="安装 electron-rebuild 包"></a>安装 electron-rebuild 包</h2><p>如果是 electron 项目，还推荐安装 electron-rebuild 包，该包可以遍历 node_modules 目录下的所有包，并将其重新编译。</p>
+<p>然后，推荐在 package.json 中配置 electron-rebuild 的命令：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">&quot;scripts&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;rebuild&quot;</span><span class="punctuation">:</span> <span class="string">&quot;./node_modules/.bin/electron-rebuild&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>之后执行在需要重新编译的时候只需要执行<code>npm run rebuild</code>即可。</p>
+<h1 id="使用方式"><a href="#使用方式" class="headerlink" title="使用方式"></a>使用方式</h1><h2 id="简单概览"><a href="#简单概览" class="headerlink" title="简单概览"></a>简单概览</h2><p>可以查看如下官方示例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> ffi = <span class="built_in">require</span>(<span class="string">&#x27;ffi&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> libm = ffi.<span class="title class_">Library</span>(<span class="string">&#x27;libm&#x27;</span>, &#123;</span><br><span class="line">  <span class="attr">ceil</span>: [<span class="string">&#x27;double&#x27;</span>, [<span class="string">&#x27;double&#x27;</span>]]</span><br><span class="line">&#125;)</span><br><span class="line">libm.<span class="title function_">ceil</span>(<span class="number">1.5</span>) <span class="comment">// 2</span></span><br></pre></td></tr></table></figure>
+
+<p>在引入 FFI 后，使用 FFI 调用了 libm 库（可能这个示例只能在类 Unix 系统中使用），一般拓展名为 libm.so，系统会在系统目录下搜索这个动态库，并将它使用动态链接器载入到 node 进程中。</p>
+<p>接着，程序声明了 libm 库中的一个方法 ceil（向上取整），其中，该函数的返回值是 double 类型（第一重数组中的 doule），而该函数的入参也是一个 double 类型的值（第二重数组中的 double）。</p>
+<p>最后，直接使用<code>libm.ceil</code>方法即可调用动态库中的函数，并返回正确的值。</p>
+<p>这只是一个 FFI 的简单用例，更复杂的用法（主要是异步调用和回调函数）可以参考 FFI 的实例页<a target="_blank" rel="noopener" href="https://github.com/node-ffi/node-ffi/wiki/Node-FFI-Tutorial">https://github.com/node-ffi/node-ffi/wiki/Node-FFI-Tutorial</a>。</p>
+<h2 id="类型"><a href="#类型" class="headerlink" title="类型"></a>类型</h2><p>FFI 的类型系统其实记住了 ref 库的类型，ref 库的类型系统基于 NodeJS 的 Buffer 内存，可以根据 Buffe 中数据的类型对 Buffer 内存中的数据进行访问和修改。</p>
+<p>ref 自带的数据类型都是基本类型，比如 int 类型、bool 类型或者 string 类型。所有类型可以参考 ref 的<a target="_blank" rel="noopener" href="https://github.com/TooTallNate/ref/wiki/Known-%22types%22">wiki</a>。</p>
+<p>ref 中的多数类型都有简写，比如<code>ref.types.int</code>可以简写为<code>int</code>。</p>
+<p>需要注意的是，<code>char*</code>可以写为<code>string</code>，对应的 ref 类型为<code>ref.types.CString</code>。值得注意的是，string 在 JS 中是基本类型，在 C 中却是引用类型。</p>
+<p>对于指针类型，ref 提供了一个方法<code>ref.refType()</code>来得到，比如<code>int*</code>类型就可以使用<code>ref.refType(&#39;int&#39;)</code>得到。当然，为了省事，也可以直接用<code>int*</code>表示。</p>
+<p>而对指针解引用，ref 库也提供了一个<code>deref()</code>方法。只要在对应类型的变量上使用该方法，就可以得到指针指向内容的变量。比如一个指向<code>int*</code>类型的 JS 变量 a_pointer，那么我们如果想得到具体的整数值，就可以使用<code>a_pointer.deref()</code>方法。</p>
+<p>相反的，如果想获取某个变量的地址，就需要对某个变量使用<code>ref()</code>方法。</p>
+<p>需要注意掌握类型与变量值的区别，使用<code>ref.types</code>、<code>ref.refType</code>或者是下面会提到的<code>ref_struct(&#123;...&#125;)</code>获得的类型，而如果想获得某个类型的变量，有两个方法，一个是从 FFI 函数的返回值中获取，另一个是在 Buffer 中开辟一个空间，来存放类型为所获得类型的变量，下面会具体讲到。</p>
+<p>如果需要在 NodJS 的 Buffer 中开辟长度为某个类型的空间，可以使用<code>ref.alloc()</code>函数，只要将类型名传入即可。比如，想开辟一个类型为 int 的内存，就可以使用<code>ref.alloc(&#39;int&#39;)</code>得到。</p>
+<p>此外，还有以下几点需要注意：</p>
+<ul>
+<li>如果开辟类型为字符串的内存，推荐使用方法 ref.allocCString，其参数为一个 JS 的字符串。因为 C 语言的字符串在末尾有一个<code>\0</code>标识符，所以用这个方法可以更安全地得到 C 字符串。</li>
+<li>如果在 C 语言中值为 NULL，则在 JS 中对应的值为 ref.NULL。</li>
+<li>如果遇到指针类型，可以统一用<code>&#39;void&#39;</code>或者<code>ref.types.void</code>表示。</li>
+<li>如果要表示一个函数的指针，可以使用<code>&#39;pointer&#39;</code>表示。</li>
+</ul>
+<p>对于复合类型，比如数组或者结构体，ref 库本身没有提供相应的支持，需要使用 ref-array 和 ref-struct 库来实现，具体可以参考这两个库的文档。</p>
+<p>另外，对于 Windows API 中较为常见的宽字符 wchar 类型，也有一个基于 ref 的库 ref-wchar 进行支持。</p>
+<p>最后，附上 ref 的文档<a target="_blank" rel="noopener" href="http://tootallnate.github.io/ref/">http://tootallnate.github.io/ref/</a>，具体的 API 都可以在这里进行查阅。</p>
+<h2 id="调用外部符号"><a href="#调用外部符号" class="headerlink" title="调用外部符号"></a>调用外部符号</h2><p>假设我们有如下 C 代码（并把它写的复杂一些）：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* main.c */</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">t_s_t</span>&#123;</span></span><br><span class="line">    <span class="type">int</span> a;</span><br><span class="line">    <span class="type">char</span> b;</span><br><span class="line">&#125; t_s;</span><br><span class="line"></span><br><span class="line">__declspec(dllexport) <span class="type">int</span> <span class="title function_">add_one</span><span class="params">(<span class="type">int</span> a)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> a + <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">__declspec(dllexport) <span class="type">void</span> <span class="title function_">struct_test</span><span class="params">(t_s** t_s_p)</span> &#123;</span><br><span class="line">    *t_s_p = (t_s *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(t_s));</span><br><span class="line">    (*t_s_p)-&gt;a = <span class="number">1</span>;</span><br><span class="line">    (*t_s_p)-&gt;b = <span class="string">&#x27;d&#x27;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面的代码中，声明了一个结构体<code>t_s</code>，以及两个函数<code>add_one</code>和<code>struct_test</code>。其中，函数前面的<code>__declspec</code>标记表示声明该函数为导出函数。VC 默认导出 C 函数时是用<code>_cdecl</code>调用约定。</p>
+<p>其中，<code>add_one</code>方法的作用显而易见，是将传入参数加一再返回。而<code>struct_test</code>函数的作用是先在堆上开辟一个大小为生面声明结构体的内存空间，然后将该内存空间的指针赋给传入的参数，并将该结构体赋值。（这里的代码其实不够严谨，没有进行内存回收，但这不是本文的重点，所以先不做讨论）</p>
+<p>需要注意的是，如果是 C++代码，需要使用<code>extern &quot;C&quot;</code>标记导出，否则会因为符号修饰和调用约定的问题导致无法通过源代码中的符号找到该函数。</p>
+<p>我们可以使用 VS 的<code>Developer Powershell</code>对上述源码进行编译：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cl /c main.c</span><br><span class="line">Link /dll main.obj</span><br></pre></td></tr></table></figure>
+
+<p>编译后将生成 main.dll，我们在后面会用到这个动态库。</p>
+<p>针对上述 C 函数，我们有如下 JS 代码，并假设和 C 代码在同一文件夹下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* index.js */</span></span><br><span class="line"><span class="keyword">const</span> ffi = <span class="built_in">require</span>(<span class="string">&#x27;ffi&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> ref = <span class="built_in">require</span>(<span class="string">&#x27;ref&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> ref_struct = <span class="built_in">require</span>(<span class="string">&#x27;ref-struct&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> t_s = <span class="title function_">ref_struct</span>(&#123;</span><br><span class="line">  <span class="attr">a</span>: ref.<span class="property">types</span>.<span class="property">int</span>,</span><br><span class="line">  <span class="attr">b</span>: ref.<span class="property">types</span>.<span class="property">char</span></span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> t_s_ref = ref.<span class="title function_">refType</span>(t_s)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> test_ffi = ffi.<span class="title class_">Library</span>(__dirname + <span class="string">&#x27;\\main&#x27;</span>, &#123;</span><br><span class="line">  <span class="attr">add_one</span>: [<span class="string">&#x27;int&#x27;</span>, [<span class="string">&#x27;int&#x27;</span>]],</span><br><span class="line">  <span class="comment">// aka &#x27;add_one&#x27;: [ref.types.int, [&#x27;int&#x27;]],</span></span><br><span class="line">  <span class="attr">struct_test</span>: [<span class="string">&#x27;void&#x27;</span>, [<span class="string">&#x27;pointer&#x27;</span>]]</span><br><span class="line">  <span class="comment">// aka &#x27;struct_test&#x27;: [&#x27;void&#x27;, [t_s_ref]],</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">const</span> result = test_ffi.<span class="title function_">add_one</span>(<span class="number">20</span>)</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(result) <span class="comment">//21</span></span><br><span class="line"></span><br><span class="line">t_s_p = ref.<span class="title function_">alloc</span>(t_s_ref)</span><br><span class="line">test_ffi.<span class="title function_">struct_test</span>(t_s_p)</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(t_s_p)</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(t_s_p.<span class="title function_">deref</span>())</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(t_s_p.<span class="title function_">deref</span>().<span class="title function_">deref</span>()) <span class="comment">//a-&gt;1, b-&gt;&#x27;d&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>首先，在代码中声明了一个结构体<code>t_s</code>,和 C 语言中的<code>t_s*</code>类型相对应。然后，我们还得到了结构体<code>t_s</code>的一个引用<code>t_s_ref</code>，和 C 语言中的<code>t_s**</code>类型对应。为什么在 C 语言中都多了一层指针呢？其原因和前面的字符串一样。</p>
+<p>然后，声明了 test_ffi 变量，它调用了 ffi.Library 方法，该方法返回了 JS 中 DLL 的句柄和函数的声明，通过该变量可以进行 DLL 的调用。该方法有两个参数，一个是动态库的名称（可以略去拓展名 dll），另一个就是描述 C 语言函数的符号及其参数的对象。</p>
+<p>该列表在上面已经简单介绍过了，对象的 key 是函数名，value 是一个数组，数组中第一个元素为函数的返回值的类型，第二个元素为另一个数组，它里面包含了函数的入参的类型。这些类型就用到了上一节中介绍的基于 ref 包的类型系统，类型可以用字符串表示，也可以用代码表示，可以参考代码中 aka 的注释。</p>
+<p>接下来，代码通过<code>test_ffi.add_one</code>调用了 C 语言动态库中的<code>add_one</code>函数，可以看出，调用的方式和 JS 中的函数并无二致。但是需要注意参数类型千万不能传错，特别要注意 C 语言的 string 类型和 JS 中的 string 类型不同，要按照前文提到的方法进行转换。</p>
+<p>然后，代码使用 ref.alloc 方法为 t_s_ref 变量开辟了一个内存空间（注意这只是一个指针大小的空间，并非结构体大小），并将该地址赋给 t_s_p 变量，然后将该变量传递给 struct_test 函数。因为 t_s_p 是一个二重指针，所以需要解两次引用，才能得到结构体真实的值。</p>
+<h2 id="回调函数"><a href="#回调函数" class="headerlink" title="回调函数"></a>回调函数</h2><p>回调函数可以使用<code>ffi.Callback()</code>函数声明，该函数的第一个参数为返回值，第二个参数为入参列表，第三个参数为真实回调函数的闭包。</p>
+<p>比如一个回调函数的定义如下，该函数会得到用户名和 id，并返回动作是否执行成功：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="title function_">int</span><span class="params">(*callback)</span><span class="params">(<span class="type">int</span>, <span class="type">const</span> <span class="type">char</span>*)</span>;</span><br></pre></td></tr></table></figure>
+
+<p>那么，在 ffi 中，就可以使用如下方式声明该回调函数：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> callback_function = ffi.<span class="title class_">Callback</span>(<span class="string">&#x27;int&#x27;</span>, [<span class="string">&#x27;int&#x27;</span>, <span class="string">&#x27;string&#x27;</span>], <span class="function">(<span class="params">id, username</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// do something</span></span><br><span class="line">  <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>在声明之后，需要将该回调函数做为参数传入某个函数：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">test_ffi.<span class="title function_">set_a_callback</span>(callback_function)</span><br><span class="line"></span><br><span class="line"><span class="comment">// Make an extra reference to the callback pointer to avoid GC</span></span><br><span class="line">process.<span class="title function_">on</span>(<span class="string">&#x27;exit&#x27;</span>, <span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">  callback_function</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>特别需要注意的是，设置完回调函数以后一定要保证该函数在 JS 中还存在一个引用（比如上面讲该函数的一个引用放在了 NodeJS 的 exit 事件中，这也是比较经典的做法）。否则，该函数将会被 NodeJS 的 GC 析构。其表现是：在程序刚开始执行的时候一切正常，但是执行了一会儿之后在调用这个回调函数，程序就会异常退出。如果用 VS 去对程序 Debug，就会发现该程序可能访问了非法指针，这是因为 DLL 代码中也存放了该回调函数的指针，但是在 JS 中该指针指向的地址因为没有被 JS 中的代码引用，所以被 CG 被释放，这样 DLL 中代码调用该地址的函数的时候，就会访问到非法的内存。</p>
+<h1 id="一些-Tips"><a href="#一些-Tips" class="headerlink" title="一些 Tips"></a>一些 Tips</h1><h2 id="DLL-的调试方法"><a href="#DLL-的调试方法" class="headerlink" title="DLL 的调试方法"></a>DLL 的调试方法</h2><p>在使用 ffi 的过程中，可能发现最大的问题就是程序难以调试。特别在面对 DLL 的时候，就像针对一个黑盒操作一样，虽然已经对着头文件将他的 API 使用 FFI 翻译为 JS 的代码，但还是难以确定传参或返回值是否正确，在 C++的代码中该参数是否正确传入，传入后是否正确执行等等。这就需要一个能够调试的方法。</p>
+<p>一个比较好用的方式是使用宇宙第一 IDE Visual Studio 的 Attach（附加）到进程的方式进行调试。但这种调试方法的前提是手中有 DLL 的源码或 PDB（符号）文件（如果没有的话就只能看到出现异常的代码附近的反汇编的代码了，而通常这些异常都是内存错误引起的，其实它附近的数据可能没有多大的意义）。</p>
+<p>如果手上有源文件，那么首先打开工程，然后在 NodeJS 载入 DLL 之后，就可以在启动工程的时候选择“附加到进程”，在对话框中选择 NodeJS 进程即可进入调试界面。在调试界面里，可以插入断点，也可以看到断点附近的内存。</p>
+<p>如果手上没有源文件，但是有 PDB 文件（或者少量的源码），可以使用 VS 打开一个空工程，然后在调试的设置中添加符号文件的位置，这样也可以进行断点调试，在调试的过程中可以查看代码有没有命中断点，在命中断点时，会引导你载入项目文件，如果有的话可以选择，否则可以查看断点附近的反汇编代码。</p>
+<p>具体的调试方法可以参考 MSDN 文档：<a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/visualstudio/debugger/attach-to-running-processes-with-the-visual-studio-debugger?view=vs-2019">https://docs.microsoft.com/en-us/visualstudio/debugger/attach-to-running-processes-with-the-visual-studio-debugger?view=vs-2019</a>，在这里就不过多叙述了。</p>
+<h2 id="如何载入在其他文件夹中的-DLL"><a href="#如何载入在其他文件夹中的-DLL" class="headerlink" title="如何载入在其他文件夹中的 DLL"></a>如何载入在其他文件夹中的 DLL</h2><p>如果 JS 文件和 DLL 文件不在同一文件夹中，可能会出现载入失败，会出现类似于“Dynamic Linking Error: Win32 error 126”的错误提示。</p>
+<p>这时，就需要将 DLL 文件夹的路径放在系统寻找动态链接库的 PATH 中，但是 FFI 并没有提供此类接口。不过，好在 Windows API 提供了 SetDllDirectoryA 这个接口用以切换该进程中寻找 DLL 的 PATH，可以使用如下代码完成这个操作：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> kernel32_ffi = ffi.<span class="title class_">Library</span>(<span class="string">&#x27;kernel32&#x27;</span>, &#123;</span><br><span class="line">  <span class="title class_">SetDllDirectoryA</span>: [<span class="string">&#x27;bool&#x27;</span>, [<span class="string">&#x27;string&#x27;</span>]]</span><br><span class="line">&#125;)</span><br><span class="line">kernel32_ffi.<span class="title class_">SetDllDirectoryA</span>(your_custom_dll_directory)</span><br></pre></td></tr></table></figure>
+
+<h2 id="一些链接时候的错误提示"><a href="#一些链接时候的错误提示" class="headerlink" title="一些链接时候的错误提示"></a>一些链接时候的错误提示</h2><p>上面已经提到，如果动态库不在 PATH 中的话，会出现无法找到动态库的情况，这时候会报“Dynamic Linking Error: Win32 error 126”的错误，在另外一些时候，只要没有找到动态库，都会报该错误。如果出现该错误，就需要检查动态库的名称是否正确，检查动态库的版本是否正确（比如 32 位 Node 使用了 64 位的 DLL）等。</p>
+<p>另外，还有一个“Dynamic Linking Error: Win32 error 127”错误比较常见，该错误指没有在 DLL 中找到对应的符号，这可能就需要检查在 ffi 中声明的函数名是否正确以及是否 DLL 版本有偏差了。</p>
+<h2 id="在-Electron-中使用-FFI"><a href="#在-Electron-中使用-FFI" class="headerlink" title="在 Electron 中使用 FFI"></a>在 Electron 中使用 FFI</h2><p>由于每一个 Electron 的版本是基于相应的 Node 和 Chrome 版本构建的，所以在使用 FFI 之前需要根据所使用的 Electron 版本安装本地的 NodeJS 版本，否则 FFI 可能会和 Node 版本不匹配，导致提示 ABI 版本不一致：<code>xx was compiled against a different Node.js version using NODE_MODULE_VERSION x. This version of Node.js requires NODE_MODULE_VERSION xx</code>（NodeJS 使用 NODE_MODULE_VERSION 来辨别 ABI 版本）。</p>
+<p>这种情况下，可以使用前文提到的<code>electron-rebuild</code>对项目中的所有插件进行重新编译（需要注意本地 NodeJS 的 ABI 版本一定要和 Electron 中 NodeJS 的 ABI 版本一致）。</p>
+<p>另外，需要注意的是，Electron 5 以上的版本使用了 NodeJS 12 的 ABI，但是当前的 Ref 库并不支持该 ABI，会导致编译失败。不过已经有人提交了 pull request 进行修复，相信之后会有一个可用的版本出来。</p>
+<p>另外，也有了 NAPI 版本的 FFI 和 Ref，分别名为<code>ffi-napi</code>和<code>ref-napi</code>，和 ref 相关的包，比如 array 和 struct 拓展，也有了相应的 NAPI 版本，命名规则同上。使用 NAPI 的 Node C++ 拓展接口相对稳定，是今后的趋势。</p>
+<p>最后，Electron 版本可以在<a target="_blank" rel="noopener" href="https://electronjs.org/releases/stable">https://electronjs.org/releases/stable</a>中查看，而 NodeJS 及其 ABI 的版本可以在<a target="_blank" rel="noopener" href="https://nodejs.org/en/download/releases/">https://nodejs.org/en/download/releases/</a>中查看。</p>
+<h1 id="一些资源"><a href="#一些资源" class="headerlink" title="一些资源"></a>一些资源</h1><p>最后，在这里放上最近踩坑时候经常使用到的一些资源吧：</p>
+<ul>
+<li>ref 文档：<a target="_blank" rel="noopener" href="http://tootallnate.github.io/ref/">http://tootallnate.github.io/ref/</a></li>
+<li>ffi 文档：<a target="_blank" rel="noopener" href="https://github.com/node-ffi/node-ffi/wiki/Node-FFI-Tutorial">https://github.com/node-ffi/node-ffi/wiki/Node-FFI-Tutorial</a></li>
+<li>基于 ffi 的 win32 api：<a target="_blank" rel="noopener" href="https://github.com/waitingsong/node-win32-api">https://github.com/waitingsong/node-win32-api</a></li>
+<li>v2ex 中的 node-ffi 食用指南（难吃）：<a target="_blank" rel="noopener" href="https://www.v2ex.com/amp/t/474611">https://www.v2ex.com/amp/t/474611</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/a_brief_talk_about_pointer_and_reference/" rel="bookmark">简谈C++中指针与引用的底层实现</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/cpp_xaml_uwp/" rel="bookmark">使用c++和XAML开发UWP程序</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请鼓励我的原创文章</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.png" alt="Jason Bian 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="Jason Bian 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Jason Bian
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://blog.zhengi.me/communicate_with_cpp_code_in_node/" title="在NodeJS中与C++代码通信">https://blog.zhengi.me/communicate_with_cpp_code_in_node/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/C/" rel="tag"><i class="fa fa-tag"></i> C++</a>
+              <a href="/tags/NodeJS/" rel="tag"><i class="fa fa-tag"></i> NodeJS</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/a_brief_talk_about_pointer_and_reference/" rel="prev" title="简谈C++中指针与引用的底层实现">
+                  <i class="fa fa-chevron-left"></i> 简谈C++中指针与引用的底层实现
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/debug-linux-kernel-with-qemu-and-gdb/" rel="next" title="使用Qemu和GDB对Linux内核进行调试">
+                  使用Qemu和GDB对Linux内核进行调试 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">陇 ICP 备 15003463 号 </a>
+  </div>
+
+<div class="copyright">
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jason Bian</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">235k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">3:33</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/lozad.js/1.16.0/lozad.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/pangu/4.0.7/pangu.min.js"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/pjax.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://cdn.jsdelivr.net/npm/pdfobject@2.2.7/pdfobject.min.js","integrity":"sha256-ph3Dk89VmuTVXG6x/RDzk53SU9LPdAh1tpv0UvnDZ2I="},"url":"/lib/pdf/web/viewer.html"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdn.jsdelivr.net/npm/mermaid@8.13.8/dist/mermaid.min.js","integrity":"sha256-QmSAc2kIaUjleIJ46X7qPW2zrpCbXlMz3YIGgWpQ1Jo="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"imaginezz","repo":"blog_public","client_id":"9c022a847ecc01650469","client_secret":"3c6fae6a3119943e381c2682b0a40f84573463b4","admin_user":"imaginezz","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js","integrity":"sha256-Pmj85ojLaPOWwRtlMJwmezB/Qg8BzvJp5eTzvXaYAfA="},"path_md5":"a4500a18d4b69dcdf0d9dd3cbf9a4ecb"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>

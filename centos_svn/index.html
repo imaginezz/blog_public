@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)">
+<meta name="generator" content="Hexo 6.3.0">
+
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/favicon/safari-pinned-tab.svg" color="#222">
+  <link rel="manifest" href="/images/favicon/site.webmanifest">
+  <meta name="baidu-site-verification" content="5x8DHwr7y8">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.bootcdn.net/ajax/libs/pace/1.2.4/pace.min.js"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.zhengi.me","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":true,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":true,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="安装 SVN检查是否安装1rpm -qa subversion  卸载旧版本1yum remove subversion  安装最新版本1yum install subversion">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在CentOS下搭建一个适用于个人的SVN环境">
+<meta property="og:url" content="https://blog.zhengi.me/centos_svn/index.html">
+<meta property="og:site_name" content="政子的博客">
+<meta property="og:description" content="安装 SVN检查是否安装1rpm -qa subversion  卸载旧版本1yum remove subversion  安装最新版本1yum install subversion">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2015-12-26T18:55:00.000Z">
+<meta property="article:modified_time" content="2024-03-23T06:03:16.943Z">
+<meta property="article:author" content="Jason Bian">
+<meta property="article:tag" content="CentOS">
+<meta property="article:tag" content="SVN">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://blog.zhengi.me/centos_svn/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://blog.zhengi.me/centos_svn/","path":"centos_svn/","title":"在CentOS下搭建一个适用于个人的SVN环境"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>在CentOS下搭建一个适用于个人的SVN环境 | 政子的博客</title>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?590a1bfeac720e6a29c58f70ab77a9a3"></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="政子的博客" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">政子的博客</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">技术|学习|随笔</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa  fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+        <li class="menu-item menu-item-书单"><a href="/booklist/" rel="section"><i class="fa fa-book fa-fw"></i>书单</a></li>
+        <li class="menu-item menu-item-算法"><a href="/algorithm/" rel="section"><i class="fa fa-code fa-fw"></i>算法</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%89%E8%A3%85-SVN"><span class="nav-number">1.</span> <span class="nav-text">安装 SVN</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A3%80%E6%9F%A5%E6%98%AF%E5%90%A6%E5%AE%89%E8%A3%85"><span class="nav-number">1.1.</span> <span class="nav-text">检查是否安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%B8%E8%BD%BD%E6%97%A7%E7%89%88%E6%9C%AC"><span class="nav-number">1.2.</span> <span class="nav-text">卸载旧版本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E6%9C%80%E6%96%B0%E7%89%88%E6%9C%AC"><span class="nav-number">1.3.</span> <span class="nav-text">安装最新版本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A3%80%E6%9F%A5%E6%98%AF%E5%90%A6%E5%AE%89%E8%A3%85%E6%88%90%E5%8A%9F"><span class="nav-number">1.4.</span> <span class="nav-text">检查是否安装成功</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E9%A1%B9%E7%9B%AE%E4%BB%93%E5%BA%93"><span class="nav-number">2.</span> <span class="nav-text">创建项目仓库</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E7%9B%AE%E5%BD%95"><span class="nav-number">2.1.</span> <span class="nav-text">创建目录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E9%A1%B9%E7%9B%AE%E4%BB%93%E5%BA%93-1"><span class="nav-number">2.2.</span> <span class="nav-text">创建项目仓库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A3%80%E6%9F%A5%E6%98%AF%E5%90%A6%E5%88%9B%E5%BB%BA%E6%88%90%E5%8A%9F"><span class="nav-number">2.3.</span> <span class="nav-text">检查是否创建成功</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E9%A1%B9%E7%9B%AE%E5%BA%93"><span class="nav-number">3.</span> <span class="nav-text">配置项目库</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9B%E5%85%A5-conf-%E7%9B%AE%E5%BD%95%EF%BC%8C%E4%BA%86%E8%A7%A3%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%EF%BC%9A"><span class="nav-number">3.1.</span> <span class="nav-text">进入 conf 目录，了解配置文件：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE-passwd"><span class="nav-number">3.2.</span> <span class="nav-text">配置 passwd</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE-authz"><span class="nav-number">3.3.</span> <span class="nav-text">配置 authz</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE-svnserve-conf"><span class="nav-number">3.4.</span> <span class="nav-text">配置 svnserve.conf</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BC%80%E6%94%BE-SVN-%E7%AB%AF%E5%8F%A3"><span class="nav-number">4.</span> <span class="nav-text">开放 SVN 端口</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9-iptables"><span class="nav-number">4.1.</span> <span class="nav-text">修改 iptables</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%9D%E5%AD%98-iptables-%E9%85%8D%E7%BD%AE"><span class="nav-number">4.2.</span> <span class="nav-text">保存 iptables 配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%87%8D%E5%90%AF-iptables"><span class="nav-number">4.3.</span> <span class="nav-text">重启 iptables</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B-iptables-%E7%8A%B6%E6%80%81"><span class="nav-number">4.4.</span> <span class="nav-text">查看 iptables 状态</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8-SVN-%E6%9C%8D%E5%8A%A1"><span class="nav-number">5.</span> <span class="nav-text">启动 SVN 服务</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BF%9E%E6%8E%A5-SVN"><span class="nav-number">6.</span> <span class="nav-text">连接 SVN</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E5%BC%80%E6%9C%BA%E5%90%AF%E5%8A%A8"><span class="nav-number">7.</span> <span class="nav-text">配置开机启动</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9%E8%84%9A%E6%9C%AC%E6%9D%83%E9%99%90"><span class="nav-number">7.1.</span> <span class="nav-text">修改脚本权限</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0%E8%87%AA%E5%90%AF%E5%8A%A8"><span class="nav-number">7.2.</span> <span class="nav-text">添加自启动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%87%8D%E5%90%AF%E4%B9%8B%E5%90%8E%E7%A1%AE%E8%AE%A4%E5%90%AF%E5%8A%A8%E6%88%90%E5%8A%9F"><span class="nav-number">7.3.</span> <span class="nav-text">重启之后确认启动成功</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#checkout-%E7%BD%91%E7%AB%99%E5%B7%A5%E4%BD%9C%E7%9B%AE%E5%BD%95"><span class="nav-number">8.</span> <span class="nav-text">checkout 网站工作目录</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BD%BF%E5%BE%97-SVN-%E5%8F%AF%E4%BB%A5%E8%87%AA%E5%8A%A8%E5%90%8C%E6%AD%A5%E7%BD%91%E7%AB%99%E4%BB%A3%E7%A0%81"><span class="nav-number">9.</span> <span class="nav-text">使得 SVN 可以自动同步网站代码</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%86%E5%B7%A5%E4%BD%9C%E7%9B%AE%E5%BD%95%E8%BD%AC%E7%A7%BB%E5%88%B0%E9%92%A9%E5%AD%90%E6%96%87%E4%BB%B6%E5%A4%B9"><span class="nav-number">9.1.</span> <span class="nav-text">将工作目录转移到钩子文件夹</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">9.2.</span> <span class="nav-text">添加配置文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9-post-commit-%E6%96%87%E4%BB%B6%EF%BC%8C%E5%8A%A0%E5%85%A5%E4%BB%A5%E4%B8%8B%E4%BB%A3%E7%A0%81"><span class="nav-number">9.3.</span> <span class="nav-text">修改 post-commit 文件，加入以下代码</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SVN-%E5%90%8C%E6%AD%A5%E6%97%B6%E6%B3%A8%E6%84%8F"><span class="nav-number">10.</span> <span class="nav-text">SVN 同步时注意</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%A5%E4%BD%9C%E7%9B%AE%E5%BD%95%E9%9C%80%E8%A6%81%E5%85%88-checkout-%E5%89%8D%E9%9D%A2%E5%B7%B2%E7%BB%8F-checkout-%E8%BF%87%E4%BA%86"><span class="nav-number">10.1.</span> <span class="nav-text">工作目录需要先 checkout(前面已经 checkout 过了)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E6%9E%9C%E5%B7%A5%E4%BD%9C%E7%9B%AE%E5%BD%95%E6%9C%89%E6%9B%B4%E6%94%B9%EF%BC%8C%E9%9C%80%E8%A6%81-commit"><span class="nav-number">10.2.</span> <span class="nav-text">如果工作目录有更改，需要 commit</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E6%9E%9C%E5%B7%A5%E4%BD%9C%E7%9B%AE%E5%BD%95%E4%B8%AD%E6%9C%89%E6%96%B0%E7%9A%84%E6%96%87%E4%BB%B6%EF%BC%8C%E9%9C%80%E8%A6%81%E5%85%88%E6%B7%BB%E5%8A%A0%E5%88%B0-SVN-%E4%B8%AD%E5%9C%A8%E5%90%8C%E6%AD%A5"><span class="nav-number">10.3.</span> <span class="nav-text">如果工作目录中有新的文件，需要先添加到 SVN 中在同步</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%B9%E9%87%8F%E6%B7%BB%E5%8A%A0-%E5%88%A0%E9%99%A4-SVN-%E5%90%8C%E6%AD%A5%E7%9A%84%E6%96%87%E4%BB%B6"><span class="nav-number">10.4.</span> <span class="nav-text">批量添加&#x2F;删除 SVN 同步的文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0"><span class="nav-number">10.4.1.</span> <span class="nav-text">添加</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A0%E9%99%A4"><span class="nav-number">10.4.2.</span> <span class="nav-text">删除</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E6%9E%9C-SVN-%E5%90%8C%E6%AD%A5%E7%9B%AE%E5%BD%95%E4%B8%AD%E5%87%BA%E7%8E%B0%E4%B8%AD%E6%96%87%EF%BC%8C%E9%92%A9%E5%AD%90%E6%97%A0%E6%B3%95%E6%AD%A3%E5%B8%B8%E8%BF%90%E8%A1%8C%E9%9C%80%E8%A6%81%E4%BF%AE%E6%94%B9%E7%B3%BB%E7%BB%9F%E7%9A%84-locale"><span class="nav-number">10.5.</span> <span class="nav-text">如果 SVN 同步目录中出现中文，钩子无法正常运行需要修改系统的 locale</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Jason Bian"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Jason Bian</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">86</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">108</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/imaginezz" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;imaginezz" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto://Jason_Bian@outlook.com" title="E-Mail → mailto:&#x2F;&#x2F;Jason_Bian@outlook.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.danmakupie.com/" title="https:&#x2F;&#x2F;www.danmakupie.com&#x2F;" rel="noopener" target="_blank">弹幕派</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.oursparkspace.cn/" title="https:&#x2F;&#x2F;www.oursparkspace.cn&#x2F;" rel="noopener" target="_blank">火花空间</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.joyreserve.com/" title="http:&#x2F;&#x2F;www.joyreserve.com" rel="noopener" target="_blank">乐享其约</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://gaocegege.com/" title="http:&#x2F;&#x2F;gaocegege.com&#x2F;" rel="noopener" target="_blank">高策 江湖小虾米</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://yian.me/blog/" title="https:&#x2F;&#x2F;yian.me&#x2F;blog&#x2F;" rel="noopener" target="_blank">Y!an's Blog</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.cyprestar.com/" title="http:&#x2F;&#x2F;www.cyprestar.com&#x2F;" rel="noopener" target="_blank">Zhilong's Blog</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://yicodes.com/" title="http:&#x2F;&#x2F;yicodes.com&#x2F;" rel="noopener" target="_blank">易极</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://merrier.wang/" title="https:&#x2F;&#x2F;merrier.wang&#x2F;" rel="noopener" target="_blank">Merrier说</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://博客.胡鼎原.中国/" title="https:&#x2F;&#x2F;博客.胡鼎原.中国" rel="noopener" target="_blank">小勤奋爱学习</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://lfhacks.com/" title="https:&#x2F;&#x2F;lfhacks.com" rel="noopener" target="_blank">LFhacks</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://study4.fun/" title="https:&#x2F;&#x2F;study4.fun&#x2F;" rel="noopener" target="_blank">学而时思之</a>
+        </li>
+    </ul>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.zhengi.me/centos_svn/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Jason Bian">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="政子的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          在CentOS下搭建一个适用于个人的SVN环境
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2015-12-27 02:55:00" itemprop="dateCreated datePublished" datetime="2015-12-27T02:55:00+08:00">2015-12-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/SVN/" itemprop="url" rel="index"><span itemprop="name">SVN</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="安装-SVN"><a href="#安装-SVN" class="headerlink" title="安装 SVN"></a>安装 SVN</h1><h2 id="检查是否安装"><a href="#检查是否安装" class="headerlink" title="检查是否安装"></a>检查是否安装</h2><figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">rpm -qa subversion</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="卸载旧版本"><a href="#卸载旧版本" class="headerlink" title="卸载旧版本"></a>卸载旧版本</h2><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum <span class="built_in">remove</span> subversion</span><br></pre></td></tr></table></figure>
+
+<h2 id="安装最新版本"><a href="#安装最新版本" class="headerlink" title="安装最新版本"></a>安装最新版本</h2><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum <span class="keyword">install</span> subversion</span><br></pre></td></tr></table></figure>
+
+<span id="more"></span>
+
+<h2 id="检查是否安装成功"><a href="#检查是否安装成功" class="headerlink" title="检查是否安装成功"></a>检查是否安装成功</h2><figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">svnserve <span class="comment">--version</span></span><br></pre></td></tr></table></figure>
+
+<p>（–之后一般跟选项的完整名称，-之后一般跟选项的单个字母缩写）</p>
+<h1 id="创建项目仓库"><a href="#创建项目仓库" class="headerlink" title="创建项目仓库"></a>创建项目仓库</h1><h2 id="创建目录"><a href="#创建目录" class="headerlink" title="创建目录"></a>创建目录</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> -p /var/svn/svnrepos</span><br></pre></td></tr></table></figure>
+
+<p>(-p 命令是当父目录不存在时创建它）</p>
+<h2 id="创建项目仓库-1"><a href="#创建项目仓库-1" class="headerlink" title="创建项目仓库"></a>创建项目仓库</h2><figure class="highlight oxygene"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">svnadmin <span class="keyword">create</span> /<span class="keyword">var</span>/svn/svnrepos</span><br></pre></td></tr></table></figure>
+
+<h2 id="检查是否创建成功"><a href="#检查是否创建成功" class="headerlink" title="检查是否创建成功"></a>检查是否创建成功</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /var/svn/svnrepos</span><br></pre></td></tr></table></figure>
+
+<p>之后使用 ll 查看是否多了一些文件夹（如果成功）</p>
+<h1 id="配置项目库"><a href="#配置项目库" class="headerlink" title="配置项目库"></a>配置项目库</h1><h2 id="进入-conf-目录，了解配置文件："><a href="#进入-conf-目录，了解配置文件：" class="headerlink" title="进入 conf 目录，了解配置文件："></a>进入 conf 目录，了解配置文件：</h2><p><code>authz</code> 是权限控制文件 <code>passwd</code> 是账号密码文件 <code>svnserve.conf</code> 是 SVN 服务配置文件</p>
+<h2 id="配置-passwd"><a href="#配置-passwd" class="headerlink" title="配置 passwd"></a>配置 <code>passwd</code></h2><p>根据 <code>users</code> 标签中的提示进行配置即可，等号左边是用户名，右边是密码</p>
+<h2 id="配置-authz"><a href="#配置-authz" class="headerlink" title="配置 authz"></a>配置 <code>authz</code></h2><p>只有自己用，所以只是限定自己的用户有 rw 权限即可，在文末加入用户名和读写权限就可以了</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-id">#example</span></span><br><span class="line"><span class="selector-attr">[/]</span></span><br><span class="line"><span class="function"><span class="title">abc</span><span class="params">(your username)</span></span> = rw</span><br></pre></td></tr></table></figure>
+
+<h2 id="配置-svnserve-conf"><a href="#配置-svnserve-conf" class="headerlink" title="配置 svnserve.conf"></a>配置 <code>svnserve.conf</code></h2><figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">anon-access</span> = none <span class="comment"># 使非授权用户无法访问</span></span><br><span class="line"><span class="attr">auth-access</span> = write <span class="comment"># 使授权用户有写权限</span></span><br><span class="line"><span class="attr">password-db</span> = password</span><br><span class="line"><span class="attr">authz-db</span> = authz <span class="comment"># 访问控制文件</span></span><br><span class="line"><span class="attr">realm</span> = imagine<span class="string">&#x27;s svn server # 认证命名空间，subversion 会在认证提示里显示，并且作为凭证缓存的关键字。</span></span><br></pre></td></tr></table></figure>
+
+<p>采用默认配置. 以上语句都必须顶格写, 左侧不能留空格, 否则会出错.</p>
+<h1 id="开放-SVN-端口"><a href="#开放-SVN-端口" class="headerlink" title="开放 SVN 端口"></a>开放 SVN 端口</h1><h2 id="修改-iptables"><a href="#修改-iptables" class="headerlink" title="修改 iptables"></a>修改 iptables</h2><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iptables -<span class="selector-tag">I</span> <span class="selector-tag">INPUT</span> -<span class="selector-tag">p</span> tcp <span class="attr">--dport</span> <span class="number">3690</span> -j ACCEPT</span><br></pre></td></tr></table></figure>
+
+<h2 id="保存-iptables-配置"><a href="#保存-iptables-配置" class="headerlink" title="保存 iptables 配置"></a>保存 iptables 配置</h2><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="regexp">/etc/</span>rc.d<span class="regexp">/init.d/i</span>ptables save</span><br></pre></td></tr></table></figure>
+
+<h2 id="重启-iptables"><a href="#重启-iptables" class="headerlink" title="重启 iptables"></a>重启 iptables</h2><figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">service iptables restart</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="查看-iptables-状态"><a href="#查看-iptables-状态" class="headerlink" title="查看 iptables 状态"></a>查看 iptables 状态</h2><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="regexp">/etc/</span><span class="keyword">init</span>.d<span class="operator">/</span>iptables status</span><br></pre></td></tr></table></figure>
+
+<h1 id="启动-SVN-服务"><a href="#启动-SVN-服务" class="headerlink" title="启动 SVN 服务"></a>启动 SVN 服务</h1><figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">svnserve -d -r /<span class="keyword">var</span>/svn/svnrepos</span><br></pre></td></tr></table></figure>
+
+<p>-d:守护进程   -r:svn 根目录</p>
+<h1 id="连接-SVN"><a href="#连接-SVN" class="headerlink" title="连接 SVN"></a>连接 SVN</h1><p>使用 TortioseSVN 连接到 <code>svn://我的 ip 地址/</code> 输入前面设置的用户名密码即可访问</p>
+<h1 id="配置开机启动"><a href="#配置开机启动" class="headerlink" title="配置开机启动"></a>配置开机启动</h1><p>编写脚本 <code>svn_startup.sh</code>，放在<code>/root/svn_startup.sh</code>，代码如下</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="built_in">export</span> LC_CTYPE=<span class="string">&quot;zh_CN.UTF-8&quot;</span></span><br><span class="line">/usr/bin/svnserve -d -r /var/svn/svnrepos</span><br></pre></td></tr></table></figure>
+
+<p>（关于绝对路径：在启动的时候环境变量可能没有加载，所以采用绝对路径比较保险，可以使用 <code>which svnserve</code> 命令来查询绝对路径）</p>
+<h2 id="修改脚本权限"><a href="#修改脚本权限" class="headerlink" title="修改脚本权限"></a>修改脚本权限</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">chmod</span> ug+x svn_startup.sh</span><br></pre></td></tr></table></figure>
+
+<p>或者</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">chmod</span> <span class="number">777</span> svn_startup.sh</span><br></pre></td></tr></table></figure>
+
+<h2 id="添加自启动"><a href="#添加自启动" class="headerlink" title="添加自启动"></a>添加自启动</h2><figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/rc.d/rc.<span class="keyword">local</span></span><br></pre></td></tr></table></figure>
+
+<p>在文件末尾添加命令行脚本</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="regexp">/root/</span>svn_startup.sh</span><br></pre></td></tr></table></figure>
+
+<h2 id="重启之后确认启动成功"><a href="#重启之后确认启动成功" class="headerlink" title="重启之后确认启动成功"></a>重启之后确认启动成功</h2><figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ps</span> -ef|<span class="keyword">grep</span> svnserve</span><br></pre></td></tr></table></figure>
+
+<h1 id="checkout-网站工作目录"><a href="#checkout-网站工作目录" class="headerlink" title="checkout 网站工作目录"></a>checkout 网站工作目录</h1><figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">svn co svn:<span class="string">//localhost</span> <span class="string">/var/www/html/</span> <span class="params">--username</span> user <span class="params">--password</span> passwd</span><br></pre></td></tr></table></figure>
+
+<h1 id="使得-SVN-可以自动同步网站代码"><a href="#使得-SVN-可以自动同步网站代码" class="headerlink" title="使得 SVN 可以自动同步网站代码"></a>使得 SVN 可以自动同步网站代码</h1><h2 id="将工作目录转移到钩子文件夹"><a href="#将工作目录转移到钩子文件夹" class="headerlink" title="将工作目录转移到钩子文件夹"></a>将工作目录转移到钩子文件夹</h2><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd <span class="regexp">/var/</span>svn<span class="regexp">/svnrepos/</span>hooks</span><br></pre></td></tr></table></figure>
+
+<h2 id="添加配置文件"><a href="#添加配置文件" class="headerlink" title="添加配置文件"></a>添加配置文件</h2><figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cp <span class="built_in">post</span>-commit.tmpl <span class="built_in">post</span>-commit</span><br><span class="line">chmod <span class="number">777</span> <span class="built_in">post</span>-commit</span><br></pre></td></tr></table></figure>
+
+<h2 id="修改-post-commit-文件，加入以下代码"><a href="#修改-post-commit-文件，加入以下代码" class="headerlink" title="修改 post-commit 文件，加入以下代码"></a>修改 post-commit 文件，加入以下代码</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> LANG=zh.CN.UTF-8</span><br><span class="line"><span class="built_in">cd</span> /var/www/html/</span><br><span class="line">/usr/bin/svn update --username usrname --password passwd --no-auth-cache</span><br><span class="line"><span class="built_in">echo</span>`<span class="built_in">date</span>`,`<span class="built_in">whoami</span>`,<span class="variable">$REPOS</span>,<span class="variable">$REV</span> &gt;&gt;/var/svn/svnrepos/hooks/svn_hook.log</span><br></pre></td></tr></table></figure>
+
+<h1 id="SVN-同步时注意"><a href="#SVN-同步时注意" class="headerlink" title="SVN 同步时注意"></a>SVN 同步时注意</h1><h2 id="工作目录需要先-checkout-前面已经-checkout-过了"><a href="#工作目录需要先-checkout-前面已经-checkout-过了" class="headerlink" title="工作目录需要先 checkout(前面已经 checkout 过了)"></a>工作目录需要先 checkout(前面已经 checkout 过了)</h2><p>先切换到工作目录 再用 SVN 的 <code>co</code> 或者 <code>checkout</code>命令进行 checkout</p>
+<h2 id="如果工作目录有更改，需要-commit"><a href="#如果工作目录有更改，需要-commit" class="headerlink" title="如果工作目录有更改，需要 commit"></a>如果工作目录有更改，需要 <code>commit</code></h2><p>先切换到工作目录 再用 SVN 的 <code>commit</code> 或者 <code>ci</code> 命令进行同步 可能需要—message 或者-m 参数，后面跟上这次修改的一些信息即可</p>
+<h2 id="如果工作目录中有新的文件，需要先添加到-SVN-中在同步"><a href="#如果工作目录中有新的文件，需要先添加到-SVN-中在同步" class="headerlink" title="如果工作目录中有新的文件，需要先添加到 SVN 中在同步"></a>如果工作目录中有新的文件，需要先添加到 SVN 中在同步</h2><p>使用 SVN 的 add 命令进行添加文件或者文件夹 如果需要添加的文件很多，可以使用 Linux 的 _通配符： svn add _/*</p>
+<h2 id="批量添加-删除-SVN-同步的文件"><a href="#批量添加-删除-SVN-同步的文件" class="headerlink" title="批量添加/删除 SVN 同步的文件"></a>批量添加/删除 SVN 同步的文件</h2><p>使用 bash 命令</p>
+<h3 id="添加"><a href="#添加" class="headerlink" title="添加"></a>添加</h3><figure class="highlight coq"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">svn status|<span class="type">grep</span> ? |<span class="type">awk</span> &#x27;&#123;print $<span class="number">2</span>&#125;&#x27;|<span class="type">xargs</span> svn add</span><br></pre></td></tr></table></figure>
+
+<h3 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h3><figure class="highlight coq"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">svn status|<span class="type">grep</span> ! |<span class="type">awk</span> &#x27;&#123;print $<span class="number">2</span>&#125;&#x27;|<span class="type">xargs</span> svn del</span><br></pre></td></tr></table></figure>
+
+<p>（转自：<a target="_blank" rel="noopener" href="http://blog.csdn.net/ownfire/article/details/7930370">http://blog.csdn.net/ownfire/article/details/7930370</a>）</p>
+<p>可以添加到 PATH 中，如<code>/usr/local/bin</code>，命令叫做 <code>svnaddall</code>和<code>svndelall</code></p>
+<h2 id="如果-SVN-同步目录中出现中文，钩子无法正常运行需要修改系统的-locale"><a href="#如果-SVN-同步目录中出现中文，钩子无法正常运行需要修改系统的-locale" class="headerlink" title="如果 SVN 同步目录中出现中文，钩子无法正常运行需要修改系统的 locale"></a>如果 SVN 同步目录中出现中文，钩子无法正常运行需要修改系统的 locale</h2><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> <span class="attribute">LC_CTYPE</span>=<span class="string">&quot;zh_CN.UTF-8&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>之后可以用 <code>locale</code> 命令检查 （添加 locale 的命令已经包含在自启动文件中了）</p>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/apache_wsgi_flask/" rel="bookmark">搭建Apache+Wsgi+Flask的环境</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/centos7_apache_php7/" rel="bookmark">CentOS7+Apache配置PHP7</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/centos7_python3/" rel="bookmark">CentOS7下安装Python3</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/centos_7_ftp/" rel="bookmark">CentOS 7 下安装Ftp服务</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/centos_7_iptables/" rel="bookmark">CentOS 7下使用iptables代替FireWall防火墙</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请鼓励我的原创文章</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.png" alt="Jason Bian 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="Jason Bian 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Jason Bian
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://blog.zhengi.me/centos_svn/" title="在CentOS下搭建一个适用于个人的SVN环境">https://blog.zhengi.me/centos_svn/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/CentOS/" rel="tag"><i class="fa fa-tag"></i> CentOS</a>
+              <a href="/tags/SVN/" rel="tag"><i class="fa fa-tag"></i> SVN</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/fellings%20about%20innovation/" rel="prev" title="创新小感">
+                  <i class="fa fa-chevron-left"></i> 创新小感
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/apache_sub_domain_name/" rel="next" title="Apache下子域名设置方法">
+                  Apache下子域名设置方法 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">陇 ICP 备 15003463 号 </a>
+  </div>
+
+<div class="copyright">
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jason Bian</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">235k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">3:33</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/lozad.js/1.16.0/lozad.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/pangu/4.0.7/pangu.min.js"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/pjax.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://cdn.jsdelivr.net/npm/pdfobject@2.2.7/pdfobject.min.js","integrity":"sha256-ph3Dk89VmuTVXG6x/RDzk53SU9LPdAh1tpv0UvnDZ2I="},"url":"/lib/pdf/web/viewer.html"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdn.jsdelivr.net/npm/mermaid@8.13.8/dist/mermaid.min.js","integrity":"sha256-QmSAc2kIaUjleIJ46X7qPW2zrpCbXlMz3YIGgWpQ1Jo="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"imaginezz","repo":"blog_public","client_id":"9c022a847ecc01650469","client_secret":"3c6fae6a3119943e381c2682b0a40f84573463b4","admin_user":"imaginezz","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js","integrity":"sha256-Pmj85ojLaPOWwRtlMJwmezB/Qg8BzvJp5eTzvXaYAfA="},"path_md5":"1828d606acafec49a3b390e744fa3c0d"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>

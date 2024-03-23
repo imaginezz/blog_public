@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)">
+<meta name="generator" content="Hexo 6.3.0">
+
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/favicon/safari-pinned-tab.svg" color="#222">
+  <link rel="manifest" href="/images/favicon/site.webmanifest">
+  <meta name="baidu-site-verification" content="5x8DHwr7y8">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.bootcdn.net/ajax/libs/pace/1.2.4/pace.min.js"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.zhengi.me","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":true,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":true,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="编译安装 freeradius-serverfreeRADIUS WIKI 先更新软件12$sudo apt update$sudo apt upgrade  在 git 仓库里 clone freeradius-server12$ git clone https:&#x2F;&#x2F;github.com&#x2F;FreeRADIUS&#x2F;freeradius-server.git$ cd freeradius-server">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Freeradius安装配置">
+<meta property="og:url" content="https://blog.zhengi.me/freeradius_install_and_configure/index.html">
+<meta property="og:site_name" content="政子的博客">
+<meta property="og:description" content="编译安装 freeradius-serverfreeRADIUS WIKI 先更新软件12$sudo apt update$sudo apt upgrade  在 git 仓库里 clone freeradius-server12$ git clone https:&#x2F;&#x2F;github.com&#x2F;FreeRADIUS&#x2F;freeradius-server.git$ cd freeradius-server">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2017-02-19T03:14:00.000Z">
+<meta property="article:modified_time" content="2024-03-23T06:03:16.943Z">
+<meta property="article:author" content="Jason Bian">
+<meta property="article:tag" content="Freeradius">
+<meta property="article:tag" content="Radius">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://blog.zhengi.me/freeradius_install_and_configure/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://blog.zhengi.me/freeradius_install_and_configure/","path":"freeradius_install_and_configure/","title":"Freeradius安装配置"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Freeradius安装配置 | 政子的博客</title>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?590a1bfeac720e6a29c58f70ab77a9a3"></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="政子的博客" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">政子的博客</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">技术|学习|随笔</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa  fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+        <li class="menu-item menu-item-书单"><a href="/booklist/" rel="section"><i class="fa fa-book fa-fw"></i>书单</a></li>
+        <li class="menu-item menu-item-算法"><a href="/algorithm/" rel="section"><i class="fa fa-code fa-fw"></i>算法</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85-freeradius-server"><span class="nav-number">1.</span> <span class="nav-text">编译安装 freeradius-server</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%88%E6%9B%B4%E6%96%B0%E8%BD%AF%E4%BB%B6"><span class="nav-number">1.1.</span> <span class="nav-text">先更新软件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8-git-%E4%BB%93%E5%BA%93%E9%87%8C-clone-freeradius-server"><span class="nav-number">1.2.</span> <span class="nav-text">在 git 仓库里 clone freeradius-server</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A3%80%E6%9F%A5%E7%89%88%E6%9C%AC%EF%BC%8C%E5%A6%82%E6%9E%9C%E9%9C%80%E8%A6%81%E7%9A%84%E8%AF%9D%E8%A6%81%E7%94%A8-git-checkout-%E5%88%87%E6%8D%A2%E7%89%88%E6%9C%AC"><span class="nav-number">1.3.</span> <span class="nav-text">检查版本，如果需要的话要用 git checkout 切换版本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E4%BE%9D%E8%B5%96%E5%B9%B6%E5%AE%89%E8%A3%85"><span class="nav-number">1.4.</span> <span class="nav-text">查看依赖并安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%B9%E6%8D%AE%E8%AF%B4%E6%98%8E%EF%BC%8C%E5%AE%89%E8%A3%85-libtalloc-%E5%92%8C-kqueue-%E4%BE%9D%E8%B5%96"><span class="nav-number">1.5.</span> <span class="nav-text">根据说明，安装 libtalloc 和 kqueue 依赖</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E5%AE%89%E8%A3%85%E8%AF%B4%E6%98%8E"><span class="nav-number">1.6.</span> <span class="nav-text">查看安装说明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9B%E8%A1%8C%E6%99%AE%E9%80%9A%E5%AE%89%E8%A3%85%EF%BC%8C%E5%A6%82%E6%9E%9C%E9%9C%80%E8%A6%81%E6%94%B9%E5%8F%98%E9%85%8D%E7%BD%AE%E7%9B%B4%E6%8E%A5%E5%8F%82%E8%80%83%E8%AF%B4%E6%98%8E%E6%96%87%E6%A1%A3%E5%8D%B3%E5%8F%AF"><span class="nav-number">1.7.</span> <span class="nav-text">进行普通安装，如果需要改变配置直接参考说明文档即可</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E6%88%90%E5%8A%9F%E5%90%8E%E6%B5%8B%E8%AF%95"><span class="nav-number">2.</span> <span class="nav-text">安装成功后测试</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%88%E5%85%B3%E9%97%AD-freeradius-%E6%9C%8D%E5%8A%A1"><span class="nav-number">2.1.</span> <span class="nav-text">先关闭 freeradius 服务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%84%B6%E5%90%8E%E4%BB%A5-debug-%E6%96%B9%E5%BC%8F%E5%90%AF%E5%8A%A8-freeradius"><span class="nav-number">2.2.</span> <span class="nav-text">然后以 debug 方式启动 freeradius</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%84%B6%E5%90%8E%E5%9C%A8%E5%8F%A6%E4%B8%80%E4%B8%AA%E7%BB%88%E7%AB%AF%E9%87%8C%E5%90%AF%E5%8A%A8%E6%B5%8B%E8%AF%95%E7%A8%8B%E5%BA%8F"><span class="nav-number">2.3.</span> <span class="nav-text">然后在另一个终端里启动测试程序</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%89%E8%A3%85-MySQL"><span class="nav-number">3.</span> <span class="nav-text">安装 MySQL</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE-MySQL-%E5%92%8C-freeradius-%E7%9A%84%E8%BF%9E%E6%8E%A5"><span class="nav-number">3.1.</span> <span class="nav-text">配置 MySQL 和 freeradius 的连接</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE-freeradius"><span class="nav-number">3.2.</span> <span class="nav-text">配置 freeradius</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%93%E5%BC%80-radius-%E7%9A%84-sql-%E6%A8%A1%E5%9D%97"><span class="nav-number">3.3.</span> <span class="nav-text">打开 radius 的 sql 模块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E7%94%A8%E6%88%B7%E5%AF%86%E7%A0%81"><span class="nav-number">3.4.</span> <span class="nav-text">配置用户密码</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Jason Bian"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Jason Bian</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">86</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">108</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/imaginezz" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;imaginezz" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto://Jason_Bian@outlook.com" title="E-Mail → mailto:&#x2F;&#x2F;Jason_Bian@outlook.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.danmakupie.com/" title="https:&#x2F;&#x2F;www.danmakupie.com&#x2F;" rel="noopener" target="_blank">弹幕派</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.oursparkspace.cn/" title="https:&#x2F;&#x2F;www.oursparkspace.cn&#x2F;" rel="noopener" target="_blank">火花空间</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.joyreserve.com/" title="http:&#x2F;&#x2F;www.joyreserve.com" rel="noopener" target="_blank">乐享其约</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://gaocegege.com/" title="http:&#x2F;&#x2F;gaocegege.com&#x2F;" rel="noopener" target="_blank">高策 江湖小虾米</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://yian.me/blog/" title="https:&#x2F;&#x2F;yian.me&#x2F;blog&#x2F;" rel="noopener" target="_blank">Y!an's Blog</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.cyprestar.com/" title="http:&#x2F;&#x2F;www.cyprestar.com&#x2F;" rel="noopener" target="_blank">Zhilong's Blog</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://yicodes.com/" title="http:&#x2F;&#x2F;yicodes.com&#x2F;" rel="noopener" target="_blank">易极</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://merrier.wang/" title="https:&#x2F;&#x2F;merrier.wang&#x2F;" rel="noopener" target="_blank">Merrier说</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://博客.胡鼎原.中国/" title="https:&#x2F;&#x2F;博客.胡鼎原.中国" rel="noopener" target="_blank">小勤奋爱学习</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://lfhacks.com/" title="https:&#x2F;&#x2F;lfhacks.com" rel="noopener" target="_blank">LFhacks</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://study4.fun/" title="https:&#x2F;&#x2F;study4.fun&#x2F;" rel="noopener" target="_blank">学而时思之</a>
+        </li>
+    </ul>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.zhengi.me/freeradius_install_and_configure/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Jason Bian">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="政子的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Freeradius安装配置
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2017-02-19 11:14:00" itemprop="dateCreated datePublished" datetime="2017-02-19T11:14:00+08:00">2017-02-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.5k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="编译安装-freeradius-server"><a href="#编译安装-freeradius-server" class="headerlink" title="编译安装 freeradius-server"></a>编译安装 freeradius-server</h1><p><a target="_blank" rel="noopener" href="http://wiki.freeradius.org/building/Home">freeRADIUS WIKI</a></p>
+<h2 id="先更新软件"><a href="#先更新软件" class="headerlink" title="先更新软件"></a>先更新软件</h2><figure class="highlight gams"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"><span class="keyword">$sudo</span> apt update</span></span><br><span class="line"><span class="meta"><span class="keyword">$sudo</span> apt upgrade</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="在-git-仓库里-clone-freeradius-server"><a href="#在-git-仓库里-clone-freeradius-server" class="headerlink" title="在 git 仓库里 clone freeradius-server"></a>在 git 仓库里 clone freeradius-server</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git <span class="built_in">clone</span> https://github.com/FreeRADIUS/freeradius-server.git</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">cd</span> freeradius-server</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="检查版本，如果需要的话要用-git-checkout-切换版本"><a href="#检查版本，如果需要的话要用-git-checkout-切换版本" class="headerlink" title="检查版本，如果需要的话要用 git checkout 切换版本"></a>检查版本，如果需要的话要用 git checkout 切换版本</h2><figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ git status</span><br><span class="line"><span class="keyword">On</span> branch v4<span class="number">.0</span>.x</span><br><span class="line">Your branch <span class="keyword">is</span> up-<span class="keyword">to</span>-<span class="type">date</span> <span class="keyword">with</span> <span class="string">&#x27;origin/v4.0.x&#x27;</span>.</span><br></pre></td></tr></table></figure>
+
+<h2 id="查看依赖并安装"><a href="#查看依赖并安装" class="headerlink" title="查看依赖并安装"></a>查看依赖并安装</h2><figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ vim doc<span class="regexp">/developer/</span><span class="keyword">dependencies</span>.rst</span><br></pre></td></tr></table></figure>
+
+<span id="more"></span>
+
+<h2 id="根据说明，安装-libtalloc-和-kqueue-依赖"><a href="#根据说明，安装-libtalloc-和-kqueue-依赖" class="headerlink" title="根据说明，安装 libtalloc 和 kqueue 依赖"></a>根据说明，安装 libtalloc 和 kqueue 依赖</h2><figure class="highlight q"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt install libtalloc2 libtalloc-<span class="built_in">dev</span></span><br><span class="line">$ sudo apt-<span class="built_in">get</span> install libkqueue-<span class="built_in">dev</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="查看安装说明"><a href="#查看安装说明" class="headerlink" title="查看安装说明"></a>查看安装说明</h2><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ vim <span class="keyword">INSTALL</span>.rst</span><br></pre></td></tr></table></figure>
+
+<h2 id="进行普通安装，如果需要改变配置直接参考说明文档即可"><a href="#进行普通安装，如果需要改变配置直接参考说明文档即可" class="headerlink" title="进行普通安装，如果需要改变配置直接参考说明文档即可"></a>进行普通安装，如果需要改变配置直接参考说明文档即可</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">./configure</span></span><br></pre></td></tr></table></figure>
+
+<p>check 出错：</p>
+<figure class="highlight elm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">configure</span>: error: <span class="type">FreeRADIUS</span> requires sup<span class="keyword">port</span> for the C11 _Generic keyword</span><br></pre></td></tr></table></figure>
+
+<p>原因：</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">You</span> need gcc at least <span class="number">4</span>.<span class="number">9</span> with C11 support to build development branches (v3.<span class="number">1</span>.x or v4.<span class="number">0</span>.x).</span><br></pre></td></tr></table></figure>
+
+<p>解决方法：</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">To</span> build the latest <span class="keyword">stable</span> versions</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git checkout release_3_0_11</span></span><br><span class="line"><span class="meta prompt_">$</span><span class="language-bash">./configure</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">make</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">sudo make install</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="安装成功后测试"><a href="#安装成功后测试" class="headerlink" title="安装成功后测试"></a>安装成功后测试</h1><h2 id="先关闭-freeradius-服务"><a href="#先关闭-freeradius-服务" class="headerlink" title="先关闭 freeradius 服务"></a>先关闭 freeradius 服务</h2><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo service freeradiusd stop</span><br></pre></td></tr></table></figure>
+
+<h2 id="然后以-debug-方式启动-freeradius"><a href="#然后以-debug-方式启动-freeradius" class="headerlink" title="然后以 debug 方式启动 freeradius"></a>然后以 debug 方式启动 freeradius</h2><figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$ </span>sudo radiusd -X</span><br></pre></td></tr></table></figure>
+
+<h2 id="然后在另一个终端里启动测试程序"><a href="#然后在另一个终端里启动测试程序" class="headerlink" title="然后在另一个终端里启动测试程序"></a>然后在另一个终端里启动测试程序</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">radtest <span class="built_in">test</span> <span class="built_in">test</span> localhost 0 testing123</span></span><br></pre></td></tr></table></figure>
+
+<p>如果收到</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Sent <span class="keyword">Access</span>-Request Id <span class="number">94</span> <span class="keyword">from</span> <span class="number">0.0</span><span class="number">.0</span><span class="number">.0</span>:<span class="number">58263</span> <span class="keyword">to</span> <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">1812</span> length <span class="number">74</span></span><br><span class="line"><span class="keyword">User</span>-<span class="type">Name</span> = &quot;test&quot;</span><br><span class="line"><span class="keyword">User</span>-<span class="keyword">Password</span> = &quot;test&quot;</span><br><span class="line">NAS-IP-Address = <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span></span><br><span class="line">NAS-Port = <span class="number">0</span></span><br><span class="line">Message-Authenticator = <span class="number">0x00</span></span><br><span class="line">Cleartext-<span class="keyword">Password</span> = &quot;test&quot;</span><br><span class="line">Received <span class="keyword">Access</span>-Reject Id <span class="number">94</span> <span class="keyword">from</span> <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">1812</span> <span class="keyword">to</span> <span class="number">0.0</span><span class="number">.0</span><span class="number">.0</span>:<span class="number">0</span> length <span class="number">20</span></span><br><span class="line">(<span class="number">0</span>) -: Expected <span class="keyword">Access</span>-Accept got <span class="keyword">Access</span>-Reject</span><br></pre></td></tr></table></figure>
+
+<p>说明连接测试成功</p>
+<h1 id="安装-MySQL"><a href="#安装-MySQL" class="headerlink" title="安装 MySQL"></a>安装 MySQL</h1><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt <span class="keyword">install</span> mysql</span><br></pre></td></tr></table></figure>
+
+<h2 id="配置-MySQL-和-freeradius-的连接"><a href="#配置-MySQL-和-freeradius-的连接" class="headerlink" title="配置 MySQL 和 freeradius 的连接"></a>配置 MySQL 和 freeradius 的连接</h2><p>进入 MySQL 管理界面，并创先 Radius 表和用户并导入表</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">mysql -uroot -p</span></span><br><span class="line"><span class="meta prompt_">&gt; </span><span class="language-bash">CREATE DATABASE radius;</span></span><br><span class="line"><span class="meta prompt_">&gt; </span><span class="language-bash">use radius;</span></span><br><span class="line"><span class="meta prompt_">&gt; </span><span class="language-bash"><span class="built_in">source</span> /etc/freeradius/sql/mysql/admin.sql;</span></span><br><span class="line">admin.sql 里面可以修改 raidius 的账号密码，但也需要在 raddb/sql.conf 中修改</span><br><span class="line"><span class="meta prompt_">&gt; </span><span class="language-bash"><span class="built_in">source</span> /etc/freeradius/sql/mysql/schema.sql;</span></span><br><span class="line"><span class="meta prompt_">&gt; </span><span class="language-bash"><span class="built_in">source</span> /etc/freeradius/sql/mysql/ippool.sql;</span></span><br><span class="line"><span class="meta prompt_">&gt; </span><span class="language-bash"><span class="built_in">source</span> /etc/freeradius/sql/mysql/schema.sql;</span></span><br><span class="line"><span class="meta prompt_">&gt; </span><span class="language-bash"><span class="built_in">source</span> /etc/freeradius/sql/mysql/wimax.sql;</span></span><br><span class="line"><span class="meta prompt_">&gt; </span><span class="language-bash"><span class="built_in">source</span> /etc/freeradius/sql/mysql/cui.sql;</span></span><br><span class="line"><span class="meta prompt_">&gt; </span><span class="language-bash"><span class="built_in">source</span> /etc/freeradius/sql/mysql/nas.sql;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="配置-freeradius"><a href="#配置-freeradius" class="headerlink" title="配置 freeradius"></a>配置 freeradius</h2><p>配置文件在<code>/usr/local/etc/raddb</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash"><span class="built_in">cd</span> /usr/local/etc/raddb</span></span><br></pre></td></tr></table></figure>
+
+<p>仔细阅读 radiusd.conf</p>
+<h2 id="打开-radius-的-sql-模块"><a href="#打开-radius-的-sql-模块" class="headerlink" title="打开 radius 的 sql 模块"></a>打开 radius 的 sql 模块</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash"><span class="built_in">ln</span> -s ../mods-available/sql</span></span><br></pre></td></tr></table></figure>
+
+<p>将数据库配置变为 mysql，并且取消用户名密码端口 ip 这一组注释</p>
+<figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># radius -X</span></span><br></pre></td></tr></table></figure>
+
+<p>检查启动信息，如果出现</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">rlm_sql_mysql</span>: Connected to database &#x27;radius&#x27; <span class="literal">on</span> Localhost via UNIX socket, server version <span class="number">5</span>.<span class="number">5</span>.<span class="number">54</span>-<span class="number">0</span>ubuntu<span class="number">0.14.04.1</span>, protocol version <span class="number">10</span></span><br></pre></td></tr></table></figure>
+
+<p>说明 mysql 连接成功</p>
+<h2 id="配置用户密码"><a href="#配置用户密码" class="headerlink" title="配置用户密码"></a>配置用户密码</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">vim <span class="built_in">users</span></span></span><br></pre></td></tr></table></figure>
+
+<p>加入一行</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">radius Cleartext-Password := <span class="string">&quot;radpass&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>然后再次进行 radtest 测试，并重启 radiusd 服务</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># radtest radius radpass localhost 1812 testing123</span></span><br><span class="line"></span><br><span class="line"><span class="attribute">Sent</span> Access-Request Id <span class="number">74</span> from <span class="number">0.0.0.0:59423</span> to <span class="number">127.0.0.1:1812</span> length <span class="number">76</span></span><br><span class="line"><span class="attribute">User</span>-Name = <span class="string">&quot;radius&quot;</span></span><br><span class="line"><span class="attribute">User</span>-Password = <span class="string">&quot;radpass&quot;</span></span><br><span class="line"><span class="attribute">NAS</span>-IP-Address = <span class="number">127.0.0.1</span></span><br><span class="line"><span class="attribute">NAS</span>-Port = <span class="number">1812</span></span><br><span class="line"><span class="attribute">Message</span>-Authenticator = <span class="number">0</span>x00</span><br><span class="line"><span class="attribute">Cleartext</span>-Password = <span class="string">&quot;radpass&quot;</span></span><br><span class="line"><span class="attribute">Received</span> Access-Accept Id <span class="number">74</span> from <span class="number">127.0.0.1:1812</span> to <span class="number">0.0.0.0:0</span> length <span class="number">20</span></span><br></pre></td></tr></table></figure>
+
+<p>可以看到，已经连接成功</p>
+
+    </div>
+
+    
+    
+    
+      
+
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请鼓励我的原创文章</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.png" alt="Jason Bian 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="Jason Bian 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Jason Bian
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://blog.zhengi.me/freeradius_install_and_configure/" title="Freeradius安装配置">https://blog.zhengi.me/freeradius_install_and_configure/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Freeradius/" rel="tag"><i class="fa fa-tag"></i> Freeradius</a>
+              <a href="/tags/Radius/" rel="tag"><i class="fa fa-tag"></i> Radius</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/php_intro/" rel="prev" title="我的PHP入门实践">
+                  <i class="fa fa-chevron-left"></i> 我的PHP入门实践
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/a_brief_history_of_mankind_is_a_drop_in_the_ocean/" rel="next" title="人类简史——我们只不过是沧海一粟">
+                  人类简史——我们只不过是沧海一粟 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">陇 ICP 备 15003463 号 </a>
+  </div>
+
+<div class="copyright">
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jason Bian</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">235k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">3:33</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/lozad.js/1.16.0/lozad.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/pangu/4.0.7/pangu.min.js"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/pjax.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://cdn.jsdelivr.net/npm/pdfobject@2.2.7/pdfobject.min.js","integrity":"sha256-ph3Dk89VmuTVXG6x/RDzk53SU9LPdAh1tpv0UvnDZ2I="},"url":"/lib/pdf/web/viewer.html"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdn.jsdelivr.net/npm/mermaid@8.13.8/dist/mermaid.min.js","integrity":"sha256-QmSAc2kIaUjleIJ46X7qPW2zrpCbXlMz3YIGgWpQ1Jo="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"imaginezz","repo":"blog_public","client_id":"9c022a847ecc01650469","client_secret":"3c6fae6a3119943e381c2682b0a40f84573463b4","admin_user":"imaginezz","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js","integrity":"sha256-Pmj85ojLaPOWwRtlMJwmezB/Qg8BzvJp5eTzvXaYAfA="},"path_md5":"5cfff3c00b4c95df81c7cc85e8e1088a"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>

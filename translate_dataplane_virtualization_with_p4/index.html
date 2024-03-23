@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)">
+<meta name="generator" content="Hexo 6.3.0">
+
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/favicon/safari-pinned-tab.svg" color="#222">
+  <link rel="manifest" href="/images/favicon/site.webmanifest">
+  <meta name="baidu-site-verification" content="5x8DHwr7y8">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.bootcdn.net/ajax/libs/pace/1.2.4/pace.min.js"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.zhengi.me","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":true,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":true,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="背景现在SDN已经有了在数据平面的编程能力，这使得网络设备（包括硬件）可以被重新编程以解析自己定制的协议和执行定制的功能。  但是，数据平面的编程能力还没有发挥最大的潜能，它依旧不完善，而且在不断增长的软硬件中提供可编程能力是有很大形成碎片的风险。如果使用虚拟化方案可以解决以上两个问题。     OpenFlow已经为网络的控制平面提供了一个标准的可编程能力，并且在网络管理者寻找更加的自由和灵活的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="译文——P4虚拟化数据平面">
+<meta property="og:url" content="https://blog.zhengi.me/translate_dataplane_virtualization_with_p4/index.html">
+<meta property="og:site_name" content="政子的博客">
+<meta property="og:description" content="背景现在SDN已经有了在数据平面的编程能力，这使得网络设备（包括硬件）可以被重新编程以解析自己定制的协议和执行定制的功能。  但是，数据平面的编程能力还没有发挥最大的潜能，它依旧不完善，而且在不断增长的软硬件中提供可编程能力是有很大形成碎片的风险。如果使用虚拟化方案可以解决以上两个问题。     OpenFlow已经为网络的控制平面提供了一个标准的可编程能力，并且在网络管理者寻找更加的自由和灵活的">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.zhengi.me/wp-content/uploads/2017/04/200a1633ec0f73c741ff0c7d4f371565.jpg">
+<meta property="og:image" content="https://blog.zhengi.me/wp-content/uploads/2017/04/4b417aa6e68d2cc0b536f67705ecd7ac.png">
+<meta property="og:image" content="https://blog.zhengi.me/wp-content/uploads/2017/04/a99988c3ff3d71a695285db1b013bc2a.png">
+<meta property="og:image" content="https://blog.zhengi.me/wp-content/uploads/2017/04/3cce2c00c7a205476c1a7b9571801833.png">
+<meta property="og:image" content="https://blog.zhengi.me/wp-content/uploads/2017/04/4f5df35aa5b423d6c4103401a3199db5.png">
+<meta property="og:image" content="https://blog.zhengi.me/wp-content/uploads/2017/04/532cbd33d406c7db338d63ad47096bae.png">
+<meta property="og:image" content="https://blog.zhengi.me/wp-content/uploads/2017/04/a9df91177d61c0229967ea447fcad429.png">
+<meta property="og:image" content="https://blog.zhengi.me/wp-content/uploads/2017/04/0a78f120fe9804e23c512a79c9e6fe43.png">
+<meta property="og:image" content="https://blog.zhengi.me/wp-content/uploads/2017/04/fd2325e07ad0c274e73520406298e0ee.png">
+<meta property="og:image" content="https://blog.zhengi.me/wp-content/uploads/2017/04/d817a91202dc6cd3838831c200b3ac0b.png">
+<meta property="og:image" content="https://blog.zhengi.me/wp-content/uploads/2017/04/177316123293c19c5b1a01205e3649a1.png">
+<meta property="og:image" content="https://blog.zhengi.me/wp-content/uploads/2017/04/0d8d2105cd2d644c269cf387cfc389bf.png">
+<meta property="og:image" content="https://blog.zhengi.me/wp-content/uploads/2017/04/9c4332de9fd14af218d914546d97d2d2.png">
+<meta property="og:image" content="https://blog.zhengi.me/wp-content/uploads/2017/04/c179c5311c0999601d656a76fa7024ee.png">
+<meta property="og:image" content="https://blog.zhengi.me/wp-content/uploads/2017/04/3784614287d07595cd3ac78617427fc8.png">
+<meta property="og:image" content="https://blog.zhengi.me/wp-content/uploads/2017/04/4a34b8cff09ced221da79ac2a2d922db.png">
+<meta property="article:published_time" content="2017-04-08T02:44:45.000Z">
+<meta property="article:modified_time" content="2024-03-23T06:03:16.947Z">
+<meta property="article:author" content="Jason Bian">
+<meta property="article:tag" content="P4">
+<meta property="article:tag" content="数据平面">
+<meta property="article:tag" content="虚拟化">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.zhengi.me/wp-content/uploads/2017/04/200a1633ec0f73c741ff0c7d4f371565.jpg">
+
+
+<link rel="canonical" href="https://blog.zhengi.me/translate_dataplane_virtualization_with_p4/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://blog.zhengi.me/translate_dataplane_virtualization_with_p4/","path":"translate_dataplane_virtualization_with_p4/","title":"译文——P4虚拟化数据平面"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>译文——P4虚拟化数据平面 | 政子的博客</title>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?590a1bfeac720e6a29c58f70ab77a9a3"></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="政子的博客" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">政子的博客</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">技术|学习|随笔</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa  fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+        <li class="menu-item menu-item-书单"><a href="/booklist/" rel="section"><i class="fa fa-book fa-fw"></i>书单</a></li>
+        <li class="menu-item menu-item-算法"><a href="/algorithm/" rel="section"><i class="fa fa-code fa-fw"></i>算法</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%83%8C%E6%99%AF"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">2.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BF%90%E8%A1%8C%E7%8E%AF%E5%A2%83"><span class="nav-number">3.</span> <span class="nav-text">运行环境</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#P4%E8%AF%AD%E8%A8%80%E8%BF%90%E8%A1%8C%E7%8E%AF%E5%A2%83%E7%AE%80%E4%BB%8B"><span class="nav-number">3.1.</span> <span class="nav-text">P4语言运行环境简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HyPer4%E8%BF%90%E8%A1%8C%E7%8E%AF%E5%A2%83"><span class="nav-number">3.2.</span> <span class="nav-text">HyPer4运行环境</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%87%A0%E4%B8%AA%E4%BE%8B%E5%AD%90"><span class="nav-number">4.</span> <span class="nav-text">几个例子</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BF%AB%E7%85%A7%E5%92%8C%E7%AE%80%E5%8D%95%E5%9C%B0%E6%A8%A1%E5%9D%97%E5%8C%96"><span class="nav-number">4.1.</span> <span class="nav-text">快照和简单地模块化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E5%88%87%E7%89%87%E5%92%8C%E6%A8%A1%E5%9D%97%E5%8C%96"><span class="nav-number">4.2.</span> <span class="nav-text">网络切片和模块化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%99%9A%E6%8B%9F%E7%BD%91%E7%BB%9C"><span class="nav-number">4.3.</span> <span class="nav-text">虚拟网络</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#HyPer4%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%AE%BE%E8%AE%A1"><span class="nav-number">5.</span> <span class="nav-text">HyPer4系统的设计</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E8%A7%88"><span class="nav-number">5.1.</span> <span class="nav-text">总览</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%AF%E7%BC%96%E7%A8%8B%E7%9A%84%E8%A7%A3%E6%9E%90%E5%99%A8"><span class="nav-number">5.1.1.</span> <span class="nav-text">可编程的解析器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%97%E6%AE%B5%E6%8F%8F%E8%BF%B0"><span class="nav-number">5.1.2.</span> <span class="nav-text">字段描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8C%B9%E9%85%8D"><span class="nav-number">5.1.3.</span> <span class="nav-text">匹配</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%A7%E8%A1%8C"><span class="nav-number">5.1.4.</span> <span class="nav-text">执行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%99%9A%E6%8B%9F%E7%BD%91%E7%BB%9C-1"><span class="nav-number">5.1.5.</span> <span class="nav-text">虚拟网络</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A3%E6%9E%90%E5%99%A8"><span class="nav-number">5.2.</span> <span class="nav-text">解析器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8C%B9%E9%85%8D-%E6%89%A7%E8%A1%8C"><span class="nav-number">5.3.</span> <span class="nav-text">匹配-执行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%86%E8%A7%A3%E6%9E%90"><span class="nav-number">5.4.</span> <span class="nav-text">逆解析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9A%94%E7%A6%BB"><span class="nav-number">5.5.</span> <span class="nav-text">隔离</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%99%9A%E6%8B%9F%E7%BD%91%E7%BB%9C-2"><span class="nav-number">5.6.</span> <span class="nav-text">虚拟网络</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BE%E8%AE%A1%E7%BB%93%E6%9E%9C"><span class="nav-number">5.7.</span> <span class="nav-text">设计结果</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%9E%E8%B7%B5"><span class="nav-number">6.</span> <span class="nav-text">实践</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE"><span class="nav-number">6.1.</span> <span class="nav-text">配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%96%E8%AF%91"><span class="nav-number">6.2.</span> <span class="nav-text">编译</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%99%90%E5%88%B6"><span class="nav-number">7.</span> <span class="nav-text">限制</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AF%84%E4%BB%B7%E5%92%8C%E5%88%86%E6%9E%90"><span class="nav-number">8.</span> <span class="nav-text">评价和分析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8C%B9%E9%85%8D-%E6%89%A7%E8%A1%8C%E9%98%B6%E6%AE%B5"><span class="nav-number">8.1.</span> <span class="nav-text">匹配-执行阶段</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A9%BA%E9%97%B4"><span class="nav-number">8.2.</span> <span class="nav-text">空间</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E5%85%83%E7%BB%84%E5%8C%B9%E9%85%8D"><span class="nav-number">8.3.</span> <span class="nav-text">三元组匹配</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%B6%E5%BB%B6%E5%92%8C%E5%B8%A6%E5%AE%BD%E5%BC%80%E9%94%80"><span class="nav-number">8.4.</span> <span class="nav-text">时延和带宽开销</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8RMT%E4%B8%AD%E9%83%A8%E7%BD%B2"><span class="nav-number">8.5.</span> <span class="nav-text">在RMT中部署</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%A6%E5%A4%96%E7%9A%84%E4%B8%80%E4%BA%9B%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="nav-number">9.</span> <span class="nav-text">另外的一些解决方案</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%83%A8%E5%88%86%E8%99%9A%E6%8B%9F%E5%8C%96"><span class="nav-number">9.1.</span> <span class="nav-text">部分虚拟化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E6%96%B9%E6%A1%88"><span class="nav-number">9.2.</span> <span class="nav-text">其他方案</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%93%E8%AE%BA"><span class="nav-number">9.3.</span> <span class="nav-text">结论</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%AE%BA%E6%96%87"><span class="nav-number">10.</span> <span class="nav-text">参考论文</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Jason Bian"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Jason Bian</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">86</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">108</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/imaginezz" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;imaginezz" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto://Jason_Bian@outlook.com" title="E-Mail → mailto:&#x2F;&#x2F;Jason_Bian@outlook.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.danmakupie.com/" title="https:&#x2F;&#x2F;www.danmakupie.com&#x2F;" rel="noopener" target="_blank">弹幕派</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.oursparkspace.cn/" title="https:&#x2F;&#x2F;www.oursparkspace.cn&#x2F;" rel="noopener" target="_blank">火花空间</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.joyreserve.com/" title="http:&#x2F;&#x2F;www.joyreserve.com" rel="noopener" target="_blank">乐享其约</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://gaocegege.com/" title="http:&#x2F;&#x2F;gaocegege.com&#x2F;" rel="noopener" target="_blank">高策 江湖小虾米</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://yian.me/blog/" title="https:&#x2F;&#x2F;yian.me&#x2F;blog&#x2F;" rel="noopener" target="_blank">Y!an's Blog</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.cyprestar.com/" title="http:&#x2F;&#x2F;www.cyprestar.com&#x2F;" rel="noopener" target="_blank">Zhilong's Blog</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://yicodes.com/" title="http:&#x2F;&#x2F;yicodes.com&#x2F;" rel="noopener" target="_blank">易极</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://merrier.wang/" title="https:&#x2F;&#x2F;merrier.wang&#x2F;" rel="noopener" target="_blank">Merrier说</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://博客.胡鼎原.中国/" title="https:&#x2F;&#x2F;博客.胡鼎原.中国" rel="noopener" target="_blank">小勤奋爱学习</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://lfhacks.com/" title="https:&#x2F;&#x2F;lfhacks.com" rel="noopener" target="_blank">LFhacks</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://study4.fun/" title="https:&#x2F;&#x2F;study4.fun&#x2F;" rel="noopener" target="_blank">学而时思之</a>
+        </li>
+    </ul>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.zhengi.me/translate_dataplane_virtualization_with_p4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Jason Bian">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="政子的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          译文——P4虚拟化数据平面
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2017-04-08 10:44:45" itemprop="dateCreated datePublished" datetime="2017-04-08T10:44:45+08:00">2017-04-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%AF%91%E6%96%87/" itemprop="url" rel="index"><span itemprop="name">译文</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%AF%91%E6%96%87/P4/" itemprop="url" rel="index"><span itemprop="name">P4</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>13k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>11 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>现在SDN已经有了在数据平面的编程能力，这使得网络设备（包括硬件）可以被重新编程以解析自己定制的协议和执行定制的功能。 </p>
+<p>但是，数据平面的编程能力还没有发挥最大的潜能，它依旧不完善，而且在不断增长的软硬件中提供可编程能力是有很大形成碎片的风险。如果使用虚拟化方案可以解决以上两个问题。 </p>
+<p><img data-src="/wp-content/uploads/2017/04/200a1633ec0f73c741ff0c7d4f371565.jpg">  </p>
+<p>OpenFlow已经为网络的控制平面提供了一个标准的可编程能力，并且在网络管理者寻找更加的自由和灵活的方案候起了重要的作用。 </p>
+<p>但是，它并没有使的数据平面有良好的可编程能力，数据平面依旧只能使用在OpenFlow的协议规范中被定义好的协议。如果OpenFlow需要支持较新的方案，那么OpenFlow的规范就要一直被扩展。 </p>
+<p>一个真正的数据平面按应该不被这些束缚，它应该允许管理员重新配置数据平面以完全适应自己定制的协议中的语法和语义。最近在可重配置的匹配表（reconfigurable match table，RMT）中的工作在体系结构上已经证明了可编程数据平面，即使在ASIC的硬件中也是可行的。 </p>
+<p>这个结果使得像P4这样的领域专用语言使得这些可编程数据平面可简单地以一个统一的方式在多种交换机上部署（比如基于RMT的ASIC、FPGA为基础的交换机、像PISCES一样的软件交换机、behavior model和在边缘服务器上的网络数据平面）。</p>
+<h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>一般来讲，每一个P4兼容设备提供的可编程数据平面表示一种网络环境。 </p>
+<p>每一个P4的程序定义了：</p>
+<ul>
+<li>  在流量被解析时的协议头的集合和与之相符合状态机</li>
+<li>  在流量被处理时的匹配-执行表</li>
+</ul>
+<p>为了支持不同的客户的类型和为复杂的包处理而灵活地组成虚拟方法，在多数情况下，操作者希望给定的网络设备可以有不止一个环境，即使只有一个物理的数据平面。 </p>
+<span id="more"></span>
+
+<p>一个解决方法就是虚拟化。虚拟化可以虚拟出多个数据平面并且使用时会比多个设备更加流畅和方便。比如，借助虚拟化，我么可以同时在备上通过不同的配置部署多个网络功能，它允许：</p>
+<ul>
+<li>  网络切片：隔离一些客户或者设备，这使得网络更加的现代和安全。每一个切面（也就是每一个网络环境）可以因为支持协议类型和功能的不同而完全不同。</li>
+<li>  网络快照：当一个配置每次到达的时候，存储多个网络或者设备的配置，并且提供配置之间的快速切换。</li>
+<li>设备内部的虚拟网络，提供了针对以下两者的解决方案：<ul>
+<li>  包处理程序的复杂模块设计，支持模块化开发</li>
+<li>  在交换机上支持多用户，并且使用可控的方法为他们提供服务</li>
+</ul>
+</li>
+<li>  提供标准的高层功能，比如程序分析，流量监控和其他功能</li>
+</ul>
+<p>这些环境都需要隔离机来制止一个程序对另一个程序产生的威胁并保护设备避免其潜在危险的程序的威胁。 </p>
+<p>使用虚拟化，可以使得物理上单一的数据平面支持逻辑上的多种网络环境。那么，是不是可以有一种使用纯P4语言实现的通用虚拟化框架呢？如何使用一个用户级别的程序来实现虚拟化？是否可以使用一个特殊设计的具有模拟其他P4程序的能力的P4程序？ </p>
+<p>这样可以动态地支持虚拟化，而且可以在不中断现有的网络设备的情况下部署和重新配置，它具有很强的便携性。 </p>
+<p>HyPer4使用软件的方式拓展了P4语言，使得支持P4语言的设备可以具有如下功能：</p>
+<ul>
+<li>  可以在逻辑上存储多个P4程序并且同时运行它们（作为网络切片）或者热切换的快照</li>
+<li>  在每一个程序之间可以形成一个虚拟网络（支持程序不同部分和或者多租户服务交互）</li>
+<li>  HyPer4可以在运行时修改程序集和改变他们的虚拟网络连接而不用中断现在正在运行的程序。</li>
+<li>  可以兼容ASCI的硬件。</li>
+</ul>
+<h1 id="运行环境"><a href="#运行环境" class="headerlink" title="运行环境"></a>运行环境</h1><h2 id="P4语言运行环境简介"><a href="#P4语言运行环境简介" class="headerlink" title="P4语言运行环境简介"></a>P4语言运行环境简介</h2><p><a href="/wp-content/uploads/2017/04/4b417aa6e68d2cc0b536f67705ecd7ac.png"><img data-src="/wp-content/uploads/2017/04/4b417aa6e68d2cc0b536f67705ecd7ac.png"></a> </p>
+<p>上图描述了典型P4程序的编译过程，它分为两步：</p>
+<ol>
+<li> 前端编译器将P4源代码编译为高级中间表示（high-level intermediate representation, HLIR）</li>
+<li> 后端编译器将HLIR转换为特定目标设备的形式（比如JSON或者二进制代码）。 比如现在P4编译器后端提供了p4c-bmv2，它会将HLIR转化为Barefoot Network的bmv2软件交换机可以使用的JSON文件；SDNet可以将其编译至Xininx FPGA的代码；LLVM_P4和P4-to-EBPF可以将其转换为Linux网络平面使用的EBPF程序。</li>
+</ol>
+<p><a href="/wp-content/uploads/2017/04/a99988c3ff3d71a695285db1b013bc2a.png"><img data-src="/wp-content/uploads/2017/04/a99988c3ff3d71a695285db1b013bc2a.png"></a> </p>
+<p>上图左边部分描述了P4设备开始配置的过程。首先，用户会编译P4的代码，然后将二进制代码（或者其等价形式）装载进P4兼容的设备中。 </p>
+<p>上图右边部分描述了在二进制代码被装在进入P4设备后，设备就可以在运行时接受和代码兼容的控制器的指令。</p>
+<h2 id="HyPer4运行环境"><a href="#HyPer4运行环境" class="headerlink" title="HyPer4运行环境"></a>HyPer4运行环境</h2><p><a href="/wp-content/uploads/2017/04/3cce2c00c7a205476c1a7b9571801833.png"><img data-src="/wp-content/uploads/2017/04/3cce2c00c7a205476c1a7b9571801833.png"></a> 上图分为三部分：</p>
+<ol>
+<li> 左边部分演示了使用HyPer4环境部署和载入foo.p4代码的过程，和原生P4环境一样，在P4设备中生成了一个HyPer4的运行时环境，但是这时的运行时环境只是具有执行的能力，并没有可执行的表。</li>
+<li> 中间部分展示了如何将普通的P4程序通过HyPer4编译器编译为实体表然后载入运行时环境。</li>
+<li> 右边部分展示了为了不修改现有的控制器，HyPer4使用了一个数据平面管理单元（Data Plane Mangagement Unit, DPMU）来作为控制器和交换机之间的代理。它可以将对于原有P4代码的虚拟表的操作转换为HyPer4表的操作。</li>
+</ol>
+<h1 id="几个例子"><a href="#几个例子" class="headerlink" title="几个例子"></a>几个例子</h1><p>已实现的代码片段</p>
+<ul>
+<li>  一个二层以太网交换机</li>
+<li>  一个IPv4路由器</li>
+<li>  一个代表交换机上的IPv4主机回复ARP请求的ARP代理</li>
+<li>  一个可以过滤IPv4、TCP和UDP源和目的的防火墙</li>
+</ul>
+<p>使用这几个简单的P4代码片段，有以下三个例子来说明可编程数据平面</p>
+<h2 id="快照和简单地模块化"><a href="#快照和简单地模块化" class="headerlink" title="快照和简单地模块化"></a>快照和简单地模块化</h2><p><a href="/wp-content/uploads/2017/04/4f5df35aa5b423d6c4103401a3199db5.png"><img data-src="/wp-content/uploads/2017/04/4f5df35aa5b423d6c4103401a3199db5.png"></a> </p>
+<p>上图是一个网络快照和模块化的示例。这个网络包含三个已经连接的P4设备：s1、s2和s3，每一个设备上都在运行HyPer4程序。两个主机h1、h2和s1连接，另外两个主机h3、h4和s3连接。 </p>
+<p>最开始，HyPer4的表项是空的，而且设备被分为不同的功能。我们接着将HyPer的表实体下发给每个设备，使得每个设备逻辑上存储了所有的程序，这三个程序可以通过网络配置进行切换。 </p>
+<p>在开始的配置中，s1和s3分别运行arp代理，s2运行二层交换。在上图的s1和s3中，虚线框中的A代表arp代理功能，在s2中，虚线框中的A代表二层交换功能。 </p>
+<p>在第二个配置中，s1和s3都运行二层交换，s2运行防火墙。这些功能都被标记为B。 </p>
+<p>在第三个配置中，s1和s3都运行了和第二个配置一样的二层交换，s2运行了一个复合的程序，这些被标记为C。当流量第一次到达s2的时候，首先被arp代理处理，然后其他的流量会被传送到s2中的下一个虚拟功能——一个防火墙。并且任何可以通过防火墙的流量都会被一个路由应用处理。 </p>
+<p>同时，每个虚拟功能的流表也会被下发给每一个运行HyPer4的设备：</p>
+<ul>
+<li>  二层交换机的MAC和目的端口对</li>
+<li>  arp代理的IPv4和MAC对</li>
+<li>  路由器的IPv4目的地址和下一跳IP和MAC地址对</li>
+<li>  防火墙对于TCP特定端口的过滤规则</li>
+</ul>
+<p>每次在一台设备中只有一个配置被激活。切换配置的时候需要控制器发送一个流表项。</p>
+<h2 id="网络切片和模块化"><a href="#网络切片和模块化" class="headerlink" title="网络切片和模块化"></a>网络切片和模块化</h2><p><a href="/wp-content/uploads/2017/04/532cbd33d406c7db338d63ad47096bae.png"><img data-src="/wp-content/uploads/2017/04/532cbd33d406c7db338d63ad47096bae.png"></a> </p>
+<p>上图描述了一个运行HyPer4的P4设备s1和4个连接它主机h1、h2、h3、h4。 </p>
+<p>s3、s4的IP地址和子网掩码已经被设置，所以他们在不同的逻辑网络内。 </p>
+<p>使用HyPer4来将s1进行切片，使得连接h1和h2的端口1和2被分配到一个逻辑设备，连接h3和h4的端口3和4被分配到另一个逻辑设备。 </p>
+<p>在一开始，s1中HyPer4的表项是空的，并且s1已经被分为许多功能。 </p>
+<p>然后给HyPer4下流表，使得s1逻辑上存储三个程序：</p>
+<ul>
+<li>  在1和2端口上的流量被一个二层交换机处理</li>
+<li>  在4和3端口上的流量首先被一个防火墙处理，然后通过防火墙的流量被一个路由器处理</li>
+</ul>
+<p>同时，也需要针对二层交换机（MAC地址和出端口对），防火墙（过滤TCP特定端口的流量）和路由器（IPv4目的地址和下一跳IP和MAC地址对）下流表。</p>
+<h2 id="虚拟网络"><a href="#虚拟网络" class="headerlink" title="虚拟网络"></a>虚拟网络</h2><p><a href="/wp-content/uploads/2017/04/a9df91177d61c0229967ea447fcad429.png"><img data-src="/wp-content/uploads/2017/04/a9df91177d61c0229967ea447fcad429.png"></a> </p>
+<p>上图描述了虚拟设备间的虚拟网络。这个网络包含了一个有h1、h2、h3、h4四个主机连接的单一的P4设备s1。每个主机都被分配到了不同的网络。 </p>
+<p>在S1上被载入了8段程序，创立了8个虚拟设备：</p>
+<ul>
+<li>  在h1上的一个路由器r1和一个防火墙f1</li>
+<li>  在h2上的一个路由器r2和一个防火墙f2</li>
+<li>  在h3上的一个路由器r3</li>
+<li>  在h4上的一个路由器r4</li>
+<li>  连接内部网络的两个二层交换机l2_s1和l2_s2</li>
+</ul>
+<p>当为每一个设备下流表以后，这个示例演示了如何使得s1通过HyPer4支持希望为每个人服务但是又需要有安全控制的多租户方案。</p>
+<h1 id="HyPer4系统的设计"><a href="#HyPer4系统的设计" class="headerlink" title="HyPer4系统的设计"></a>HyPer4系统的设计</h1><h2 id="总览"><a href="#总览" class="headerlink" title="总览"></a>总览</h2><p>在高层上来看，HyPer4具有一个运行环境，一个编译器和一个数据平面管理单元（data plane management unit，DPMU）。 一个P4程序定义了包处理的结构。当执行的时候，以匹配表形式出现的运行时状态（可随时改变）会影响一个包会如何被包处理结构处理。 </p>
+<p>Hyper4定义了一个足够通用的结构，这个结构可以允许状态以任意的途径改变，并影响数据包处理的流程。 </p>
+<p><a href="/wp-content/uploads/2017/04/0a78f120fe9804e23c512a79c9e6fe43.png"><img data-src="/wp-content/uploads/2017/04/0a78f120fe9804e23c512a79c9e6fe43.png"></a> </p>
+<p>上图描述了HyPer4运行环境的概览。 </p>
+<p>HyPer4分为三个阶段</p>
+<ol>
+<li> 解析和设置阶段接受数据包并且使用一个模拟的P4程序来为将数据包设置为一个明确的HyPer4状态</li>
+<li> HyPer4模拟了目标程序的匹配-执行状态序列</li>
+<li> egress阶段处理任意的egress专有的的原始操作并且准备传输</li>
+</ol>
+<h3 id="可编程的解析器"><a href="#可编程的解析器" class="headerlink" title="可编程的解析器"></a>可编程的解析器</h3><p>运行环境必须可以解析在包中匹配到的任意字节的数据，它通过遍历一棵分析树来达到这个目的。在一棵树中每一个节点解析整体需求的一部分需要并且在一个元数据分支上的字段<code>numbytes_to_extract</code>存储这些需求。 </p>
+<p>框架在ingres pipeline的设置阶段设置了解析器的一些属性，如果需要，它会将包返回至ingress pipeline。 </p>
+<p>特别地，<code>numbytes_to_extract</code>依赖于虚拟设备以及和它有关的包。 </p>
+<p>框架也使用了P4的resubmit操作来使得包被重新送回解析器（如果需要的话）。 </p>
+<p>resubmit操作非常强大，因为可以将需要保留他们的值的字段列表传给它（比如<code>numbytes_to_extract</code>）。最终，解析器提取了一个字节栈，resubmit的操作可以在一个包含一个虚拟设备可能需要处理的许多包头的包上被重复调用多次。</p>
+<h3 id="字段描述"><a href="#字段描述" class="headerlink" title="字段描述"></a>字段描述</h3><p>框架使用了非常广泛的元数据字段来表示虚拟设备需要使用的字段列表。 框架也定义了一个逻辑上存储所有被从包中解析出的数据（被解析器解析出的字节栈）的字段，并且另一个字段会被用来表示虚拟设备中所有的元数据字段。</p>
+<h3 id="匹配"><a href="#匹配" class="headerlink" title="匹配"></a>匹配</h3><p>任意的P4程序匹配任意的字段。HyPer4的任务是以将一个大的源数据字段的相关部分隔离开的方法支持任意的字段，并将其用以表示一个P4程序的被定义好的字段。 </p>
+<p>HyPer4使用了非常多的P4的三元组匹配机制对这种模式进行支持，它允许在匹配值的时候一同提供表中匹配实体和掩码，这些掩码被用于在和匹配的数据比较之前确定匹配的区域。</p>
+<h3 id="执行"><a href="#执行" class="headerlink" title="执行"></a>执行</h3><p>匹配在P4程序中会触发可能是复杂的原始操作集合的执行过程。 </p>
+<p>HyPer4为每一个支持的P4原始操作提供了一套共同执行需要的行为的表。 </p>
+<p>简单来说，框架使用了一个元数据字段的集合在每个包处理阶段的必要时重定向HyPer4的控制流。 </p>
+<p>各种HyPer4中不同的匹配-执行阶段会读取（匹配），写入，或者读写这些元数据字段。 </p>
+<p>用提供这些表的实体来确定被用于读取或者写入这些确定的值，使得操作者可以调用相关HyPer4提供的需要执行任意行为的方法。</p>
+<h3 id="虚拟网络-1"><a href="#虚拟网络-1" class="headerlink" title="虚拟网络"></a>虚拟网络</h3><p>HyPer4依赖P4的recirculate原始操作将包从一个设备传送到另一个设备。这个操作会在完成egress pipeline以后标记一个会被重新发回的包。 </p>
+<p>它允许将一个字段列表作为参数传入。当包重新在解析器出现的时候，这个列表里所有的字段将会保持它原有的值。 </p>
+<p>HyPer4结构依赖于一般的匹配-执行阶段的概念。HyPer4的状态可以决定应该进行哪一种匹配操作和进行每一种原始操作的参数。为了模拟其他的P4程序，HyPer4需要根据被仿真的目的程序改变HyPer4的状态，进而将其被转换成对于表的操作。 </p>
+<p>通过将P4程序表示成状态，HyPer4可以支持P4程序的实时更新。</p>
+<h2 id="解析器"><a href="#解析器" class="headerlink" title="解析器"></a>解析器</h2><p>P4程序解析器的规则是将一个包前N比特的结构鉴别为一系列具有相关标签的比特字段。这些被打标签的比特字段也可以被称为一个包的“Parsered Representation（被解析的表示）”。 </p>
+<p>程序员定义了包头的类型，其中指出了名字、宽度和在比特区域中的位置，并且还声明了当解析包中比特的时候这些类型所定义的包实例。 </p>
+<p>为了解析一个包头，要做的是添加根据包的类型被结构化和命名的一个比特域的集合，并将其转变为Parsered Representation。 </p>
+<p>解析器决定那些包头应该被解析的方法是根据包中的数据或者元数据中一些字段的数据标记解析图的分支。 </p>
+<p>HyPer4必须用可以在运行时重新配置的方法来解析足够数量的的数据来达到模拟其他P4程序的需求。 </p>
+<p>框架定义了一个有一字节宽度单一字段的包头类型，并且声明了一个这个类型的数组来适应从包中解析出的变化的字节长度。 </p>
+<p>同时，框架也定义了一个元数据字段（比如<code>numbytes_to_extract</code>）。 </p>
+<p>一旦收到了一个包，解析器会验证这些字段。 </p>
+<p>数值为0表明它还没有为引导解析过程做好准备。在这种情况下，一个默认长度的字节会被解析（一般来说是20字节），并且控制流被重定向到一个初始化方法中去（上图的setup -a环节），如果有必要，它会更新<code>numbytes_to_extract</code>并且将包重新提交。被重新提交的包会重新回到解析器，但是这次<code>numbytes_to_extract</code>是一个有意义的值。 </p>
+<p>HyPer4遍历了在这个区域的解析树中可以解析的每个部分的分支。 </p>
+<p>在完成解析以后，HyPer4将所有被解析的字节连接到一起。在整个剩下的处理流程中，框架使用一个非常大的元数据字段来表示这些被解析的字段。 </p>
+<p>设置函数（上图的setup -b）接着配置包处理的流程。 </p>
+<p>特别地，这个函数设置一个指示了被仿真的程序在HyPer4中可能需要执行的元数据字段。 </p>
+<p>它也设置了另一个字段去表明哪一个表应该是最初被执行的（根据被模拟的程序中匹配到的类别的匹配-执行阶段），并将其作为HyPer4的匹配-执行阶段。</p>
+<h2 id="匹配-执行"><a href="#匹配-执行" class="headerlink" title="匹配-执行"></a>匹配-执行</h2><p>每一个被模拟的匹配-执行阶段都需要一些HyPer4的表：一个去执行匹配，另外三个元操作的表去执行相应的表匹配功能。 </p>
+<p>为了执行匹配，框架定义了一个匹配类型（精确匹配，三元组匹配，验证有效性）的所有组合和每个阶段所有数据类型的表。 </p>
+<p>HyPer4使用元数据的<code>next_table</code>的字段中进行分支（在初始化设置阶段或者在在上述的匹配-执行过程的结尾设置）。通过这个设置，程序将会执行正确的表。 </p>
+<p>精确匹配而不是解析包中的数据是一种匹配类型，在这种情况下，HyPer4使用一个三元组而非单一数据匹配，使用一个非常宽的字段来表示提取出的数据包。 </p>
+<p>三元组匹配在分离这个字段中和匹配有关的比特时非常有用（比如去鉴别在<code>foo.p4</code>中被定义的哪个字段参与了匹配）。 </p>
+<p>一般来讲，三元组匹配帮助模拟许多匹配类型而不是许多数据类型，因为它允许在运行时表项提供比特掩码（尽管它在TCAM单元中的能耗会很显著）。 </p>
+<p>在每一种情况下，一个匹配触发一个动作，并设置各种元数据字段。这些字段一定会有一个到达控制函数的分支来表达第一个被模拟的过程的原始操作。 </p>
+<p>执行一个原始操作包含了至少三个表，一个设置原始操作的阶段，另一个执行原始操作，最后一个进行状态包含了表明HyPer4的操作（以及匹配-执行阶段）是否完成，或者更多的原始操作需要被执行。</p>
+<h2 id="逆解析"><a href="#逆解析" class="headerlink" title="逆解析"></a>逆解析</h2><p>在P4中，在整个包处理的过程中都可能会改变这个包的被解析后的表示，不仅包括包头字段的值，也包括这个包本身的结构（这个包的包头可能会被删除或添加）。因此，为了鉴别出来序列的头部，然后序列化进行传输，逆解析是一个必须的步骤。 </p>
+<p>但是逆解析器在P4的代码中并没有出现，而是将一个具有特殊构建的解析器反过来当作逆解析器。 </p>
+<p>因为HyPer4在整个包处理的过程中使用了一个元数据字段当作Parsered Representation的代理，所以在最后egress pipeline的过程中，必须将Parsered Representation进行回写成原来的形式为包的逆解析作准备。 </p>
+<p>Parsered Representation包含了一个单字节的包头的栈，所以这个准备过程包含了重复的为代理的元数据字段加掩码的过程，将最低位的字节拷贝到栈中的下一个头部，并且将其余数据字段向右移位一个字节。</p>
+<h2 id="隔离"><a href="#隔离" class="headerlink" title="隔离"></a>隔离</h2><p>在现在框架的设计中将每个程序分离，它保护了一个程序的代码不被另一个程序重写。现在框架也支持内存的隔离。 </p>
+<p>代码隔离是在编译的时候给每一个程序指派一个独立的标识数来解决的（它可以是P4代码的哈希值或者是在编译器下载程序的时候人为决定）。 </p>
+<p>当收到一个包的时候，一些操作者可以控制的条件（比如进入端口，时间，网络安全状态或者一个包中包含的值）确定哪个程序应该去处理它，相应的元数据字段会被设置成为相应的程序ID。 </p>
+<p>这个字段是每一个环境中的匹配-执行的模拟表的匹配字段之一，并且它也在相同的共享的物理表中将一个程序的表项同另一个程序分离开。 </p>
+<p>框架将一个模拟的程序看作一个虚拟设备。这个程序的ID在功能上很类似于VLAN ID，尽管分配一个程序ID的机制会更加的灵活。 </p>
+<p>DPMU监视器需要给虚拟设备添加表项并且确保对于请求者所请求的程序ID是被许可的。 </p>
+<p>同时，DPMU可以强行限制每个虚拟设备可用的表项的数量，部分地协助完成内存隔离。另外内存隔离的需求使用一个内存状态对象（计数器，量表和寄存器）作为协助。 </p>
+<p>HyPer4设计要求预分配这些对象，这些对象中的设置的数量要和虚拟设备中的数量是相等的。这是HyPer4一起将这些集合分配给虚拟设备时的规则。 </p>
+<p>CPU隔离在这里的意义是没有程序执行的动作不能在一个时钟周期中被完成。如果一个虚拟设备的操作没有满足上述要求，那么任何一个超时的包处理都会被停止，并且它后面的包也都会被延迟处理（可能会属于其他的虚拟设备）。但是现在的版本还没有实现这个功能。 </p>
+<p>输入缓存区是另一个可能使得虚拟设备之间的连接产生干扰的资源。在现在的系统设计中，一个虚拟设备可能使用原始操作重复触发把包发回给输入缓存的操作。这就可能使得其他的包无法进入缓存区。其他的包可能来自于外部的链接或者内部其他设备或者同样是被回发的操作。 </p>
+<p>一个解决这个问题的办法是提供一个阈值，如果进入输入缓存区的次数超过阈值，则这个包将会被丢弃。</p>
+<h2 id="虚拟网络-2"><a href="#虚拟网络-2" class="headerlink" title="虚拟网络"></a>虚拟网络</h2><p>HyPer4被设计用于在环境中控制虚拟设备间的流量交换的虚拟网络。 </p>
+<p>框架创建带有唯一ID的虚拟端口并且将它分配给虚拟设备。这些虚拟端口可以被直接映射到物理端口上面，也可以将他们连接到另一端也是另一个虚拟设备的虚拟链路。 </p>
+<p>对于确定发送到其他虚拟设备的包，HyPer4在改变其程序ID以后使用<code>recirculate</code>的原始操作将其发送回解析器。 </p>
+<p>框架使用P4的<code>clone</code>和<code>recirculate</code>支持了虚拟多播。简要地说，程序的ID根据可编程的队列更新.接着一个包的复制被送去解析器并且最终被相关联的设备处理。其他的复制被送到egress pipeline的起始处，程序ID用作循环计数器，并且一旦到达多播序列的末尾，就会触发分组丢弃。</p>
+<h2 id="设计结果"><a href="#设计结果" class="headerlink" title="设计结果"></a>设计结果</h2><ol>
+<li> HyPer4使用三元组匹配来模拟各种的匹配类型而不是任意的数据字段，增加了TCAM的压力。这导致了能耗的增加以及在当前硬件上HyPer4的潜在TCAM障碍。</li>
+<li> 为了使得HyPer4可以来模拟来自一个行为集合中任意最大长度为K的的序列的行为，框架源代码必须声明K个执行从集合中给定的行为的表的复制。这是因为P4限制了在处理一个特定的包的时候使用一个表超过一次。P4的这种设计选择对于兼容硬件体系结构（由于物理写入约束和数据包处理算法对于顺序的依赖而选择使用在一条管道里面使用连接表而非使用纵横开关，比如RMT）来说是明智的，</li>
+<li> 使用重新提交原始操作来允许动态可编程解析器来减少吞吐量。HyPer4可以避免这些的P4设备重复的的重新提交直到到达某个最大的数目导致不再有空间可用的解析器异常。有趣的是，协议透明转发和P4不同，它有一种根据需求解析的机制，也可以消除HyPer4对于重新提交的需要。虚拟网络的recirculation也引起了吞吐量的损失，但是这是把一个物理设备虚拟成多个设备的自然结果。</li>
+<li> HyPer4可以发送时间上完全不同于它有效接收的数据包，而标准的P4程序通常不是这样的。P4通过使用.p4代码中的解析器函数执行的相同的路径表示和剩余的数据包序列化解析的表示。这样做的结果就是P4程序只能发送和它能解析的结构一致的包。但是HyPer4将大多数的解析逻辑放在了ingress pipeline中，并且实际上HyPer4的解析路径简单地以一定长度的字节表达而没有更高层的结构。这样，HyPer4使得传统P4的限制被终结，不论是好是坏。</li>
+</ol>
+<h1 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h1><p>这个章节提供了关于实践的一些细节，所有的源码都可以在<a target="_blank" rel="noopener" href="https://gitlab.flux.utah.edu/hp4/src.git">这个git仓库</a>中访问到。</p>
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p>HyPer4必须声明一份执行特定行为的表的拷贝，它们只在名字上不同，这样每一份拷贝都可以在一个行为序列的任何一个部分出现。这导致了一个有许多功能上冗余代码和庞大的代码基数。 </p>
+<p>比如，在HyPer4的源码中一定可以找到两张表<code>t1_exact_extracted</code>和<code>t2_exact_extracted</code>。他们两个表示相同的含义：精确地匹配而非解析包的数据。 </p>
+<p>第一个表在第一个模拟的匹配-执行阶段可以被调用，第二个表是在第二个阶段可以被调用。 </p>
+<p>在代码上的这种冗余导致只能使用配置脚本来为HyPer4生成源码。这使得HyPer4的开发变得简单，而且允许根据需求和资源进行定制。可以配置的参数包括：</p>
+<ul>
+<li>  HyPer4必须能够模拟最大的匹配-执行阶段的最大数量</li>
+<li>  每个复合的动作可以执行的最大的原始操作数目</li>
+<li>  HyPer4可以解析的比特的默认值，最大值和步进值</li>
+</ul>
+<p>这些配置脚本（900行Python代码）将P4源码处理成了HyPer4可以执行的代码，它支持4个个模拟的匹配-执行pipeline的阶段而每个行为最多9个原始操作，它也支持5个P4的21个精确的原始操作。这些HyPer4的配置大约有6400行。 </p>
+<p><a href="/wp-content/uploads/2017/04/fd2325e07ad0c274e73520406298e0ee.png"><img data-src="/wp-content/uploads/2017/04/fd2325e07ad0c274e73520406298e0ee.png"></a> </p>
+<p>上图表示P4代码量是如何随着被模拟的匹配-执行阶段和每个阶段允许的最大原始操作数目的增长而线性增长的。其中图（a）表示整个代码量的增长，（b）关注了需要drop原始操作的代码量，而（c）是有关于<code>modify_field</code>操作的代码量。 </p>
+<p>HyPer4目前支持的五个原始操作平均的代码长度从128行（一个阶段和一个原始操作）到539行（五个阶段和九个原始操作）。外拓到16个附加原始操作（在P4中有21个），这个版本的HyPer4支持每个原始操作，除了在上图中的数字外，有超过了2000行（一个阶段和一个原始操作）到8600行（五个阶段和9个原始操作）的代码量。</p>
+<h2 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h2><p>HyPer4编译器的开发还在进行中（很可能已经挂了或者闭源？）。 </p>
+<p>命令文件包含了所有的bmv2需要的命令，在产生这个文件之前 ，它首先会产生一个人可以阅读的中间文件。在装载后，中间命令文件将会被转化为HyPer4的命令。</p>
+<h1 id="限制"><a href="#限制" class="headerlink" title="限制"></a>限制</h1><p>有一些P4的功能还没有被转化到HyPer4中。比如：</p>
+<ul>
+<li>  有状态的内存（registers，counters，meters）</li>
+<li>  匹配类型：最大长度匹配，根据范围匹配</li>
+<li>  任意的校验和</li>
+<li>  字段列表</li>
+<li>  Expression和action profile将不会被转化为HyPer4</li>
+</ul>
+<h1 id="评价和分析"><a href="#评价和分析" class="headerlink" title="评价和分析"></a>评价和分析</h1><p>这里将所选的原生P4程序和被HyPer4模拟的这些P4程序进行比较。主要比较在执行的阶段匹配-执行表的阶段数目（影响时延），表、数据和动作的空间占用（影响内存）和三元组匹配的宽和频率（影响TCAM和能耗）。</p>
+<h2 id="匹配-执行阶段"><a href="#匹配-执行阶段" class="headerlink" title="匹配-执行阶段"></a>匹配-执行阶段</h2><p><a href="/wp-content/uploads/2017/04/d817a91202dc6cd3838831c200b3ac0b.png"><img data-src="/wp-content/uploads/2017/04/d817a91202dc6cd3838831c200b3ac0b.png"></a> </p>
+<p>上表显示了HyPer4在匹配-执行阶段数目方面和P4原生代码的比较。 </p>
+<p>一般HyPer4需要大约6到7倍的匹配-执行阶段数，而arp代理则需要12倍之多。这是因为arp代理为了创建一个arp回复，这需要9个原始操作，而且这12倍的代价只发生在了收到了arp请求的时候。</p>
+<h2 id="空间"><a href="#空间" class="headerlink" title="空间"></a>空间</h2><p><a href="/wp-content/uploads/2017/04/177316123293c19c5b1a01205e3649a1.png"><img data-src="/wp-content/uploads/2017/04/177316123293c19c5b1a01205e3649a1.png"></a> </p>
+<p>上图表明了HyPer4在不同的匹配-执行阶段和每一个阶段允许的原始操作数目一定的情况下定义的表的数目。 </p>
+<p>这里多数的表没有表项，只是为了达到模拟任意程序的需求而存在。但这些空的表也需要空间开销。 </p>
+<p>多数情况下，每一个HyPer4的表之和一个动作相关，但是一些情况下（比如执行<code>modify_field</code>原始操作的表）将达到14个操作。 </p>
+<p>以下的实验是在允许HyPer4有4个匹配-执行阶段，每个阶段有9个原始操作并且定义了346个表的情况下完成的。 </p>
+<p><a href="/wp-content/uploads/2017/04/0d8d2105cd2d644c269cf387cfc389bf.png"><img data-src="/wp-content/uploads/2017/04/0d8d2105cd2d644c269cf387cfc389bf.png"></a> </p>
+<p>上表表示了被不同程序所共享的表的数目。在操作的过程中，如果HyPer4托管了多个程序，那么其中许多表都被共享了。上表对角线上的元素表示每个程序自己拥有的表，因为不是所有的表在给定的程序中都有相同的分支，所以这里表的数目和前面匹配-执行阶段的表格中的数据不同。 </p>
+<p><a href="/wp-content/uploads/2017/04/9c4332de9fd14af218d914546d97d2d2.png"><img data-src="/wp-content/uploads/2017/04/9c4332de9fd14af218d914546d97d2d2.png"></a> </p>
+<p>上表显示了没有为其他程序共享的表的数目。显然arp_proxy有最多的特定的表。这是因为事实上只有这个程序在它的一个阶段执行过九种原始操作。 </p>
+<p>在12种情况中的8种中，程序之间共享了许多表，而不是在每个程序中都使用自己的表。 </p>
+<p>表项需要空间来存储，但是灵活性在HyPer4种更加重要，所以每个匹配都涉及解析包中的数据。框架不使用单一的800比特宽的字段，而是每一个匹配实体都需要至少1600比特来存储（800比特存储数据，800比特存储掩码）。类似地，涉及模拟元数据的匹配操作不是针对256位的字段进行，而是每个字段至少需要512个比特。程序的ID也为每个实体的bite开销增加了一些负担。所以一个用于匹配的表的前800比特用于存储包，而后256比特用于存储元数据。</p>
+<h2 id="三元组匹配"><a href="#三元组匹配" class="headerlink" title="三元组匹配"></a>三元组匹配</h2><p>对三元组匹配的更多的依赖增加了能耗。 </p>
+<p><a href="/wp-content/uploads/2017/04/c179c5311c0999601d656a76fa7024ee.png"><img data-src="/wp-content/uploads/2017/04/c179c5311c0999601d656a76fa7024ee.png"></a> </p>
+<p>上表表示了对于每个程序产生最复杂的数据包处理时三元组匹配了多少位。total列包含了不必关心和通配符的比特，active列表示在匹配的过程中积极参与的比特数。最后一列种提供了导致前两列的三元组匹配的数目。</p>
+<h2 id="时延和带宽开销"><a href="#时延和带宽开销" class="headerlink" title="时延和带宽开销"></a>时延和带宽开销</h2><p>所有的测试均使用了bmv2软件交换机，并且使用了iperf3和ping flood来完成。 </p>
+<p>测试使用的机器是运行了Mininet的Ubuntu14.04虚拟机，虚拟机拥有2.2GHz Intel Core i7-4770HQ的CPU和6.15GB的内存。 </p>
+<p><a href="/wp-content/uploads/2017/04/3784614287d07595cd3ac78617427fc8.png"><img data-src="/wp-content/uploads/2017/04/3784614287d07595cd3ac78617427fc8.png"></a> </p>
+<p>上表显示了十次测试的平均值和标准差，Hyper4模拟器增加了将近80%的带宽消耗和4倍左右的时延。</p>
+<h2 id="在RMT中部署"><a href="#在RMT中部署" class="headerlink" title="在RMT中部署"></a>在RMT中部署</h2><p>决定了运行HyPer4能力的RMT部署细节包括了数据包头向量的长度（这使得每一个匹配-执行阶段可行，并且它既包含了用于元数据的所有比特，也包含了从包中提取的比特），物理匹配执行阶段的数量，以及每一个阶段能匹配的最大比特值。 </p>
+<p>RMT支持一个4096比特的包头向量，这达到了HyPer4使用3312比特（800比特的被解析的包数据，256比特的元数据和2256比特的其他开销）配置的要求。其他开销包括支持对分组数据的操纵的临时空间，这影响了关于如何利用可用的剩余分组包头任何决定，无论是从分组中提取更多的字节还是表示更多的元数据。 </p>
+<p>RMT在ingress pipeline和其他32个egress pipeline中包含了32个匹配-执行的阶段。在上面的示例中需要最多的匹配-执行阶段的是arp代理，它在ingress pipeline中使用了46个匹配-执行阶段，在egress中使用了两个。 </p>
+<p>RMT不能支持这种需求，但是更精确地说，将每个RTM匹配-执行阶段支持的比特数与HyPer4匹配-执行阶段所需要的比特数进行比较，可以了解在哪些情况下需要更多的物理阶段来支持给定的HyPer4匹配-执行阶段。 </p>
+<p>RMT阶段在SRAM中支持多达640比特的匹配，在TCAM中同样支持640比特。 </p>
+<p>在arp代理的46个输入阶段中，他们中的44个可以被转化为RMT物理阶段。其他的两个阶段涉及对应于80位宽字段的三元组表示提取的分组数据，并且每个需要1600位的TCAM存储器（800位存储值，800位存储掩码）。 </p>
+<p>因此，这两个HyPer4阶段的每一个需要三个RMT物理阶段。 </p>
+<p>最终总共有51个物理阶段，这比RMT的能力多60％。 </p>
+<p>请注意，这不仅将满足arp代理，而且会满足任意组合，包括arp代理和任何更简单的程序。 </p>
+<p>将32个egress匹配执行阶段中的19个转移到egress pipeline的RMT的变体可以满足今天的要求。</p>
+<h1 id="另外的一些解决方案"><a href="#另外的一些解决方案" class="headerlink" title="另外的一些解决方案"></a>另外的一些解决方案</h1><p>考虑到HyPer4的性能开销较大，所以需要考虑一些替代的方案。</p>
+<h2 id="部分虚拟化"><a href="#部分虚拟化" class="headerlink" title="部分虚拟化"></a>部分虚拟化</h2><p><a href="/wp-content/uploads/2017/04/4a34b8cff09ced221da79ac2a2d922db.png"><img data-src="/wp-content/uploads/2017/04/4a34b8cff09ced221da79ac2a2d922db.png"></a> </p>
+<p>在对性能需求比较高的硬件上使用HyPer4的全部功能会造成很大的性能开销，所以可以分的地部署HyPer4，使其可以在这些设备中流畅的运行。 </p>
+<p>P4编程模型提供了对数据包解析器以及匹配执行表进行编程的机制。对于这些程序元素，虚拟化和直接实现的各种组合以满足各种用例是可能的。 </p>
+<p>上图（a）描绘了“完整”虚拟化，每个列运行自己的程序。每个列可以同时处于活动状态（网络分片），并且数据包通过某些标准发送到特定列。 </p>
+<p>上图（b）说明了分开的虚拟解析器附加到相同的直接实现的匹配执行pipeline的可能性。 </p>
+<p>该pipeline将不会像完全虚拟化解决方案中的pipeline一样动态灵活。可以通过允许运行时可选标准来调用基于哪个数据包头被提取的不同直接实现的功能来提供有限的灵活性。 </p>
+<p>相反，如上图（c）所示，单个直接实现的解析器可以将流量传递到不同的虚拟匹配执pipeline。 </p>
+<p>这“修复”支持的协议头集，但允许不同的可动态修改的行为作为对这些头部的响应。 </p>
+<p>上图（d）表明匹配执行pipeline本身可以部分虚拟化。这对于我们愿意在一层协议栈（可能是L2或L3）中牺牲动态灵活性以满足性能的环境可能是有吸引力的，但在其他层仍然需要动态灵活性。</p>
+<h2 id="其他方案"><a href="#其他方案" class="headerlink" title="其他方案"></a>其他方案</h2><ul>
+<li>  用于编写P4代码函数的编译器。该工具将产生一个从多个P4项目合并功能的功能。这种方法可提高性能，但不能提供运行时可重构性。</li>
+<li>  在应用层下实现虚拟化。这种方法可以提供具有高性能的运行时可重构性，但是需要每个平台特有的非便携式实现。</li>
+<li>  将P4程序直接嵌入网络。这种技术需要使用不同的程序加载不同的具有P4能力的交换机，另一个交换机根据将分组标记为属于一个虚拟网络或另一个虚拟网络的标准来选择适当的目标来处理流量。这种方法以额外的交换机为代价提供高性能和运行时可重构性（如果备用硬件可用）的可能性。</li>
+</ul>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>本文描述了一个名为HyPer4的P4虚拟化框架的概念、设计、实现和评价。它现在只能模拟P4程序的一小部分。为了使得数据平面虚拟化可以有一个便携式的解决方案，它在性能方面会造成80%到90%的损耗。它有助于运行并模拟网络中的网络功能的复杂组合，并且是一个可以为监视和程序验证功能添加有用的模块的平台。</p>
+<h1 id="参考论文"><a href="#参考论文" class="headerlink" title="参考论文"></a>参考论文</h1><blockquote>
+<p>David Hancock,Jacobus van der Merwe. HyPer4: Using P4 to Virtualize the Programmable Data Plane. CoNEXT, ACM, 35-19, 2016.</p>
+<p><a target="_blank" rel="noopener" href="http://dl.acm.org/citation.cfm?id=2999607">HyPer4: Using P4 to Virtualize the Programmable Data Plane</a></p>
+</blockquote>
+<blockquote>
+<p>本文链接：<a target="_blank" rel="noopener" href="http://www.sdnlab.com/18939.html">http://www.sdnlab.com/18939.html</a></p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/p4_applications/" rel="bookmark">P4相关应用简介</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/p4_bcc_to_ebpf/" rel="bookmark">使用BCC提供的转换器将P4转换为eBPF的流程分析</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/p4_envirnoment_establish/" rel="bookmark">P4语言环境快速安装配置</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/p4_github_resp/" rel="bookmark">来聊聊P4的GitHub仓库吧</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/p4_int/" rel="bookmark">配置P4的INT应用</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请鼓励我的原创文章</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.png" alt="Jason Bian 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="Jason Bian 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Jason Bian
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://blog.zhengi.me/translate_dataplane_virtualization_with_p4/" title="译文——P4虚拟化数据平面">https://blog.zhengi.me/translate_dataplane_virtualization_with_p4/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/P4/" rel="tag"><i class="fa fa-tag"></i> P4</a>
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E5%B9%B3%E9%9D%A2/" rel="tag"><i class="fa fa-tag"></i> 数据平面</a>
+              <a href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" rel="tag"><i class="fa fa-tag"></i> 虚拟化</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/p4_bcc_to_ebpf/" rel="prev" title="使用BCC提供的转换器将P4转换为eBPF的流程分析">
+                  <i class="fa fa-chevron-left"></i> 使用BCC提供的转换器将P4转换为eBPF的流程分析
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/p4_applications/" rel="next" title="P4相关应用简介">
+                  P4相关应用简介 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">陇 ICP 备 15003463 号 </a>
+  </div>
+
+<div class="copyright">
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jason Bian</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">235k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">3:33</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/lozad.js/1.16.0/lozad.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/pangu/4.0.7/pangu.min.js"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/pjax.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://cdn.jsdelivr.net/npm/pdfobject@2.2.7/pdfobject.min.js","integrity":"sha256-ph3Dk89VmuTVXG6x/RDzk53SU9LPdAh1tpv0UvnDZ2I="},"url":"/lib/pdf/web/viewer.html"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdn.jsdelivr.net/npm/mermaid@8.13.8/dist/mermaid.min.js","integrity":"sha256-QmSAc2kIaUjleIJ46X7qPW2zrpCbXlMz3YIGgWpQ1Jo="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"imaginezz","repo":"blog_public","client_id":"9c022a847ecc01650469","client_secret":"3c6fae6a3119943e381c2682b0a40f84573463b4","admin_user":"imaginezz","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js","integrity":"sha256-Pmj85ojLaPOWwRtlMJwmezB/Qg8BzvJp5eTzvXaYAfA="},"path_md5":"79dffc33803164382c9ebba2a5f861f2"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>

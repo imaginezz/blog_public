@@ -1,0 +1,1573 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)">
+<meta name="generator" content="Hexo 6.3.0">
+
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/favicon/safari-pinned-tab.svg" color="#222">
+  <link rel="manifest" href="/images/favicon/site.webmanifest">
+  <meta name="baidu-site-verification" content="5x8DHwr7y8">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.bootcdn.net/ajax/libs/pace/1.2.4/pace.min.js"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.zhengi.me","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":true,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":true,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="Leetcode Solutions   # Title Difficulty Blog Others    1 Two Sum Easy Two Sum    2 Add Two Numbers Medium Add Two Numbers    3 Longest Substring Without Repeating Characters Medium Longest Substring W">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Algorithm Solutions">
+<meta property="og:url" content="https://blog.zhengi.me/algorithm/index.html">
+<meta property="og:site_name" content="政子的博客">
+<meta property="og:description" content="Leetcode Solutions   # Title Difficulty Blog Others    1 Two Sum Easy Two Sum    2 Add Two Numbers Medium Add Two Numbers    3 Longest Substring Without Repeating Characters Medium Longest Substring W">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-08-30T13:00:00.000Z">
+<meta property="article:modified_time" content="2024-03-23T06:03:16.951Z">
+<meta property="article:author" content="Jason Bian">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://blog.zhengi.me/algorithm/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":false,"lang":"zh-CN","comments":"","permalink":"https://blog.zhengi.me/algorithm/index.html","path":"algorithm/index.html","title":"Algorithm Solutions"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Algorithm Solutions | 政子的博客
+</title>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?590a1bfeac720e6a29c58f70ab77a9a3"></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="政子的博客" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">政子的博客</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">技术|学习|随笔</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa  fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+        <li class="menu-item menu-item-书单"><a href="/booklist/" rel="section"><i class="fa fa-book fa-fw"></i>书单</a></li>
+        <li class="menu-item menu-item-算法"><a href="/algorithm/" rel="section"><i class="fa fa-code fa-fw"></i>算法</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Leetcode-Solutions"><span class="nav-number">1.</span> <span class="nav-text">Leetcode Solutions</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%91%E6%8C%87-offer"><span class="nav-number">2.</span> <span class="nav-text">剑指 offer</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%93%E9%A2%98"><span class="nav-number">3.</span> <span class="nav-text">专题</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Jason Bian"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Jason Bian</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">86</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">108</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/imaginezz" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;imaginezz" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto://Jason_Bian@outlook.com" title="E-Mail → mailto:&#x2F;&#x2F;Jason_Bian@outlook.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.danmakupie.com/" title="https:&#x2F;&#x2F;www.danmakupie.com&#x2F;" rel="noopener" target="_blank">弹幕派</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.oursparkspace.cn/" title="https:&#x2F;&#x2F;www.oursparkspace.cn&#x2F;" rel="noopener" target="_blank">火花空间</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.joyreserve.com/" title="http:&#x2F;&#x2F;www.joyreserve.com" rel="noopener" target="_blank">乐享其约</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://gaocegege.com/" title="http:&#x2F;&#x2F;gaocegege.com&#x2F;" rel="noopener" target="_blank">高策 江湖小虾米</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://yian.me/blog/" title="https:&#x2F;&#x2F;yian.me&#x2F;blog&#x2F;" rel="noopener" target="_blank">Y!an's Blog</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.cyprestar.com/" title="http:&#x2F;&#x2F;www.cyprestar.com&#x2F;" rel="noopener" target="_blank">Zhilong's Blog</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://yicodes.com/" title="http:&#x2F;&#x2F;yicodes.com&#x2F;" rel="noopener" target="_blank">易极</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://merrier.wang/" title="https:&#x2F;&#x2F;merrier.wang&#x2F;" rel="noopener" target="_blank">Merrier说</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://博客.胡鼎原.中国/" title="https:&#x2F;&#x2F;博客.胡鼎原.中国" rel="noopener" target="_blank">小勤奋爱学习</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://lfhacks.com/" title="https:&#x2F;&#x2F;lfhacks.com" rel="noopener" target="_blank">LFhacks</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://study4.fun/" title="https:&#x2F;&#x2F;study4.fun&#x2F;" rel="noopener" target="_blank">学而时思之</a>
+        </li>
+    </ul>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner page posts-expand">
+  
+  
+
+
+    
+    
+    
+    <div class="post-block" lang="zh-CN"><header class="post-header">
+
+<h1 class="post-title" itemprop="name headline">Algorithm Solutions
+</h1>
+
+<div class="post-meta-container">
+</div>
+
+</header>
+
+      
+      
+      <div class="post-body">
+          <h1 id="Leetcode-Solutions"><a href="#Leetcode-Solutions" class="headerlink" title="Leetcode Solutions"></a>Leetcode Solutions</h1><table>
+<thead>
+<tr>
+<th>#</th>
+<th>Title</th>
+<th>Difficulty</th>
+<th>Blog</th>
+<th>Others</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/two-sum/">Two Sum</a></td>
+<td>Easy</td>
+<td><a href="/algorithm/leetcode/1.two-sum.html">Two Sum</a></td>
+<td></td>
+</tr>
+<tr>
+<td>2</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/add-two-numbers/">Add Two Numbers</a></td>
+<td>Medium</td>
+<td><a href="/algorithm/leetcode/2.add-two-numbers.html">Add Two Numbers</a></td>
+<td></td>
+</tr>
+<tr>
+<td>3</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/longest-substring-without-repeating-characters/">Longest Substring Without Repeating Characters</a></td>
+<td>Medium</td>
+<td><a href="/algorithm/leetcode/3.longest-substring-without-repeating-characters.html">Longest Substring Without Repeating Characters</a></td>
+<td></td>
+</tr>
+<tr>
+<td>4</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/median-of-two-sorted-arrays/">Median of Two Sorted Arrays</a></td>
+<td>Hard</td>
+<td><a href="/algorithm/leetcode/4.median-of-two-sorted-arrays.html">Median of Two Sorted Arrays</a></td>
+<td>Binary Search *</td>
+</tr>
+<tr>
+<td>5</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/longest-palindromic-substring/">Longest Palindromic Substring</a></td>
+<td>Medium</td>
+<td><a href="/algorithm/leetcode/5.longest-palindromic-substring.html">Longest Palindromic Substring</a></td>
+<td>dp &amp; Manacher’s Algorithm *</td>
+</tr>
+<tr>
+<td>6</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/zigzag-conversion/">ZigZag Conversion</a></td>
+<td>Medium</td>
+<td><a href="/algorithm/leetcode/6.zigzag-conversion.html">ZigZag Conversion</a></td>
+<td></td>
+</tr>
+<tr>
+<td>7</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/reverse-integer/">Reverse Integer</a></td>
+<td>Easy</td>
+<td><a href="/algorithm/leetcode/7.reverse-integer.html">Reverse Integer</a></td>
+<td></td>
+</tr>
+<tr>
+<td>8</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/string-to-integer-atoi/">String to Integer (atoi)</a></td>
+<td>Medium</td>
+<td><a href="/algorithm/leetcode/8.string-to-integer-atoi.html">String to Integer (atoi)</a></td>
+<td></td>
+</tr>
+<tr>
+<td>9</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/palindrome-number/">Palindrome Number</a></td>
+<td>Easy</td>
+<td><a href="/algorithm/leetcode/9.palindrome-number.html">Palindrome Number</a></td>
+<td></td>
+</tr>
+<tr>
+<td>10</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/regular-expression-matching/">Regular Expression Matching</a></td>
+<td>Hard</td>
+<td><a href="/algorithm/leetcode/10.regular-expression-matching.html">Regular Expression Matching</a></td>
+<td>dp **</td>
+</tr>
+<tr>
+<td>11</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/container-with-most-water/">Container With Most Water</a></td>
+<td>Medium</td>
+<td><a href="/algorithm/leetcode/11.container-with-most-water.html">Container With Most Water</a></td>
+<td></td>
+</tr>
+<tr>
+<td>12</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/integer-to-roman/">Integer to Roman</a></td>
+<td>Medium</td>
+<td><a href="/algorithm/leetcode/12.integer-to-roman.html">Integer to Roman</a></td>
+<td></td>
+</tr>
+<tr>
+<td>13</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/roman-to-integer/">Roman to Integer</a></td>
+<td>Easy</td>
+<td><a href="/algorithm/leetcode/13.roman-to-integer.html">Roman to Integer</a></td>
+<td></td>
+</tr>
+<tr>
+<td>14</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/longest-common-prefix/">Longest Common Prefix</a></td>
+<td>Easy</td>
+<td><a href="/algorithm/leetcode/14.longest-common-prefix.html">Longest Common Prefix</a></td>
+<td></td>
+</tr>
+<tr>
+<td>15</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/3sum/">3Sum</a></td>
+<td>Medium</td>
+<td><a href="/algorithm/leetcode/15.3sum.html">3Sum</a></td>
+<td></td>
+</tr>
+<tr>
+<td>16</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/3sum-closest/">3Sum Closest</a></td>
+<td>Medium</td>
+<td><a href="/algorithm/leetcode/16.3sum-closest.html">3Sum Closest</a></td>
+<td></td>
+</tr>
+<tr>
+<td>17</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/letter-combinations-of-a-phone-number/">Letter Combinations of a Phone Number</a></td>
+<td>Medium</td>
+<td><a href="/algorithm/leetcode/17.letter-combinations-of-a-phone-number.html">Letter Combinations of a Phone Number</a></td>
+<td></td>
+</tr>
+<tr>
+<td>18</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/4sum/">4Sum</a></td>
+<td>Medium</td>
+<td><a href="/algorithm/leetcode/18.4sum.html">4Sum</a></td>
+<td></td>
+</tr>
+<tr>
+<td>19</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/remove-nth-node-from-end-of-list/">Remove Nth Node From End of List</a></td>
+<td>Medium</td>
+<td><a href="/algorithm/leetcode/19.remove-nth-node-from-end-of-list.html">Remove Nth Node From End of List</a></td>
+<td></td>
+</tr>
+<tr>
+<td>20</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/valid-parentheses/">Valid Parentheses</a></td>
+<td>Easy</td>
+<td><a href="/algorithm/leetcode/20.valid-parentheses.html">Valid Parentheses</a></td>
+<td></td>
+</tr>
+<tr>
+<td>21</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/merge-two-sorted-lists/">Merge Two Sorted Lists</a></td>
+<td>Easy</td>
+<td><a href="/algorithm/leetcode/21.merge-two-sorted-lists.html">Merge Two Sorted Lists</a></td>
+<td></td>
+</tr>
+<tr>
+<td>22</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/generate-parentheses/">Generate Parentheses</a></td>
+<td>Medium</td>
+<td><a href="/algorithm/leetcode/22.generate-parentheses.html">Generate Parentheses</a></td>
+<td></td>
+</tr>
+<tr>
+<td>23</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/merge-k-sorted-lists/">Merge k Sorted Lists</a></td>
+<td>Hard</td>
+<td><a href="/algorithm/leetcode/23.merge-k-sorted-lists.html">Merge k Sorted Lists</a></td>
+<td>Divide Conquer &amp; Heap Sort</td>
+</tr>
+<tr>
+<td>24</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/swap-nodes-in-pairs/">Swap Nodes in Pairs</a></td>
+<td>Medium</td>
+<td><a href="/algorithm/leetcode/24.swap-nodes-in-pairs.html">Swap Nodes in Pairs</a></td>
+<td></td>
+</tr>
+<tr>
+<td>25</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/reverse-nodes-in-k-group/">Reverse Nodes in k-Group</a></td>
+<td>Hard</td>
+<td><a href="/algorithm/leetcode/25.reverse-nodes-in-k-group.html">Reverse Nodes in k-Group</a></td>
+<td>Reverse List</td>
+</tr>
+<tr>
+<td>26</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/remove-duplicates-from-sorted-array/">Remove Duplicates from Sorted Array</a></td>
+<td>Easy</td>
+<td><a href="/algorithm/leetcode/26.remove-duplicates-from-sorted-array.html">Remove Duplicates from Sorted Array</a></td>
+<td></td>
+</tr>
+<tr>
+<td>27</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/remove-element/">Remove Element</a></td>
+<td>Easy</td>
+<td><a href="/algorithm/leetcode/27.remove-element.html">Remove Element</a></td>
+<td></td>
+</tr>
+<tr>
+<td>28</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/implement-strstr/">Implement strStr()</a></td>
+<td>Easy</td>
+<td><a href="/algorithm/leetcode/28.implement-strstr.html">Implement strStr()</a></td>
+<td>KMP Algorithm *</td>
+</tr>
+<tr>
+<td>29</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/divide-two-integers/">Divide Two Integers</a></td>
+<td>Medium</td>
+<td><a href="/algorithm/leetcode/29.divide-two-integers.html">Divide Two Integers</a></td>
+<td></td>
+</tr>
+<tr>
+<td>30</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/substring-with-concatenation-of-all-words/">Substring with Concatenation of All Words</a></td>
+<td>Hard</td>
+<td><a href="/algorithm/leetcode/30.substring-with-concatenation-of-all-words.html">Substring with Concatenation of All Words</a></td>
+<td></td>
+</tr>
+<tr>
+<td>31</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/next-permutation/">Next Permutation</a></td>
+<td>Medium</td>
+<td><a href="/algorithm/leetcode/31.next-permutation.html">Next Permutation</a></td>
+<td></td>
+</tr>
+<tr>
+<td>32</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/longest-valid-parentheses/">Longest Valid Parentheses</a></td>
+<td>Hard</td>
+<td><a href="/algorithm/leetcode/32.longest-valid-parentheses.html">Longest Valid Parentheses</a></td>
+<td>DP/Stack *</td>
+</tr>
+<tr>
+<td>33</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/search-in-rotated-sorted-array/">Search in Rotated Sorted Array</a></td>
+<td>Medium</td>
+<td><a href="/algorithm/leetcode/33.search-in-rotated-sorted-array.html">Search in Rotated Sorted Array</a></td>
+<td></td>
+</tr>
+<tr>
+<td>34</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/find-first-and-last-position-of-element-in-sorted-array/">Find First and Last Position of Element in Sorted Array</a></td>
+<td>Medium</td>
+<td><a href="/algorithm/leetcode/34.find-first-and-last-position-of-element-in-sorted-array.html">Find First and Last Position of Element in Sorted Array</a></td>
+<td></td>
+</tr>
+<tr>
+<td>35</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/search-insert-position/">Search Insert Position</a></td>
+<td>Easy</td>
+<td><a href="/algorithm/leetcode/35.search-insert-position.html">Search Insert Position</a></td>
+<td></td>
+</tr>
+<tr>
+<td>36</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/valid-sudoku/">Valid Sudoku</a></td>
+<td>Medium</td>
+<td><a href="/algorithm/leetcode/36.valid-sudoku.html">Valid Sudoku</a></td>
+<td></td>
+</tr>
+<tr>
+<td>37</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/sudoku-solver/">Sudoku Solver</a></td>
+<td>Hard</td>
+<td><a href="/algorithm/leetcode/37.sudoku-solver.html">Sudoku Solver</a></td>
+<td>Backtracking *</td>
+</tr>
+<tr>
+<td>38</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/count-and-say/">Count And Say</a></td>
+<td>Easy</td>
+<td><a href="/algorithm/leetcode/38.count-and-say.html">Count And Say</a></td>
+<td></td>
+</tr>
+<tr>
+<td>39</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/combination-sum/">Combination Sum</a></td>
+<td>Medium</td>
+<td><a href="/algorithm/leetcode/39.combination-sum.html">Combination Sum</a></td>
+<td>backtracing</td>
+</tr>
+<tr>
+<td>40</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/combination-sum-ii/">Combination Sum II</a></td>
+<td>Medium</td>
+<td><a href="/algorithm/leetcode/40.combination-sum-ii.html">Combination Sum II</a></td>
+<td>backtracing</td>
+</tr>
+<tr>
+<td>41</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/first-missing-positive/">First Missing Positive</a></td>
+<td>Hard</td>
+<td><a href="/algorithm/leetcode/41.first-missing-positive.html">First Missing Positive</a></td>
+<td>Trick method</td>
+</tr>
+<tr>
+<td>42</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/trapping-rain-water/">Trapping Rain Water</a></td>
+<td>Hard</td>
+<td><a href="/algorithm/leetcode/42.trapping-rain-water.html">Trapping Rain Water</a></td>
+<td>Dp/Stack/Two Pointer</td>
+</tr>
+<tr>
+<td>43</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/multiply-strings/">Multiply Strings</a></td>
+<td>Medium</td>
+<td><a href="/algorithm/leetcode/43.multiply-strings.html">Multiply Strings</a></td>
+<td></td>
+</tr>
+<tr>
+<td>44</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/wildcard-matching/">Wildcard Matching</a></td>
+<td>Hard</td>
+<td><a href="/algorithm/leetcode/44.wildcard-matching.html">Wildcard Matching</a></td>
+<td>DP*</td>
+</tr>
+<tr>
+<td>45</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/jump-game-ii/">Jump Game II</a></td>
+<td>Hard</td>
+<td><a href="/algorithm/leetcode/45.jump-game-ii.html">Jump Game II</a></td>
+<td></td>
+</tr>
+<tr>
+<td>46</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/permutations/">Permutations</a></td>
+<td>Medium</td>
+<td><a href="/algorithm/leetcode/46.permutations.html">Permutations</a></td>
+<td></td>
+</tr>
+<tr>
+<td>47</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/permutations-ii/">Permutations II</a></td>
+<td>Medium</td>
+<td><a href="/algorithm/leetcode/47.permutations-ii/.html">Permutations II</a></td>
+<td></td>
+</tr>
+<tr>
+<td>48</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/rotate-image/">Rotate Image</a></td>
+<td>Medium</td>
+<td><a href="/algorithm/leetcode/48.rotate-image/.html">Rotate Image</a></td>
+<td></td>
+</tr>
+<tr>
+<td>49</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/group-anagrams/">Group Anagrams</a></td>
+<td>Medium</td>
+<td><a href="/algorithm/leetcode/49.group-anagrams/.html">Group Anagrams</a></td>
+<td></td>
+</tr>
+<tr>
+<td>50</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/powx-n/">Pow(x, n)</a></td>
+<td>Medium</td>
+<td><a href="/algorithm/leetcode/50.powx-n/.html">Pow(x, n)</a></td>
+<td></td>
+</tr>
+<tr>
+<td>53</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/maximum-subarray/">Maximum Subarray</a></td>
+<td>Easy</td>
+<td><a href="/algorithm/leetcode/53.maximum-subarray.html">Maximum Subarray</a></td>
+<td>Kadane Algorithm *</td>
+</tr>
+<tr>
+<td>56</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/merge-intervals/">Merge Intervals</a></td>
+<td>Medium</td>
+<td><a href="/algorithm/leetcode/56.merge-intervals.html">Merge Intervals</a></td>
+<td></td>
+</tr>
+<tr>
+<td>57</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/insert-intervals/">Insert Interval</a></td>
+<td>Hard</td>
+<td><a href="/algorithm/leetcode/57.insert-intervals.html">Insert Interval</a></td>
+<td></td>
+</tr>
+<tr>
+<td>58</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/length-of-last-word/">Length of Last Word</a></td>
+<td>Easy</td>
+<td><a href="/algorithm/leetcode/58.length-of-last-word.html">Length of Last Word</a></td>
+<td></td>
+</tr>
+<tr>
+<td>66</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/plus-one/">Plus One</a></td>
+<td>Easy</td>
+<td><a href="/algorithm/leetcode/66.plus-one.html">Plus One</a></td>
+<td></td>
+</tr>
+<tr>
+<td>67</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/add-binary/">Add Binary</a></td>
+<td>Easy</td>
+<td><a href="/algorithm/leetcode/67.add-binary.html">Add Binary</a></td>
+<td></td>
+</tr>
+<tr>
+<td>69</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/sqrtx/">Sqrt(x)</a></td>
+<td>Easy</td>
+<td><a href="/algorithm/leetcode/69.sqrtx.html">Sqrt(x)</a></td>
+<td></td>
+</tr>
+<tr>
+<td>70</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/climbing-stairs/">Climbing Stairs</a></td>
+<td>Easy</td>
+<td><a href="/algorithm/leetcode/70.climbing-stairs.html">Climbing Stairs</a></td>
+<td></td>
+</tr>
+<tr>
+<td>71</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/simplify-path/">Simplify Path</a></td>
+<td>Medium</td>
+<td><a href="/algorithm/leetcode/71.simplify-path.html">Simplify Path</a></td>
+<td>dp</td>
+</tr>
+<tr>
+<td>72</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/edit-distance/">Edit Distance</a></td>
+<td>Hard</td>
+<td><a href="/algorithm/leetcode/72.edit-distance.html">Edit Distance</a></td>
+<td></td>
+</tr>
+<tr>
+<td>77</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/combinations/">Combinations</a></td>
+<td>Medium</td>
+<td><a href="/algorithm/leetcode/77.combinations.html">Combinations</a></td>
+<td>backtracing</td>
+</tr>
+<tr>
+<td>83</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/remove-duplicates-from-sorted-list/">Remove Duplicates from Sorted List</a></td>
+<td>Easy</td>
+<td><a href="/algorithm/leetcode/83.remove-duplicates-from-sorted-list.html">Remove Duplicates from Sorted List</a></td>
+<td></td>
+</tr>
+<tr>
+<td>88</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/merge-sorted-array/">Merge Sorted Array</a></td>
+<td>Easy</td>
+<td><a href="/algorithm/leetcode/88.merge-sorted-array.html">Merge Sorted Array</a></td>
+<td></td>
+</tr>
+<tr>
+<td>94</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/binary-tree-inorder-traversal/">Binary Tree Inorder Traversal</a></td>
+<td>Medium</td>
+<td><a href="/algorithm/leetcode/94.binary-tree-inorder-traversal.html">Binary Tree Inorder Traversal</a></td>
+<td></td>
+</tr>
+<tr>
+<td>100</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/same-tree/">Same Tree</a></td>
+<td>Easy</td>
+<td><a href="/algorithm/leetcode/100.same-tree.html">Same Tree</a></td>
+<td></td>
+</tr>
+<tr>
+<td>101</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/symmetric-tree/">Symmetric Tree</a></td>
+<td>Easy</td>
+<td><a href="/algorithm/leetcode/101.symmetric-tree.html">Symmetric Tree</a></td>
+<td>* Binary-Tree Traverse</td>
+</tr>
+<tr>
+<td>102</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/binary-tree-level-order-traversal/">Binary Tree Level Order Traversal</a></td>
+<td>Medium</td>
+<td><a href="/algorithm/leetcode/102.binary-tree-level-order-traversal.html">Binary Tree Level Order Traversal</a></td>
+<td>* Binary-Tree Traverse</td>
+</tr>
+<tr>
+<td>104</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/maximum-depth-of-binary-tree/">Maximum Depth of Binary Tree</a></td>
+<td>Easy</td>
+<td><a href="/algorithm/leetcode/104.maximum-depth-of-binary-tree.html">Maximum Depth of Binary Tree</a></td>
+<td>* Binary-Tree Traverse</td>
+</tr>
+<tr>
+<td>105</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/">Construct Binary Tree from Preorder and Inorder Traversal</a></td>
+<td>Medium</td>
+<td><a href="/algorithm/leetcode/105.construct-binary-tree-from-preorder-and-inorder-traversal.html">Construct Binary Tree from Preorder and Inorder Traversal</a></td>
+<td></td>
+</tr>
+<tr>
+<td>106</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/">Construct Binary Tree from Inorder and Postorder Traversal</a></td>
+<td>Medium</td>
+<td><a href="/algorithm/leetcode/106.construct-binary-tree-from-inorder-and-postorder-traversal.html">Construct Binary Tree from Inorder and Postorder Traversal</a></td>
+<td></td>
+</tr>
+<tr>
+<td>107</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/binary-tree-level-order-traversal-ii/">Binary Tree Level Order Traversal II</a></td>
+<td>Easy</td>
+<td><a href="/algorithm/leetcode/107.binary-tree-level-order-traversal-ii.html">Binary Tree Level Order Traversal II</a></td>
+<td>* Binary-Tree Traverse</td>
+</tr>
+<tr>
+<td>108</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/convert-sorted-array-to-binary-search-tree/">Convert Sorted Array to Binary Search Tree</a></td>
+<td>Easy</td>
+<td><a href="/algorithm/leetcode/108.convert-sorted-array-to-binary-search-tree.html">Convert Sorted Array to Binary Search Tree</a></td>
+<td>* Binary-Tree Traverse</td>
+</tr>
+<tr>
+<td>112</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/path-sum">Path Sum</a></td>
+<td>Easy</td>
+<td><a href="/algorithm/leetcode/112.path-sum.html">Path Sum</a></td>
+<td></td>
+</tr>
+<tr>
+<td>113</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/path-sum-ii">Path Sum II</a></td>
+<td>Medium</td>
+<td><a href="/algorithm/leetcode/113.path-sum-ii.html">Path Sum II</a></td>
+<td></td>
+</tr>
+<tr>
+<td>121</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock/">Best Time to Buy and Sell Stock</a></td>
+<td>Easy</td>
+<td><a href="/algorithm/leetcode/121.best-time-to-buy-and-sell-stock.html">Best Time to Buy and Sell Stock</a></td>
+<td></td>
+</tr>
+<tr>
+<td>122</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-ii/">Best Time to Buy and Sell Stock</a></td>
+<td>Easy</td>
+<td><a href="/algorithm/leetcode/122.best-time-to-buy-and-sell-stock-ii.html">Best Time to Buy and Sell Stock</a></td>
+<td></td>
+</tr>
+<tr>
+<td>123</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-iii/">Best Time to Buy and Sell Stock III</a></td>
+<td>Hard</td>
+<td><a href="/algorithm/leetcode/123.best-time-to-buy-and-sell-stock-iii.html">Best Time to Buy and Sell Stock III</a></td>
+<td>dp</td>
+</tr>
+<tr>
+<td>144</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/binary-tree-preorder-traversal/">Binary Tree Preorder Traversal</a></td>
+<td>Medium</td>
+<td><a href="/algorithm/leetcode/144.binary-tree-preorder-traversal.html">Binary Tree Preorder Traversal</a></td>
+<td></td>
+</tr>
+<tr>
+<td>145</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/binary-tree-postorder-traversal/">Binary Tree Postorder Traversal</a></td>
+<td>Hard</td>
+<td><a href="/algorithm/leetcode/145.binary-tree-postorder-traversal.html">Binary Tree Postorder Traversal</a></td>
+<td></td>
+</tr>
+<tr>
+<td>188</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-iv/">Best Time to Buy and Sell Stock IV</a></td>
+<td>Hard</td>
+<td><a href="/algorithm/leetcode/188.best-time-to-buy-and-sell-stock-iv.html">Best Time to Buy and Sell Stock IV</a></td>
+<td>dp</td>
+</tr>
+<tr>
+<td>198</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/house-robber/">House Robber</a></td>
+<td>Easy</td>
+<td><a href="/algorithm/leetcode/198.house-robber.html">House Robber</a></td>
+<td>dp</td>
+</tr>
+<tr>
+<td>213</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/house-robber-ii/">House Robber II</a></td>
+<td>Easy</td>
+<td><a href="/algorithm/leetcode/213.house-robber-ii.html">House Robber II</a></td>
+<td>dp</td>
+</tr>
+<tr>
+<td>216</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/combination-sum-iii/">Combination Sum III</a></td>
+<td>Medium</td>
+<td><a href="/algorithm/leetcode/216.combination-sum-iii.html">Combination Sum III</a></td>
+<td>backtracing</td>
+</tr>
+<tr>
+<td>236</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/lowest-common-ancestor-of-a-binary-tree">Lowest Common Ancestor of a Binary Tree</a></td>
+<td>Medium</td>
+<td><a href="/algorithm/leetcode/236.lowest-common-ancestor-of-a-binary-tree.html">Lowest Common Ancestor of a Binary Tree</a></td>
+<td></td>
+</tr>
+<tr>
+<td>279</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/perfect-squares">Perfect Squares</a></td>
+<td>Medium</td>
+<td><a href="/algorithm/leetcode/279.perfect-squares.html">Perfect Squares</a></td>
+<td>dp</td>
+</tr>
+<tr>
+<td>287</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/find-the-duplicate-number">Find the Duplicate Number</a></td>
+<td>Medium</td>
+<td><a href="/algorithm/leetcode/287.find-the-duplicate-number.html">Find the Duplicate Number</a></td>
+<td>fast-slow-pointer</td>
+</tr>
+<tr>
+<td>300</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/longest-increasing-subsequence/">Longest Increasing Subsequence</a></td>
+<td>Medium</td>
+<td><a href="/algorithm/leetcode/300.longest-increasing-subsequence.html">Longest Increasing Subsequence</a></td>
+<td>dp</td>
+</tr>
+<tr>
+<td>309</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-with-cooldown">Best Time to Buy and Sell Stock with Cooldown</a></td>
+<td>Medium</td>
+<td><a href="/algorithm/leetcode/309.best-time-to-buy-and-sell-stock-with-cooldown.html">Best Time to Buy and Sell Stock with Cooldown</a></td>
+<td>dp</td>
+</tr>
+<tr>
+<td>337</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/house-robber-iii">House Robber III</a></td>
+<td>Medium</td>
+<td><a href="/algorithm/leetcode/337.house-robber-iii.html">House Robber III</a></td>
+<td>dp</td>
+</tr>
+<tr>
+<td>373</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/find-k-pairs-with-smallest-sums">Find K Pairs with Smallest Sums</a></td>
+<td>Medium</td>
+<td><a href="/algorithm/leetcode/373.find-k-pairs-with-smallest-sums.html">Find K Pairs with Smallest Sums</a></td>
+<td></td>
+</tr>
+<tr>
+<td>377</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/combination-sum-iv/">Combination Sum IV</a></td>
+<td>Medium</td>
+<td><a href="/algorithm/leetcode/377.combinatyion-sum-iv.html">Combination Sum IV</a></td>
+<td>dp</td>
+</tr>
+<tr>
+<td>378</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/kth-smallest-element-in-a-sorted-matrix">Kth Smallest Element in a Sorted Matrix</a></td>
+<td>Medium</td>
+<td><a href="/algorithm/leetcode/378.kth-smallest-element-in-a-sorted-matrix.html">Kth Smallest Element in a Sorted Matrix</a></td>
+<td></td>
+</tr>
+<tr>
+<td>407</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/trapping-rain-water-ii"> Trapping Rain Water II</a></td>
+<td>Hard</td>
+<td><a href="/algorithm/leetcode/407.trapping-rain-water-ii.html"> Trapping Rain Water II</a></td>
+<td></td>
+</tr>
+<tr>
+<td>437</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/path-sum-iii">Path Sum III</a></td>
+<td>Easy</td>
+<td><a href="/algorithm/leetcode/437.path-sum-iii.html">Path Sum III</a></td>
+<td></td>
+</tr>
+<tr>
+<td>442</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/find-all-duplicates-in-an-array">Find All Duplicates in an Array</a></td>
+<td>Medium</td>
+<td><a href="/algorithm/leetcode/442.find-all-duplicates-in-an-array.html">Find All Duplicates in an Array</a></td>
+<td></td>
+</tr>
+<tr>
+<td>448</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/find-all-numbers-disappeared-in-an-array">Find All Numbers Disappeared in an Array</a></td>
+<td>Easy</td>
+<td><a href="/algorithm/leetcode/448.find-all-numbers-disappeared-in-an-array.html">Find All Numbers Disappeared in an Array</a></td>
+<td></td>
+</tr>
+<tr>
+<td>468</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/validate-ip-address">Validate IP Address</a></td>
+<td>Medium</td>
+<td><a href="/algorithm/leetcode/468.validate-ip-address.html">Validate IP Address</a></td>
+<td></td>
+</tr>
+<tr>
+<td>538</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/convert-bst-to-greater-tree">Convert BST to Greater Tree</a></td>
+<td>Easy</td>
+<td><a href="/algorithm/leetcode/538.convert-bst-to-greater-tree.html">Convert BST to Greater Tree</a></td>
+<td></td>
+</tr>
+<tr>
+<td>583</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/delete-operation-for-two-strings">Delete Operation for Two Strings</a></td>
+<td>Medium</td>
+<td><a href="/algorithm/leetcode/583.delete-operation-for-two-strings.html">Delete Operation for Two Strings</a></td>
+<td>dp</td>
+</tr>
+<tr>
+<td>645</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/set-mismatch">Set Mismatch</a></td>
+<td>Easy</td>
+<td><a href="/algorithm/leetcode/645.set-mismatch.html">Set Mismatch</a></td>
+<td></td>
+</tr>
+<tr>
+<td>650</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/2-keys-keyboard">2 Keys Keyboard</a></td>
+<td>Medium</td>
+<td><a href="/algorithm/leetcode/650.2-keys-keyboard.html">2 Keys Keyboard</a></td>
+<td>dp</td>
+</tr>
+<tr>
+<td>669</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/trim-a-binary-search-tree">Trim a Binary Search Tree</a></td>
+<td>Easy</td>
+<td><a href="/algorithm/leetcode/669.trim-a-binary-search-tree.html">Trim a Binary Search Tree</a></td>
+<td></td>
+</tr>
+<tr>
+<td>671</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/second-minimum-node-in-a-binary-tree">Second Minimum Node In a Binary Tree</a></td>
+<td>Easy</td>
+<td><a href="/algorithm/leetcode/671.second-minimum-node-in-a-binary-tree.html">Second Minimum Node In a Binary Tree</a></td>
+<td></td>
+</tr>
+<tr>
+<td>687</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/longest-univalue-path">Longest Univalue Path</a></td>
+<td>Easy</td>
+<td><a href="/algorithm/leetcode/687.longest-univalue-path.html">Longest Univalue Path</a></td>
+<td></td>
+</tr>
+<tr>
+<td>714</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-with-transaction-fee">Best Time to Buy and Sell Stock with Transaction Fee</a></td>
+<td>Medium</td>
+<td><a href="/algorithm/leetcode/714.best-time-to-buy-and-sell-stock-with-transaction-fee.html">Best Time to Buy and Sell Stock with Transaction Fee</a></td>
+<td>dp</td>
+</tr>
+<tr>
+<td>873</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/length-of-longest-fibonacci-subsequence">Length of Longest Fibonacci Subsequence</a></td>
+<td>Medium</td>
+<td><a href="/algorithm/leetcode/873.length-of-longest-fibonacci-subsequence.html">Length of Longest Fibonacci Subsequence</a></td>
+<td>dp</td>
+</tr>
+<tr>
+<td>953</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/verifying-an-alien-dictionary">Verifying an Alien Dictionary</a></td>
+<td>Easy</td>
+<td><a href="/algorithm/leetcode/953.verifying-an-alien-dictionary.html">Verifying an Alien Dictionary</a></td>
+<td></td>
+</tr>
+<tr>
+<td>1027</td>
+<td><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/longest-arithmetic-sequence">Longest Arithmetic Sequence</a></td>
+<td>Medium</td>
+<td><a href="/algorithm/leetcode/1027.longest-arithmetic-sequence.html">Longest Arithmetic Sequence</a></td>
+<td>dp</td>
+</tr>
+</tbody></table>
+<h1 id="剑指-offer"><a href="#剑指-offer" class="headerlink" title="剑指 offer"></a>剑指 offer</h1><table>
+<thead>
+<tr>
+<th>#</th>
+<th>Title</th>
+<th>Blog</th>
+<th>Category</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>3</td>
+<td><a target="_blank" rel="noopener" href="https://www.nowcoder.com/practice/abc3fe2ce8e146608e868a70efebf62e">二维数组中的查找</a></td>
+<td><a href="/algorithm/coding_interview/3.FindInTwoDimensionArray.html">二维数组中的查找</a></td>
+<td>数组、查找</td>
+</tr>
+<tr>
+<td>4</td>
+<td><a target="_blank" rel="noopener" href="https://www.nowcoder.com/practice/4060ac7e3e404ad1a894ef3e17650423">替换空格</a></td>
+<td><a href="/algorithm/coding_interview/4.ReplaceSpace.html">替换空格</a></td>
+<td>字符串</td>
+</tr>
+<tr>
+<td>5</td>
+<td><a target="_blank" rel="noopener" href="https://www.nowcoder.com/practice/d0267f7f55b3412ba93bd35cfa8e8035">从尾到头打印链表</a></td>
+<td><a href="/algorithm/coding_interview/5.PrintListFromTailToHead.html">从尾到头打印链表</a></td>
+<td>链表</td>
+</tr>
+<tr>
+<td>6</td>
+<td><a target="_blank" rel="noopener" href="https://www.nowcoder.com/practice/8a19cbe657394eeaac2f6ea9b0f6fcf6">重建二叉树</a></td>
+<td><a href="/algorithm/coding_interview/6.ReConstructBinaryTree.html">重建二叉树</a></td>
+<td>树 *</td>
+</tr>
+<tr>
+<td>7</td>
+<td><a target="_blank" rel="noopener" href="https://www.nowcoder.com/practice/54275ddae22f475981afa2244dd448c6">用两个栈实现队列</a></td>
+<td><a href="/algorithm/coding_interview/7.QueueImplementedBy2Stacks.html">用两个栈实现队列</a></td>
+<td>栈、队列</td>
+</tr>
+<tr>
+<td>8</td>
+<td><a target="_blank" rel="noopener" href="https://www.nowcoder.com/practice/9f3231a991af4f55b95579b44b7a01ba">旋转数组的最小数字</a></td>
+<td><a href="/algorithm/coding_interview/8.MinNumberInRotateArray.html">旋转数组的最小数字</a></td>
+<td>查找和排序</td>
+</tr>
+<tr>
+<td>9</td>
+<td><a target="_blank" rel="noopener" href="https://www.nowcoder.com/practice/c6c7742f5ba7442aada113136ddea0c3">斐波那契数列</a></td>
+<td><a href="/algorithm/coding_interview/9.Fibonacci.html">斐波那契数列</a></td>
+<td>递归和循环</td>
+</tr>
+<tr>
+<td>9_1</td>
+<td><a target="_blank" rel="noopener" href="https://www.nowcoder.com/practice/8c82a5b80378478f9484d87d1c5f12a4">跳台阶</a></td>
+<td><a href="/algorithm/coding_interview/9_1.JumpFloor.html">跳台阶</a></td>
+<td>递归和循环</td>
+</tr>
+<tr>
+<td>9_2</td>
+<td><a target="_blank" rel="noopener" href="https://www.nowcoder.com/practice/22243d016f6b47f2a6928b4313c85387">变态跳台阶</a></td>
+<td><a href="/algorithm/coding_interview/9_2.JumpFloor2.html">变态跳台阶</a></td>
+<td>递归和循环</td>
+</tr>
+<tr>
+<td>9_3</td>
+<td><a target="_blank" rel="noopener" href="https://www.nowcoder.com/practice/72a5a919508a4251859fb2cfb987a0e6">矩形覆盖</a></td>
+<td><a href="/algorithm/coding_interview/9_3.RectCover.html">矩形覆盖</a></td>
+<td>递归和循环</td>
+</tr>
+<tr>
+<td>10</td>
+<td><a target="_blank" rel="noopener" href="https://www.nowcoder.com/practice/8ee967e43c2c4ec193b040ea7fbb10b8">二进制中 1 的个数</a></td>
+<td><a href="/algorithm/coding_interview/10.NumberOf1InBinary.html">二进制中 1 的个数</a></td>
+<td>位运算</td>
+</tr>
+<tr>
+<td>11</td>
+<td><a target="_blank" rel="noopener" href="https://www.nowcoder.com/practice/1a834e5e3e1a4b7ba251417554e07c00">数值的整数次方</a></td>
+<td><a href="/algorithm/coding_interview/11.PowerOfNumber.html">数值的整数次方</a></td>
+<td>代码的完整性</td>
+</tr>
+<tr>
+<td>14</td>
+<td><a target="_blank" rel="noopener" href="https://www.nowcoder.com/practice/beb5aa231adc45b2a5dcc5b62c93f593">调整数组顺序使奇数位于偶数前面</a></td>
+<td><a href="/algorithm/coding_interview/14.ReOrderArray.html">调整数组顺序使奇数位于偶数前面</a></td>
+<td>代码的完整性、数组</td>
+</tr>
+<tr>
+<td>15</td>
+<td><a target="_blank" rel="noopener" href="https://www.nowcoder.com/practice/529d3ae5a407492994ad2a246518148a">链表中倒数第 k 个结点</a></td>
+<td><a href="/algorithm/coding_interview/15.FindKthToTailInLinkedList.html">链表中倒数第 k 个结点</a></td>
+<td>代码的鲁棒性、链表</td>
+</tr>
+<tr>
+<td>16</td>
+<td><a target="_blank" rel="noopener" href="https://www.nowcoder.com/practice/75e878df47f24fdc9dc3e400ec6058ca">反转链表</a></td>
+<td><a href="/algorithm/coding_interview/16.ReverseLinkedList.html">反转链表</a></td>
+<td>代码的鲁棒性、链表</td>
+</tr>
+<tr>
+<td>17</td>
+<td><a target="_blank" rel="noopener" href="https://www.nowcoder.com/practice/d8b6b4358f774294a89de2a6ac4d9337">合并两个排序的链表</a></td>
+<td><a href="/algorithm/coding_interview/17.MergeTwoSortedLinkedList.html">合并两个排序的链表</a></td>
+<td>代码的鲁棒性、链表</td>
+</tr>
+<tr>
+<td>18</td>
+<td><a target="_blank" rel="noopener" href="https://www.nowcoder.com/practice/6e196c44c7004d15b1610b9afca8bd88">树的子结构</a></td>
+<td><a href="/algorithm/coding_interview/18.HasSubtree.html">树的子结构</a></td>
+<td>代码的鲁棒性</td>
+</tr>
+<tr>
+<td>19</td>
+<td><a target="_blank" rel="noopener" href="https://www.nowcoder.com/practice/564f4c26aa584921bc75623e48ca3011">二叉树的镜像</a></td>
+<td><a href="/algorithm/coding_interview/19.BinaryTreeMirror.html">二叉树的镜像</a></td>
+<td>面试思路</td>
+</tr>
+<tr>
+<td>20</td>
+<td><a target="_blank" rel="noopener" href="https://www.nowcoder.com/practice/9b4c81a02cd34f76be2659fa0d54342a">顺时针打印矩阵</a></td>
+<td><a href="/algorithm/coding_interview/20.printMatrix.html">顺时针打印矩阵</a></td>
+<td>画图让抽象形象化、数组</td>
+</tr>
+<tr>
+<td>21</td>
+<td><a target="_blank" rel="noopener" href="https://www.nowcoder.com/practice/4c776177d2c04c2494f2555c9fcc1e49">包含 min 函数的栈</a></td>
+<td><a href="/algorithm/coding_interview/21.AStackContainsMin.html">包含 min 函数的栈</a></td>
+<td>举例让抽象形象化、栈</td>
+</tr>
+<tr>
+<td>22</td>
+<td><a target="_blank" rel="noopener" href="https://www.nowcoder.com/practice/d77d11405cc7470d82554cb392585106">栈的压入、弹出序列</a></td>
+<td><a href="/algorithm/coding_interview/22.IsPopOrderOfStack.html">栈的压入、弹出序列</a></td>
+<td>举例让抽象形象化、栈</td>
+</tr>
+<tr>
+<td>23</td>
+<td><a target="_blank" rel="noopener" href="https://www.nowcoder.com/practice/7fe2212963db4790b57431d9ed259701">从上往下打印二叉树</a></td>
+<td><a href="/algorithm/coding_interview/23.PrintBinaryTreeFromTopToBottom.html">从上往下打印二叉树</a></td>
+<td>举例让抽象形象化</td>
+</tr>
+<tr>
+<td>24</td>
+<td><a target="_blank" rel="noopener" href="https://www.nowcoder.com/practice/a861533d45854474ac791d90e447bafd">二叉搜索树的后序遍历序列</a></td>
+<td><a href="/algorithm/coding_interview/24.VerifyPostOrderSquenceOfBST.html">二叉搜索树的后序遍历序列</a></td>
+<td>举例让抽象形象化</td>
+</tr>
+<tr>
+<td>25</td>
+<td><a target="_blank" rel="noopener" href="https://www.nowcoder.com/practice/b736e784e3e34731af99065031301bca">二叉树中和为某一值的路径</a></td>
+<td><a href="/algorithm/coding_interview/25.FindSumPathBinaryTree.html">二叉树中和为某一值的路径</a></td>
+<td>举例让抽象形象化</td>
+</tr>
+<tr>
+<td>26</td>
+<td><a target="_blank" rel="noopener" href="https://www.nowcoder.com/practice/f836b2c43afc4b35ad6adc41ec941dba">复杂链表的复制</a></td>
+<td><a href="/algorithm/coding_interview/26.CloneOfComplexLinkedList.html">复杂链表的复制</a></td>
+<td>分解让复杂问题简单</td>
+</tr>
+<tr>
+<td>27</td>
+<td><a target="_blank" rel="noopener" href="https://www.nowcoder.com/practice/947f6eb80d944a84850b0538bf0ec3a5">二叉搜索树与双向链表</a></td>
+<td><a href="/algorithm/coding_interview/27.ConvertBTree2LinkedList.html">二叉搜索树与双向链表</a></td>
+<td>分解让复杂问题简单*</td>
+</tr>
+<tr>
+<td>28</td>
+<td><a target="_blank" rel="noopener" href="https://www.nowcoder.com/practice/fe6b651b66ae47d7acce78ffdd9a96c7">字符串的排列</a></td>
+<td><a href="/algorithm/coding_interview/28.Permutation.html">字符串的排列</a></td>
+<td>分解让复杂问题简单*</td>
+</tr>
+<tr>
+<td>31</td>
+<td><a target="_blank" rel="noopener" href="https://www.nowcoder.com/practice/459bd355da1549fa8a49e350bf3df484">连续子数组的最大和</a></td>
+<td><a href="/algorithm/coding_interview/31.FindGreatestSumOfSubArray.html">连续子数组的最大和</a></td>
+<td>时间效率、数组</td>
+</tr>
+<tr>
+<td>32</td>
+<td><a target="_blank" rel="noopener" href="https://www.nowcoder.com/practice/bd7f978302044eee894445e244c7eee6">整数中 1 出现的次数</a></td>
+<td><a href="/algorithm/coding_interview/32.NumberOf1Between1AndN.html">整数中 1 出现的次数</a></td>
+<td>时间效率</td>
+</tr>
+<tr>
+<td>33</td>
+<td><a target="_blank" rel="noopener" href="https://www.nowcoder.com/practice/8fecd3f8ba334add803bf2a06af1b993">把数组排成最小的数</a></td>
+<td><a href="/algorithm/coding_interview/33.PrintMinNumber.html">把数组排成最小的数</a></td>
+<td>时间效率、数组 *</td>
+</tr>
+<tr>
+<td>34</td>
+<td><a target="_blank" rel="noopener" href="https://www.nowcoder.com/practice/6aa9e04fc3794f68acf8778237ba065b">丑数</a></td>
+<td><a href="/algorithm/coding_interview/34.UglyNumber.html">丑数</a></td>
+<td>时间空间效率的平衡、数组</td>
+</tr>
+<tr>
+<td>35</td>
+<td><a target="_blank" rel="noopener" href="https://www.nowcoder.com/practice/1c82e8cf713b4bbeb2a5b31cf5b0417c">第一个只出现一次的字符</a></td>
+<td><a href="/algorithm/coding_interview/35.FirstNotRepeatingChar.html">第一个只出现一次的字符</a></td>
+<td>时间空间效率的平衡、字符串</td>
+</tr>
+<tr>
+<td>36</td>
+<td><a target="_blank" rel="noopener" href="https://www.nowcoder.com/practice/96bd6684e04a44eb80e6a68efc0ec6c5">数组中的逆序对</a></td>
+<td><a href="/algorithm/coding_interview/36.InversePairsInArray.html">数组中的逆序对</a></td>
+<td>时间空间效率的平衡、数组</td>
+</tr>
+<tr>
+<td>37</td>
+<td><a target="_blank" rel="noopener" href="https://www.nowcoder.com/practice/70610bf967994b22bb1c26f9ae901fa2">两个链表的第一个公共结点</a></td>
+<td><a href="/algorithm/coding_interview/37.FindFirstCommonNode.html">两个链表的第一个公共结点</a></td>
+<td>时间空间效率的平衡、链表</td>
+</tr>
+<tr>
+<td>38</td>
+<td><a target="_blank" rel="noopener" href="https://www.nowcoder.com/practice/70610bf967994b22bb1c26f9ae901fa2">数字在排序数组中出现的次数</a></td>
+<td><a href="/algorithm/coding_interview/38.GetNumberOfK.html">数字在排序数组中出现的次数</a></td>
+<td>知识迁移能力、数组</td>
+</tr>
+<tr>
+<td>39</td>
+<td><a target="_blank" rel="noopener" href="https://www.nowcoder.com/practice/435fb86331474282a3499955f0a41e8b">二叉树的深度</a></td>
+<td><a href="/algorithm/coding_interview/39.BinaryTreeDepth.html">二叉树的深度</a></td>
+<td>知识迁移能力、数组</td>
+</tr>
+<tr>
+<td>39_2</td>
+<td><a target="_blank" rel="noopener" href="https://www.nowcoder.com/practice/8b3b95850edb4115918ecebdf1b4d222">平衡二叉树</a></td>
+<td><a href="/algorithm/coding_interview/39_2.BalancedBinaryTree.html">平衡二叉树</a></td>
+<td>知识迁移能力</td>
+</tr>
+<tr>
+<td>40</td>
+<td><a target="_blank" rel="noopener" href="https://www.nowcoder.com/practice/e02fdb54d7524710a7d664d082bb7811">数组中只出现一次的数字</a></td>
+<td><a href="/algorithm/coding_interview/40.FindNumsAppearOnce.html">数组中只出现一次的数字</a></td>
+<td>知识迁移能力、数组</td>
+</tr>
+<tr>
+<td>41</td>
+<td><a target="_blank" rel="noopener" href="https://www.nowcoder.com/practice/390da4f7a00f44bea7c2f3d19491311b">和为 S 的两个数字</a></td>
+<td><a href="/algorithm/coding_interview/41.FindNumbersWithSum.html">和为 S 的两个数字</a></td>
+<td>知识迁移能力</td>
+</tr>
+<tr>
+<td>41_2</td>
+<td><a target="_blank" rel="noopener" href="https://www.nowcoder.com/practice/c451a3fd84b64cb19485dad758a55ebe">和为 S 的连续正数序列</a></td>
+<td><a href="/algorithm/coding_interview/41_2.FindContinousSeq.html">和为 S 的连续正数序列</a></td>
+<td>知识迁移能力</td>
+</tr>
+<tr>
+<td>42</td>
+<td><a target="_blank" rel="noopener" href="https://www.nowcoder.com/practice/3194a4f4cf814f63919d0790578d51f3">翻转单词顺序列</a></td>
+<td><a href="/algorithm/coding_interview/42.ReverseSentence.html">翻转单词顺序列</a></td>
+<td>知识迁移能力、字符串</td>
+</tr>
+<tr>
+<td>42_2</td>
+<td><a target="_blank" rel="noopener" href="https://www.nowcoder.com/practice/12d959b108cb42b1ab72cef4d36af5ec">左旋转字符串</a></td>
+<td><a href="/algorithm/coding_interview/42_2.LeftRotateString.html">左旋转字符串</a></td>
+<td>知识迁移能力、字符串</td>
+</tr>
+<tr>
+<td>44</td>
+<td><a target="_blank" rel="noopener" href="https://www.nowcoder.com/practice/762836f4d43d43ca9deb273b3de8e1f4">扑克牌顺子</a></td>
+<td><a href="/algorithm/coding_interview/44.IsContinuousInCards.html">扑克牌顺子</a></td>
+<td>抽象建模能力</td>
+</tr>
+<tr>
+<td>45</td>
+<td><a target="_blank" rel="noopener" href="https://www.nowcoder.com/practice/f78a359491e64a50bce2d89cff857eb6">圆圈中最后剩下的数</a></td>
+<td><a href="/algorithm/coding_interview/45.LastRemainingNumberInCircle.html">圆圈中最后剩下的数</a></td>
+<td>抽象建模能力、模拟</td>
+</tr>
+<tr>
+<td>46</td>
+<td><a target="_blank" rel="noopener" href="https://www.nowcoder.com/practice/7a0da8fc483247ff8800059e12d7caf1">求 1+2+3+…+n</a></td>
+<td><a href="/algorithm/coding_interview/46.SumWithLimits.html">求 1+2+3+…+n</a></td>
+<td>发散思维能力</td>
+</tr>
+<tr>
+<td>47</td>
+<td><a target="_blank" rel="noopener" href="https://www.nowcoder.com/practice/59ac416b4b944300b617d4f7f111b215">不用加减乘除做加法</a></td>
+<td><a href="/algorithm/coding_interview/47.AddWithLimits.html">不用加减乘除做加法</a></td>
+<td>发散思维能力</td>
+</tr>
+<tr>
+<td>49</td>
+<td><a target="_blank" rel="noopener" href="https://www.nowcoder.com/practice/1277c681251b4372bdef344468e4f26e">把字符串转换成整数</a></td>
+<td><a href="/algorithm/coding_interview/49.StrToInt.html">把字符串转换成整数</a></td>
+<td>综合、字符串</td>
+</tr>
+<tr>
+<td>51</td>
+<td><a target="_blank" rel="noopener" href="https://www.nowcoder.com/practice/623a5ac0ea5b4e5f95552655361ae0a8">数组中重复的数字</a></td>
+<td><a href="/algorithm/coding_interview/51.DuplicateNumOfArray.html">数组中重复的数字</a></td>
+<td>数组</td>
+</tr>
+<tr>
+<td>52</td>
+<td><a target="_blank" rel="noopener" href="https://www.nowcoder.com/practice/94a4d381a68b47b7a8bed86f2975db46">构建乘积数组</a></td>
+<td><a href="/algorithm/coding_interview/52.MultiplyArray.html">构建乘积数组</a></td>
+<td>数组</td>
+</tr>
+<tr>
+<td>53</td>
+<td><a target="_blank" rel="noopener" href="https://www.nowcoder.com/practice/45327ae22b7b413ea21df13ee7d6429c">正则表达式匹配</a></td>
+<td><a href="/algorithm/coding_interview/53.RegularExpressionMatch.html">正则表达式匹配</a></td>
+<td>字符串</td>
+</tr>
+<tr>
+<td>54</td>
+<td><a target="_blank" rel="noopener" href="https://www.nowcoder.com/practice/6f8c901d091949a5837e24bb82a731f2">表示数值的字符串</a></td>
+<td><a href="/algorithm/coding_interview/54.StringIsNumericOrNot.html">表示数值的字符串</a></td>
+<td>字符串</td>
+</tr>
+<tr>
+<td>55</td>
+<td><a target="_blank" rel="noopener" href="https://www.nowcoder.com/practice/00de97733b8e4f97a3fb5c680ee10720">字符流中第一个不重复的字符</a></td>
+<td><a href="/algorithm/coding_interview/55.FirstAppearingOnceInStream.html">字符流中第一个不重复的字符</a></td>
+<td>字符串</td>
+</tr>
+<tr>
+<td>56</td>
+<td><a target="_blank" rel="noopener" href="https://www.nowcoder.com/practice/253d2c59ec3e4bc68da16833f79a38e4">链表中环的入口结点</a></td>
+<td><a href="/algorithm/coding_interview/56.EntryNodeOfRingedLinkedList.html">链表中环的入口结点</a></td>
+<td>链表</td>
+</tr>
+<tr>
+<td>57</td>
+<td><a target="_blank" rel="noopener" href="https://www.nowcoder.com/practice/fc533c45b73a41b0b44ccba763f866ef">删除链表中重复的结点</a></td>
+<td><a href="/algorithm/coding_interview/57.DelRepeatedNodeInLinkedList.html">删除链表中重复的结点</a></td>
+<td>链表</td>
+</tr>
+<tr>
+<td>58</td>
+<td><a target="_blank" rel="noopener" href="https://www.nowcoder.com/practice/9023a0c988684a53960365b889ceaf5e">二叉树的下一个结点</a></td>
+<td><a href="/algorithm/coding_interview/58.NextNodeInBinaryTree.html">二叉树的下一个结点</a></td>
+<td>树</td>
+</tr>
+<tr>
+<td>59</td>
+<td><a target="_blank" rel="noopener" href="https://www.nowcoder.com/practice/ff05d44dfdb04e1d83bdbdab320efbcb">对称的二叉树</a></td>
+<td><a href="/algorithm/coding_interview/59.SymmetricBinaryTree.html">对称的二叉树</a></td>
+<td>树*</td>
+</tr>
+<tr>
+<td>60</td>
+<td><a target="_blank" rel="noopener" href="https://www.nowcoder.com/practice/445c44d982d04483b04a54f298796288">把二叉树打印成多行</a></td>
+<td><a href="/algorithm/coding_interview/60.PrintBinaryTreeMultiLine.html">把二叉树打印成多行</a></td>
+<td>树</td>
+</tr>
+<tr>
+<td>61</td>
+<td><a target="_blank" rel="noopener" href="https://www.nowcoder.com/practice/91b69814117f4e8097390d107d2efbe0">按之字形顺序打印二叉树</a></td>
+<td><a href="/algorithm/coding_interview/61.PrintBinaryTreeInZ.html">按之字形顺序打印二叉树</a></td>
+<td>树</td>
+</tr>
+<tr>
+<td>62</td>
+<td><a target="_blank" rel="noopener" href="https://www.nowcoder.com/practice/cf7e25aa97c04cc1a68c8f040e71fb84">序列化二叉树</a></td>
+<td><a href="/algorithm/coding_interview/62.SerializeBinaryTree.html">序列化二叉树</a></td>
+<td>树</td>
+</tr>
+<tr>
+<td>63</td>
+<td><a target="_blank" rel="noopener" href="https://www.nowcoder.com/practice/ef068f602dde4d28aab2b210e859150a">二叉搜索树的第 k 个结点</a></td>
+<td><a href="/algorithm/coding_interview/63.KthSmallestNodeInBinaryTree.html">二叉搜索树的第 k 个结点</a></td>
+<td>树</td>
+</tr>
+<tr>
+<td>64</td>
+<td><a target="_blank" rel="noopener" href="https://www.nowcoder.com/practice/9be0172896bd43948f8a32fb954e1be1">数据流中的中位数</a></td>
+<td><a href="/algorithm/coding_interview/64.GetMedianInFlow.html">数据流中的中位数</a></td>
+<td>树*</td>
+</tr>
+<tr>
+<td>65</td>
+<td><a target="_blank" rel="noopener" href="https://www.nowcoder.com/practice/1624bc35a45c42c0bc17d17fa0cba788">滑动窗口的最大值</a></td>
+<td><a href="/algorithm/coding_interview/65.MaxInWindows.html">滑动窗口的最大值</a></td>
+<td>栈和队列*</td>
+</tr>
+<tr>
+<td>66</td>
+<td><a target="_blank" rel="noopener" href="https://www.nowcoder.com/practice/c61c6999eecb4b8f88a98f66b273a3cc">矩阵中的路径</a></td>
+<td><a href="/algorithm/coding_interview/66.HasPathInMatrix.html">矩阵中的路径</a></td>
+<td>回溯法</td>
+</tr>
+<tr>
+<td>67</td>
+<td><a target="_blank" rel="noopener" href="https://www.nowcoder.com/practice/6e5207314b5241fb83f2329e89fdecc8">机器人的运动范围</a></td>
+<td><a href="/algorithm/coding_interview/67.RangeOfMotion.html">机器人的运动范围</a></td>
+<td>回溯法</td>
+</tr>
+</tbody></table>
+<h1 id="专题"><a href="#专题" class="headerlink" title="专题"></a>专题</h1><table>
+<thead>
+<tr>
+<th>#</th>
+<th>Title</th>
+<th>Category</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td><a href="/algorithm/topic/BinaryTree.html">二叉树相关知识点总结</a></td>
+<td>树</td>
+</tr>
+<tr>
+<td>2</td>
+<td><a href="/algorithm/topic/LeetCode.html">LeetCode 题目专题</a></td>
+<td>LeetCode</td>
+</tr>
+</tbody></table>
+
+      </div>
+      
+      
+      
+    </div>
+
+    
+    
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">陇 ICP 备 15003463 号 </a>
+  </div>
+
+<div class="copyright">
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jason Bian</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">235k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">3:33</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/lozad.js/1.16.0/lozad.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/pangu/4.0.7/pangu.min.js"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/pjax.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://cdn.jsdelivr.net/npm/pdfobject@2.2.7/pdfobject.min.js","integrity":"sha256-ph3Dk89VmuTVXG6x/RDzk53SU9LPdAh1tpv0UvnDZ2I="},"url":"/lib/pdf/web/viewer.html"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdn.jsdelivr.net/npm/mermaid@8.13.8/dist/mermaid.min.js","integrity":"sha256-QmSAc2kIaUjleIJ46X7qPW2zrpCbXlMz3YIGgWpQ1Jo="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"imaginezz","repo":"blog_public","client_id":"9c022a847ecc01650469","client_secret":"3c6fae6a3119943e381c2682b0a40f84573463b4","admin_user":"imaginezz","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js","integrity":"sha256-Pmj85ojLaPOWwRtlMJwmezB/Qg8BzvJp5eTzvXaYAfA="},"path_md5":"5745e32058c1b582dbe8cdde24cac3db"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>

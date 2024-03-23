@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)">
+<meta name="generator" content="Hexo 6.3.0">
+
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/favicon/safari-pinned-tab.svg" color="#222">
+  <link rel="manifest" href="/images/favicon/site.webmanifest">
+  <meta name="baidu-site-verification" content="5x8DHwr7y8">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.bootcdn.net/ajax/libs/pace/1.2.4/pace.min.js"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.zhengi.me","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":true,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":true,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="Windows 桌面程序开发一些方案开发 Windows GUI 程序的方案有很多，接触过比较流行的大概有三种，一种是 C++和 Qt，一种是 HTML5+浏览器内核，最后一种是 C#+WPF。另外古老的 WinForms 和更古老的 MFC 也不多说了。 Qt 的跨平台特性得以开发的项目可以跨平台，而且各种 C++的组件非常丰富。但是但是 Qt 本身库的并不小，我也不是很喜欢 QML 那种 JS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用c++和XAML开发UWP程序">
+<meta property="og:url" content="https://blog.zhengi.me/cpp_xaml_uwp/index.html">
+<meta property="og:site_name" content="政子的博客">
+<meta property="og:description" content="Windows 桌面程序开发一些方案开发 Windows GUI 程序的方案有很多，接触过比较流行的大概有三种，一种是 C++和 Qt，一种是 HTML5+浏览器内核，最后一种是 C#+WPF。另外古老的 WinForms 和更古老的 MFC 也不多说了。 Qt 的跨平台特性得以开发的项目可以跨平台，而且各种 C++的组件非常丰富。但是但是 Qt 本身库的并不小，我也不是很喜欢 QML 那种 JS">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.zhengi.me/wp-content/uploads/2017/09/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20170924163941.png">
+<meta property="og:image" content="https://blog.zhengi.me/wp-content/uploads/2017/09/4f5f2392683c3f7111fe8c8f6adf7bdd.png">
+<meta property="og:image" content="https://blog.zhengi.me/wp-content/uploads/2017/09/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20170924172202.png">
+<meta property="article:published_time" content="2017-10-24T09:30:54.000Z">
+<meta property="article:modified_time" content="2024-03-23T06:03:16.943Z">
+<meta property="article:author" content="Jason Bian">
+<meta property="article:tag" content="C++">
+<meta property="article:tag" content="UWP">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.zhengi.me/wp-content/uploads/2017/09/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20170924163941.png">
+
+
+<link rel="canonical" href="https://blog.zhengi.me/cpp_xaml_uwp/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://blog.zhengi.me/cpp_xaml_uwp/","path":"cpp_xaml_uwp/","title":"使用c++和XAML开发UWP程序"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>使用c++和XAML开发UWP程序 | 政子的博客</title>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?590a1bfeac720e6a29c58f70ab77a9a3"></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="政子的博客" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">政子的博客</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">技术|学习|随笔</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa  fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+        <li class="menu-item menu-item-书单"><a href="/booklist/" rel="section"><i class="fa fa-book fa-fw"></i>书单</a></li>
+        <li class="menu-item menu-item-算法"><a href="/algorithm/" rel="section"><i class="fa fa-code fa-fw"></i>算法</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Windows-%E6%A1%8C%E9%9D%A2%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91%E4%B8%80%E4%BA%9B%E6%96%B9%E6%A1%88"><span class="nav-number">1.</span> <span class="nav-text">Windows 桌面程序开发一些方案</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%B5%B7%E5%9B%A0"><span class="nav-number">2.</span> <span class="nav-text">起因</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE"><span class="nav-number">3.</span> <span class="nav-text">环境配置</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BC%80%E5%A7%8B-Coding"><span class="nav-number">4.</span> <span class="nav-text">开始 Coding</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%80%E5%8D%95%E7%9A%84%E5%B0%9D%E8%AF%95"><span class="nav-number">5.</span> <span class="nav-text">简单的尝试</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A1%B5%E9%9D%A2%E5%AF%BC%E8%88%AA"><span class="nav-number">5.1.</span> <span class="nav-text">页面导航</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96%E4%BA%8B%E4%BB%B6%E8%A7%A6%E5%8F%91%E8%80%85"><span class="nav-number">5.2.</span> <span class="nav-text">获取事件触发者</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%9F%E6%88%90-XAML-%E5%85%83%E7%B4%A0"><span class="nav-number">5.3.</span> <span class="nav-text">生成 XAML 元素</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F"><span class="nav-number">5.4.</span> <span class="nav-text">全局变量</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%AF%E7%94%A8%E7%9A%84%E8%B5%84%E6%BA%90"><span class="nav-number">6.</span> <span class="nav-text">可用的资源</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%90%8E%E8%AE%B0"><span class="nav-number">7.</span> <span class="nav-text">后记</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Jason Bian"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Jason Bian</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">86</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">108</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/imaginezz" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;imaginezz" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto://Jason_Bian@outlook.com" title="E-Mail → mailto:&#x2F;&#x2F;Jason_Bian@outlook.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.danmakupie.com/" title="https:&#x2F;&#x2F;www.danmakupie.com&#x2F;" rel="noopener" target="_blank">弹幕派</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.oursparkspace.cn/" title="https:&#x2F;&#x2F;www.oursparkspace.cn&#x2F;" rel="noopener" target="_blank">火花空间</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.joyreserve.com/" title="http:&#x2F;&#x2F;www.joyreserve.com" rel="noopener" target="_blank">乐享其约</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://gaocegege.com/" title="http:&#x2F;&#x2F;gaocegege.com&#x2F;" rel="noopener" target="_blank">高策 江湖小虾米</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://yian.me/blog/" title="https:&#x2F;&#x2F;yian.me&#x2F;blog&#x2F;" rel="noopener" target="_blank">Y!an's Blog</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.cyprestar.com/" title="http:&#x2F;&#x2F;www.cyprestar.com&#x2F;" rel="noopener" target="_blank">Zhilong's Blog</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://yicodes.com/" title="http:&#x2F;&#x2F;yicodes.com&#x2F;" rel="noopener" target="_blank">易极</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://merrier.wang/" title="https:&#x2F;&#x2F;merrier.wang&#x2F;" rel="noopener" target="_blank">Merrier说</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://博客.胡鼎原.中国/" title="https:&#x2F;&#x2F;博客.胡鼎原.中国" rel="noopener" target="_blank">小勤奋爱学习</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://lfhacks.com/" title="https:&#x2F;&#x2F;lfhacks.com" rel="noopener" target="_blank">LFhacks</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://study4.fun/" title="https:&#x2F;&#x2F;study4.fun&#x2F;" rel="noopener" target="_blank">学而时思之</a>
+        </li>
+    </ul>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.zhengi.me/cpp_xaml_uwp/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Jason Bian">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="政子的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          使用c++和XAML开发UWP程序
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2017-10-24 17:30:54" itemprop="dateCreated datePublished" datetime="2017-10-24T17:30:54+08:00">2017-10-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/UWP/" itemprop="url" rel="index"><span itemprop="name">UWP</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>5.2k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>5 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="Windows-桌面程序开发一些方案"><a href="#Windows-桌面程序开发一些方案" class="headerlink" title="Windows 桌面程序开发一些方案"></a>Windows 桌面程序开发一些方案</h1><p>开发 Windows GUI 程序的方案有很多，接触过比较流行的大概有三种，一种是 C++和 Qt，一种是 HTML5+浏览器内核，最后一种是 C#+WPF。另外古老的 WinForms 和更古老的 MFC 也不多说了。</p>
+<p>Qt 的跨平台特性得以开发的项目可以跨平台，而且各种 C++的组件非常丰富。但是但是 Qt 本身库的并不小，我也不是很喜欢 QML 那种 JSON 的书写方式，而且 Qt Creator 用起来也不太顺手，所以一般没怎么用过这种开发模式进行桌面应用的开发。</p>
+<p>H5 和浏览器内核是一个不错的方式，可以轻松跨平台，而且 H5+JS 可以有很快的开发速度。主流的方案有 Electron、nwjs、cef 和 wke（其中<a target="_blank" rel="noopener" href="http://www.danmakupie.com/">弹幕派</a>所用的方案就是 wke），但是 Electron 同样体积巨大，不利于应用的分发。wke 虽小但也很久没有更新，内核很老，bug 比较多。最近志鹏同学正在研究之前 wke 开发者新开发的 miniblink 内核，相信这个方案会比较优秀。</p>
+<p>WPF 必须依赖于.NetFramework，所以无法跨平台，而且 XP 也不自带.Net，需要用户安装。另外，XAML 虽然写起来麻烦一些，但是开发漂亮的 GUI 还是比较方便。而最新的 UWP 技术也利用了 WPF 的 XAML 进行 UI 的设计，转型起来并不困难。</p>
+<span id="more"></span>
+
+<h1 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h1><p>上周受到卤蛋同学的启发，如果需要使用 C++开发 GUI 程序难道只能用 Qt（或者北邮老师专用的 ege）？能不能使用熟悉的就技术来开发呢？于是在 Windows Dev Center 里找到了使用 C++和 XAML 开发 UWP 程序的方式。粗略看了一下，大概是使用经过微软扩展的 C++，名字叫 c++/cx，基于 Windows RT，但是不受.Net 的托管，也就是要自己处理垃圾回收（这方面理解不够深入，感觉大概是这个意思吧）。</p>
+<p>但不管如何，可以使用 C++和 XAML 开发 Windows 应用还是让人眼前一亮，忍不住去尝试一下。所以，下面开工吧！</p>
+<h1 id="环境配置"><a href="#环境配置" class="headerlink" title="环境配置"></a>环境配置</h1><p>开发环境必须使用 Visual Studio 2017，在新建项目中选择 Visua C++语言的 Windows 通用选项，建立一个空白应用即可。如果没有下载 SDK，上方会提示下载，如果没有显示该选项，说明需要在 VS 安装程序中安装一下 VS 对 C++ UWP 的支持。</p>
+<p><img data-src="/wp-content/uploads/2017/09/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20170924163941.png"></p>
+<p>在几秒种后，Visual Studio 就会打开一个新建的应用。假设你对 WPF 很熟悉，你可以看见熟悉的 XAML 设计器，在左侧的解决方案管理器中，也可以看见 C++的文件以代码隐藏文件的形式被嵌在 xaml 文件之后，包含一个.h 文件和一个.cpp 文件。整个工程的组织形式和 WPF 极其相似，这足以让人很激动了。</p>
+<h1 id="开始-Coding"><a href="#开始-Coding" class="headerlink" title="开始 Coding"></a>开始 Coding</h1><p>进一步熟悉一下项目组织形式，可以发现，除了 C++的语法和 C#有区别，开发思路和 WPF 中的 C#是基本一致的，于是对应卤蛋的大作业题目，我建立了一些类的头文件和相关实现，需要注意的是字符串的处理问题，如果要支持中文需要使用 wstring（其实这个问题也并不仅仅是这种时候才会遇到），但关键在于 XAML 中的字符串使用了另外一种并不是 C++标准库中的字符串类型 <code>Platform::String^</code>，所以需要一些函数来在这些字符串中进行转换。</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Platform</span><span class="symbol">:</span><span class="symbol">:String^</span> <span class="title class_">Runtime</span><span class="symbol">:</span><span class="symbol">:stops</span>(std::string s)</span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">return</span> ref new <span class="title class_">Platform</span><span class="symbol">:</span><span class="symbol">:String</span>(stows(s).c_str());</span><br><span class="line">&#125;</span><br><span class="line">std::wstring <span class="title class_">Runtime</span><span class="symbol">:</span><span class="symbol">:stows</span>(std::string s)</span><br><span class="line">&#123;</span><br><span class="line">  std::wstring ws;</span><br><span class="line">  ws.assign(s.<span class="keyword">begin</span>(), s.<span class="keyword">end</span>());</span><br><span class="line">  <span class="keyword">return</span> ws;</span><br><span class="line">&#125;</span><br><span class="line">std::string <span class="title class_">Runtime</span><span class="symbol">:</span><span class="symbol">:pstos</span>(<span class="title class_">Platform</span><span class="symbol">:</span><span class="symbol">:String^</span> ps)</span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">return</span> wstos(std::wstring(ps-&gt;<span class="title class_">Data</span>()));</span><br><span class="line">&#125;</span><br><span class="line">std::string <span class="title class_">Runtime</span><span class="symbol">:</span><span class="symbol">:wstos</span>(std::wstring ws)</span><br><span class="line">&#123;</span><br><span class="line">  std::string s;</span><br><span class="line">  s.assign(ws.<span class="keyword">begin</span>(), ws.<span class="keyword">end</span>());</span><br><span class="line">  <span class="keyword">return</span> s;</span><br><span class="line">&#125;</span><br><span class="line">std::wstring <span class="title class_">Runtime</span><span class="symbol">:</span><span class="symbol">:pstows</span>(<span class="title class_">Platform</span><span class="symbol">:</span><span class="symbol">:String^</span> ps) &#123;</span><br><span class="line">  <span class="keyword">return</span> std::wstring(ps-&gt;<span class="title class_">Data</span>());</span><br><span class="line">&#125;</span><br><span class="line"><span class="title class_">Platform</span><span class="symbol">:</span><span class="symbol">:String^</span> <span class="title class_">Runtime</span><span class="symbol">:</span><span class="symbol">:wstops</span>(std::wstring ws) &#123;</span><br><span class="line">  <span class="keyword">return</span> ref new <span class="title class_">Platform</span><span class="symbol">:</span><span class="symbol">:String</span>(ws.c_str());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>具体转换关系可以参考下图，图片来自<a target="_blank" rel="noopener" href="http://www.cnblogs.com/nio-nio/p/3511843.html">http://www.cnblogs.com/nio-nio/p/3511843.html</a></p>
+<p><img data-src="/wp-content/uploads/2017/09/4f5f2392683c3f7111fe8c8f6adf7bdd.png"></p>
+<p>在完成对底层数据对象的抽象以后，就可以着手设计界面和应用逻辑了。UI 的设计因为使用了 XAML，所以非常简单，所有的 XAML 特性都可以使用。而 UI 的事件绑定也和 C#非常类似，如果让 Vs 自动生成事件响应程序的话，它会在代码隐藏文件的头文件和实现文件中分别生成函数的声明和函数体，然后就可以直接在函数中写代码来控制它了。</p>
+<h1 id="简单的尝试"><a href="#简单的尝试" class="headerlink" title="简单的尝试"></a>简单的尝试</h1><h2 id="页面导航"><a href="#页面导航" class="headerlink" title="页面导航"></a>页面导航</h2><p>首先说页面的导航，这里和 UWP 的概念非常吻合，只需要一行代码就可以实现。比如我现在需要导航到 UserPage.xaml，我只需要：</p>
+<figure class="highlight elm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Frame</span>-&gt;<span class="type">Navigate</span>(<span class="type">UserPage</span>::typeid);</span><br></pre></td></tr></table></figure>
+
+<p>就可以完成，有一点需要提醒的就是必须在.h 文件中引入 <code>UserPage.xaml.h</code> 才可以这样调用。</p>
+<h2 id="获取事件触发者"><a href="#获取事件触发者" class="headerlink" title="获取事件触发者"></a>获取事件触发者</h2><p>获取事件触发者也很容易，和 C#中思路相当，事件委托的 Handler 中触发者和参数会被以 sender 和 e 的形式传入，只需要做一些类型转换就可以获得到，下面是一个例子：</p>
+<figure class="highlight zephir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">void App1::QuestionListPage::OnPointerPressed(Platform::Object ^sender, Windows::UI::Xaml::Input::PointerRoutedEventArgs ^e)</span><br><span class="line">&#123;</span><br><span class="line">  StackPanel^ s = safe_cast&lt;StackPanel^&gt;(sender);</span><br><span class="line">  <span class="keyword">int</span> questionId =_wtoi(QA::Runtime::pstows( s-&gt;Name).c_str());</span><br><span class="line">  QA::Runtime::currentQuestion = QA::Runtime::questionList[questionId];</span><br><span class="line">  Frame-&gt;Navigate(QuestionPage::typeid);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="生成-XAML-元素"><a href="#生成-XAML-元素" class="headerlink" title="生成 XAML 元素"></a>生成 XAML 元素</h2><p>不多说，直接贴上代码：</p>
+<figure class="highlight zephir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">QuestionListPage::QuestionListPage()</span><br><span class="line">&#123;</span><br><span class="line">  InitializeComponent();</span><br><span class="line">  vector&lt;QA::Question*&gt;::iterator iter;</span><br><span class="line">  <span class="keyword">for</span> (iter = QA::Runtime::questionList.begin(); iter != QA::Runtime::questionList.end(); iter++) &#123;</span><br><span class="line">    auto questionStack = ref <span class="keyword">new</span> StackPanel();</span><br><span class="line">    QA::Question *question = *iter;</span><br><span class="line">    auto info = question-&gt;getInfo();</span><br><span class="line">    auto questionTitle = ref <span class="keyword">new</span> TextBlock();</span><br><span class="line">    questionTitle-&gt;Text = L<span class="string">&quot;问题:&quot;</span> + QA::Runtime::wstops(info[<span class="number">0</span>]);</span><br><span class="line">    questionTitle-&gt;FontSize = +<span class="number">30</span>;</span><br><span class="line">    auto userName = ref <span class="keyword">new</span> TextBlock();</span><br><span class="line">    userName-&gt;Text = L<span class="string">&quot;用户：&quot;</span> + QA::Runtime::wstops(QA::Runtime::currentUser-&gt;getUserName());</span><br><span class="line">    questionStack-&gt;Children-&gt;Append(questionTitle);</span><br><span class="line">    questionStack-&gt;Children-&gt;Append(userName);</span><br><span class="line">    questionStack-&gt;Name = question-&gt;getQuestionId().ToString();</span><br><span class="line">    questionStack-&gt;PointerPressed += ref <span class="keyword">new</span> Windows::UI::Xaml::Input::PointerEventHandler(this, &amp;App1::QuestionListPage::OnPointerPressed);</span><br><span class="line">    questionList-&gt;Items-&gt;Append(questionStack);</span><br><span class="line">    QA::Runtime::currentQuestion = question;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>以上代码在界面初始化以后动态加载了一个问题列表，其中包含了 Title 和 UserName，并且给 StackPanel 绑定了一个叫做 OnPointerPressed 的事件。（就是之前获取触发者中的代码） 一切都非常简单，不得不说微软已经把 c++/cx 改造得很像 C#了，甚至连委托都被加入了进去。</p>
+<h2 id="全局变量"><a href="#全局变量" class="headerlink" title="全局变量"></a>全局变量</h2><p>最后想说说的就是应用中全局变量的实现。 本程序采用了静态类的方式实现了全局变量和一些基础方法的封装（比如各种字符串转换函数）。只需要把需要全局的变量设置成 static，并且赋予初始值，在需要的时候调用即可。以下是代码中全局的例子：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//classes.h</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Runtime</span> &#123;</span><br><span class="line">  <span class="keyword">public</span>:</span><br><span class="line">  <span class="type">static</span> <span class="type">int</span> userNum;</span><br><span class="line">  <span class="type">static</span> <span class="type">int</span> questionNum;</span><br><span class="line">  <span class="type">static</span> <span class="type">int</span> answerNum;</span><br><span class="line">  <span class="type">static</span> User *currentUser;</span><br><span class="line">  <span class="type">static</span> Question *currentQuestion;</span><br><span class="line">  <span class="type">static</span> vector&lt;User*&gt; userList;</span><br><span class="line">  <span class="type">static</span> vector&lt;Question*&gt; questionList;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">//classes.cpp</span></span><br><span class="line"><span class="type">int</span> Runtime::userNum = <span class="number">0</span>;</span><br><span class="line"><span class="type">int</span> Runtime::questionNum = <span class="number">0</span>;</span><br><span class="line"><span class="type">int</span> Runtime::answerNum = <span class="number">0</span>;</span><br><span class="line">Question *Runtime::currentQuestion = <span class="literal">nullptr</span>;</span><br><span class="line">User *Runtime::currentUser = <span class="literal">nullptr</span>;</span><br><span class="line">vector&lt;User*&gt; Runtime::userList = <span class="built_in">vector</span>&lt;User*&gt;();</span><br><span class="line">vector&lt;Question_&gt; Runtime::questionList = <span class="built_in">vector</span>&lt;Question_&gt;();</span><br></pre></td></tr></table></figure>
+
+<p>对于全局方法，用法一样，不再赘述。</p>
+<h1 id="可用的资源"><a href="#可用的资源" class="headerlink" title="可用的资源"></a>可用的资源</h1><ul>
+<li>官方介绍：<a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/windows/uwp/get-started/create-a-basic-windows-10-app-in-cpp">https://docs.microsoft.com/en-us/windows/uwp/get-started/create-a-basic-windows-10-app-in-cpp</a>（目前也只找到了这一篇）</li>
+<li>C++ WinRT 介绍：<a target="_blank" rel="noopener" href="https://msdn.microsoft.com/zh-cn/magazine/mt745094">https://msdn.microsoft.com/zh-cn/magazine/mt745094</a></li>
+<li>官方 GitHub 仓库：<a target="_blank" rel="noopener" href="https://github.com/Microsoft/Windows-universal-samples/tree/master/Samples">https://github.com/Microsoft/Windows-universal-samples/tree/master/Samples</a>（每个例子的 C++文件夹中都是一些示例，文档有限，这些例子非常珍贵）</li>
+</ul>
+<h1 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h1><p>说应用跑不起来是假的，自己写的应用，含着泪都要让它跑起来</p>
+<p><img data-src="/wp-content/uploads/2017/09/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20170924172202.png"></p>
+<p>不过仔细思考一下，如果不是必须要用 C++，这种开发方案作用并不很大。首先资料太少，连 MSDN 上面都只能搜到 API，几乎没有任何示例，而社区中也几乎一丁点都见不到对这种方案的讨论，所以如果遇到坑基本只能自己靠经验解决（但如果太大呢），比如研究事件委托怎么写我就研究了半个晚上，没有 API 也没有文档。另外这种方案开发出的应用也只能跑在 Windows10 中，对于老版本的 Windows 和其他系统（感觉 Xarmain 也不会支持这种模式），所以应用范围也很受限。</p>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/a_brief_talk_about_pointer_and_reference/" rel="bookmark">简谈C++中指针与引用的底层实现</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/communicate_with_cpp_code_in_node/" rel="bookmark">在NodeJS中与C++代码通信</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/c_sharp_uwp_application_data/" rel="bookmark">使用C#封装一个UWP Applicaion Data的结构化存储类</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/c_sharp_uwp_http_get_and_post/" rel="bookmark">使用C#封装一个UWP的HTTP Get和Post的类</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/c_sharp_uwp_toast/" rel="bookmark">使用C#封装一个UWP的Toast通知类</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请鼓励我的原创文章</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.png" alt="Jason Bian 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="Jason Bian 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Jason Bian
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://blog.zhengi.me/cpp_xaml_uwp/" title="使用c++和XAML开发UWP程序">https://blog.zhengi.me/cpp_xaml_uwp/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/C/" rel="tag"><i class="fa fa-tag"></i> C++</a>
+              <a href="/tags/UWP/" rel="tag"><i class="fa fa-tag"></i> UWP</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/about_lanzhou/" rel="prev" title="兰州小记">
+                  <i class="fa fa-chevron-left"></i> 兰州小记
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/feelings_around_new_year/" rel="next" title="年关随笔">
+                  年关随笔 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">陇 ICP 备 15003463 号 </a>
+  </div>
+
+<div class="copyright">
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jason Bian</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">235k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">3:33</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/lozad.js/1.16.0/lozad.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/pangu/4.0.7/pangu.min.js"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/pjax.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://cdn.jsdelivr.net/npm/pdfobject@2.2.7/pdfobject.min.js","integrity":"sha256-ph3Dk89VmuTVXG6x/RDzk53SU9LPdAh1tpv0UvnDZ2I="},"url":"/lib/pdf/web/viewer.html"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdn.jsdelivr.net/npm/mermaid@8.13.8/dist/mermaid.min.js","integrity":"sha256-QmSAc2kIaUjleIJ46X7qPW2zrpCbXlMz3YIGgWpQ1Jo="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"imaginezz","repo":"blog_public","client_id":"9c022a847ecc01650469","client_secret":"3c6fae6a3119943e381c2682b0a40f84573463b4","admin_user":"imaginezz","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js","integrity":"sha256-Pmj85ojLaPOWwRtlMJwmezB/Qg8BzvJp5eTzvXaYAfA="},"path_md5":"3ca6b39ebb4a6eccde6eb252fadc5fae"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>

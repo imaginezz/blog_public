@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)">
+<meta name="generator" content="Hexo 6.3.0">
+
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/favicon/safari-pinned-tab.svg" color="#222">
+  <link rel="manifest" href="/images/favicon/site.webmanifest">
+  <meta name="baidu-site-verification" content="5x8DHwr7y8">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.bootcdn.net/ajax/libs/pace/1.2.4/pace.min.js"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.zhengi.me","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":true,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":true,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="作为一个参加了许多次 Hackathon 的老司机，恰巧见到微软的 Office 主题 Hackathon，想去凑凑热闹。没想到这成了我到目前参与过的逼格最高也是感悟最多的一次 Hackathon。  话不多说，先放出我们的作品：一款 PowerPoint 插件——ClassPie。总的来说，ClassPie 是一款可以帮助老师在课堂中更加高效地同学生互动的 PowerPoint 插件。可以把每一">
+<meta property="og:type" content="article">
+<meta property="og:title" content="记DevDays Asia 2016 @Beijing">
+<meta property="og:url" content="https://blog.zhengi.me/devday_asia_2016/index.html">
+<meta property="og:site_name" content="政子的博客">
+<meta property="og:description" content="作为一个参加了许多次 Hackathon 的老司机，恰巧见到微软的 Office 主题 Hackathon，想去凑凑热闹。没想到这成了我到目前参与过的逼格最高也是感悟最多的一次 Hackathon。  话不多说，先放出我们的作品：一款 PowerPoint 插件——ClassPie。总的来说，ClassPie 是一款可以帮助老师在课堂中更加高效地同学生互动的 PowerPoint 插件。可以把每一">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.zhengi.me/wp-content/uploads/2016/10/163668315694259371-1024x768.jpg">
+<meta property="og:image" content="https://blog.zhengi.me/wp-content/uploads/2016/10/527513761386604399-768x1024.jpg">
+<meta property="og:image" content="https://blog.zhengi.me/wp-content/uploads/2016/11/9381fac5e60bb04a59262138f3453de6.jpg">
+<meta property="og:image" content="https://blog.zhengi.me/wp-content/uploads/2016/11/045f7157652bd1cf83b29c02daebdd8f.jpg">
+<meta property="og:image" content="https://blog.zhengi.me/wp-content/uploads/2016/11/20fe814c659cc97a2edca582cbfb5db7.jpg">
+<meta property="og:image" content="https://blog.zhengi.me/wp-content/uploads/2016/11/1493f428f1a1dd3337730108598b3052.jpg">
+<meta property="og:image" content="https://blog.zhengi.me/wp-content/uploads/2016/11/4119d4456c31676ae552545f8e52f98e.jpg">
+<meta property="og:image" content="https://blog.zhengi.me/wp-content/uploads/2016/10/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20161107012941-1024x771.png">
+<meta property="article:published_time" content="2016-10-30T16:39:31.000Z">
+<meta property="article:modified_time" content="2024-03-23T06:03:16.943Z">
+<meta property="article:author" content="Jason Bian">
+<meta property="article:tag" content="应用">
+<meta property="article:tag" content="Hackathon">
+<meta property="article:tag" content="Office">
+<meta property="article:tag" content="微软">
+<meta property="article:tag" content="课堂派">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.zhengi.me/wp-content/uploads/2016/10/163668315694259371-1024x768.jpg">
+
+
+<link rel="canonical" href="https://blog.zhengi.me/devday_asia_2016/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://blog.zhengi.me/devday_asia_2016/","path":"devday_asia_2016/","title":"记DevDays Asia 2016 @Beijing"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>记DevDays Asia 2016 @Beijing | 政子的博客</title>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?590a1bfeac720e6a29c58f70ab77a9a3"></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="政子的博客" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">政子的博客</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">技术|学习|随笔</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa  fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+        <li class="menu-item menu-item-书单"><a href="/booklist/" rel="section"><i class="fa fa-book fa-fw"></i>书单</a></li>
+        <li class="menu-item menu-item-算法"><a href="/algorithm/" rel="section"><i class="fa fa-code fa-fw"></i>算法</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Jason Bian"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Jason Bian</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">86</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">108</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/imaginezz" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;imaginezz" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto://Jason_Bian@outlook.com" title="E-Mail → mailto:&#x2F;&#x2F;Jason_Bian@outlook.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.danmakupie.com/" title="https:&#x2F;&#x2F;www.danmakupie.com&#x2F;" rel="noopener" target="_blank">弹幕派</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.oursparkspace.cn/" title="https:&#x2F;&#x2F;www.oursparkspace.cn&#x2F;" rel="noopener" target="_blank">火花空间</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.joyreserve.com/" title="http:&#x2F;&#x2F;www.joyreserve.com" rel="noopener" target="_blank">乐享其约</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://gaocegege.com/" title="http:&#x2F;&#x2F;gaocegege.com&#x2F;" rel="noopener" target="_blank">高策 江湖小虾米</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://yian.me/blog/" title="https:&#x2F;&#x2F;yian.me&#x2F;blog&#x2F;" rel="noopener" target="_blank">Y!an's Blog</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.cyprestar.com/" title="http:&#x2F;&#x2F;www.cyprestar.com&#x2F;" rel="noopener" target="_blank">Zhilong's Blog</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://yicodes.com/" title="http:&#x2F;&#x2F;yicodes.com&#x2F;" rel="noopener" target="_blank">易极</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://merrier.wang/" title="https:&#x2F;&#x2F;merrier.wang&#x2F;" rel="noopener" target="_blank">Merrier说</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://博客.胡鼎原.中国/" title="https:&#x2F;&#x2F;博客.胡鼎原.中国" rel="noopener" target="_blank">小勤奋爱学习</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://lfhacks.com/" title="https:&#x2F;&#x2F;lfhacks.com" rel="noopener" target="_blank">LFhacks</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://study4.fun/" title="https:&#x2F;&#x2F;study4.fun&#x2F;" rel="noopener" target="_blank">学而时思之</a>
+        </li>
+    </ul>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.zhengi.me/devday_asia_2016/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Jason Bian">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="政子的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          记DevDays Asia 2016 @Beijing
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2016-10-31 00:39:31" itemprop="dateCreated datePublished" datetime="2016-10-31T00:39:31+08:00">2016-10-31</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%B4%BB%E5%8A%A8%E5%B0%8F%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">活动小记</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.1k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>作为一个参加了许多次 Hackathon 的老司机，恰巧见到微软的 Office 主题 Hackathon，想去凑凑热闹。没想到这成了我到目前参与过的逼格最高也是感悟最多的一次 Hackathon。</p>
+<p><a href="/wp-content/uploads/2016/10/163668315694259371.jpg"><img data-src="/wp-content/uploads/2016/10/163668315694259371-1024x768.jpg" alt="163668315694259371"></a></p>
+<p>话不多说，先放出我们的作品：一款 PowerPoint 插件——ClassPie。总的来说，ClassPie 是一款可以帮助老师在课堂中更加高效地同学生互动的 PowerPoint 插件。可以把每一页 Slide 中的题目直接分发给在课堂中或者远程听课的同学，同时实时搜集同学们的答案并汇总到 PPT 中；同学们也可以把不懂的问题直接通过弹幕的形式发送到 PPT 中（在这里调用了以前的项目<a href="/319.html">DanmakuPie</a>的 API）直接同老师互动。</p>
+<p><a href="/wp-content/uploads/2016/10/527513761386604399.jpg"><img data-src="/wp-content/uploads/2016/10/527513761386604399-768x1024.jpg" alt="527513761386604399"></a></p>
+<p>半成品的 Github 链接：<a target="_blank" rel="noopener" href="https://github.com/Thesharing/ClassPieAddin">https://github.com/Thesharing/ClassPieAddin</a>。</p>
+<p>说完作品，我更多想来谈谈这两天在微软的感受。</p>
+<p>作为微软最有钱任性的 Office 部门，到来的讲师也都非常厉害。他们由来自 Redmond 和上海的大佬组成，阵容豪华。更重要的是多数讲师都非常 Nice，帮助了我们许多。</p>
+<span id="more"></span>
+
+<p>在 Kickoff 结束以后，我们团队开始讨论这次要做的主题，这时一位美籍华人 Donny 主动来到我们这边参与讨论中，虽然他的中文不是很好，但还是坚持用中文和我们来聊想法和思路，并且跟许多同事求证我们所想要的效果在新的 add-in 技术中是否具有解决方案。虽然最终结果是不可行的，但他的鼓励给了我们很强的动力去用各种办法来达到我们想要的效果。</p>
+<p><img data-src="/wp-content/uploads/2016/11/9381fac5e60bb04a59262138f3453de6.jpg"></p>
+<p>之后在两天的开发中，一位印度小哥 Tarun 更是帮助了我们许多。在我们确定许多方案不可行之后一筹莫展的时候又是他主动凑过来询问项目进展（这也终于使我达成了听懂印式英语的成就，交流上的困难也并没有构成多大的障碍，我们很快可以自由地表达各自的想法）。在听完我们的困惑以后他给出了 VSTO 的方案并让我们尝试，之后向我要了电子邮箱，给我发了好几封相关的文档或者教程。这对我们帮助很大。不仅仅如此，第二天一大早，他主动打招呼问我们问题解决得怎么样，我们如实说还是有一些关于 WinForms 的小问题。没先到他就真的拿来自己的电脑打开 Visual Studio 按照我们的说法和一些 Sample 敲了一遍，接着去 Debug，然后搜索出现的问题，并叫来另一位大神一起讨论，找到了解决方案，并且耐心讲给我们。更令我们惊讶的是，在他走后一阵又主动跑来告诉我们旁边会场的下一个主讲人可能会讲到我们遇到的问题，强烈建议我们去听一下。</p>
+<p><img data-src="/wp-content/uploads/2016/11/045f7157652bd1cf83b29c02daebdd8f.jpg"></p>
+<p>嗯，终于，经过这两位工程师的帮助，我们居然还算顺利地完成了预想的所有功能，在这儿给他们点一个大大的赞。</p>
+<p>我想他们一定是非常热爱自己的工作，不然是不可能每天以如此充沛的精力投入到问题的解决中。他们也可以利用各种可以利用的方法去思考解决问题，甚至愿意自己亲手去写代码（我的感觉里级别这么高的人不可能会亲自写代码），更愿意很热心毫无怨言帮助像我们这样如此小白的学生。嗯，以后，一定要和这样一群优秀的人共事。</p>
+<p>伙食住宿方面，也都非常周到。</p>
+<p><img data-src="/wp-content/uploads/2016/11/20fe814c659cc97a2edca582cbfb5db7.jpg"></p>
+<p>第一天晚上的自助非常给力，忍不住多吃了些。之后早饭都是麦当劳，午饭是盒饭，另外还有一顿 pizza。值得一提的是微软并没有因为有这么多外国人就多准备西餐（不过还是多准备了勺子），在我们嫌弃盒饭的时候，眼看着那些来自国外的大牛们直冲冲拿起一盒走去桌子边上就开吃，毫无违和感。而在吃 Pizza 的时候他们来晚了，也好不嫌弃看见哪桌还有 pizza 抓起来就开吃。另外，组委会也贴心地准备了怎么也吃不完的零食和水果，还有泡面 ！这也导致我两天后腰带都必须得松上一圈。</p>
+<p>住宿方面除了不能洗澡剩下我都非常喜欢。组委会准备了许多睡垫、毛巾毯和洗漱包。在微软大厦温暖的空调和柔软的地板上睡了两晚也是别有滋味。</p>
+<p>作品评比方面也还不错，抛弃了往常的 PosterSession 和主题路演，而是采用了现由评委去每一个团队的位子上来观看团队展示，之后晋级的团队再去做主题演讲的形式（还贴心地请了一位超级厉害的美女同传）。过程比较随意，但也不会感到无聊。</p>
+<p><img data-src="/wp-content/uploads/2016/11/1493f428f1a1dd3337730108598b3052.jpg"></p>
+<p>（PS：两天里真的是受够了用蹩脚的英语同歪果仁交流的感觉，好羡慕英语好能够和老外轻松愉快地交流的同学 T-T。）</p>
+<p>有趣的是和我们一起组队的一位神奇的大叔这时候仿佛开了天眼，在初赛我们表现不佳的时候鼓励我们说“我们一定可以进入复赛”，结果如他所料，而在复赛还没开始的时候又转了一圈回来说“我们这次应该是第三名”，果不其然又如他所料。</p>
+<p>第一名是几位法律人士做的一个 Word 法律助手，可以快速更正错误用法，也可以快速插入各种法条模板，非常贴切需求，给我留了非常深刻的印象。像他们这样可以在工作中发现刚性需求，然后用技术去解决的，必然冠军无疑。</p>
+<p>最终的奖品是团队里每个人一人一台九号平衡车，第一次拿到奖品难免有些激动，于是又和志龙奖励给自己一顿好吃的春卷。</p>
+<p><img data-src="/wp-content/uploads/2016/11/4119d4456c31676ae552545f8e52f98e.jpg"></p>
+<p>两天的 Hackathon 结束，但 ClassPie 并没有结束。我们还是想把这个项目继续做下去。也希望有兴趣来改变课堂教学现状的同学加入我们，一起为学弟学妹做一些有意思的事情！</p>
+<p><a href="/wp-content/uploads/2016/10/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20161107012941.png"><img data-src="/wp-content/uploads/2016/10/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20161107012941-1024x771.png" alt="%e5%be%ae%e4%bf%a1%e6%88%aa%e5%9b%be_20161107012941"></a></p>
+<p>最后，附上 MSDN 的博客链接：<a target="_blank" rel="noopener" href="http://blog.sina.com.cn/s/blog_6408cdc70102wyd1.html">DevDays Asia 2016 精彩回顾</a></p>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/feelings_about_msc_hackathon/" rel="bookmark">参加微软校园Hackathon是怎样的体验？</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/danmakupie_so_cool/" rel="bookmark">弹幕派——原来弹幕可以这样玩</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/if_theres_no_danmakupie/" rel="bookmark">如果弹幕不曾有派</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/ten_top_of_byr_bbs/" rel="bookmark">北邮人论坛每日十大检索</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/feelings_about_msc_summer_camp/" rel="bookmark">参加微软学生夏令营是一种什么样的体验？</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请鼓励我的原创文章</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.png" alt="Jason Bian 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="Jason Bian 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Jason Bian
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://blog.zhengi.me/devday_asia_2016/" title="记DevDays Asia 2016 @Beijing">https://blog.zhengi.me/devday_asia_2016/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E5%BA%94%E7%94%A8/" rel="tag"><i class="fa fa-tag"></i> 应用</a>
+              <a href="/tags/Hackathon/" rel="tag"><i class="fa fa-tag"></i> Hackathon</a>
+              <a href="/tags/Office/" rel="tag"><i class="fa fa-tag"></i> Office</a>
+              <a href="/tags/%E5%BE%AE%E8%BD%AF/" rel="tag"><i class="fa fa-tag"></i> 微软</a>
+              <a href="/tags/%E8%AF%BE%E5%A0%82%E6%B4%BE/" rel="tag"><i class="fa fa-tag"></i> 课堂派</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/php_post/" rel="prev" title="PHP的$_POST变量浅析">
+                  <i class="fa fa-chevron-left"></i> PHP的$_POST变量浅析
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/chromebook_ubuntu/" rel="next" title="记在ChromeBook中装入Ubuntu">
+                  记在ChromeBook中装入Ubuntu <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">陇 ICP 备 15003463 号 </a>
+  </div>
+
+<div class="copyright">
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jason Bian</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">235k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">3:33</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/lozad.js/1.16.0/lozad.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/pangu/4.0.7/pangu.min.js"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/pjax.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://cdn.jsdelivr.net/npm/pdfobject@2.2.7/pdfobject.min.js","integrity":"sha256-ph3Dk89VmuTVXG6x/RDzk53SU9LPdAh1tpv0UvnDZ2I="},"url":"/lib/pdf/web/viewer.html"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdn.jsdelivr.net/npm/mermaid@8.13.8/dist/mermaid.min.js","integrity":"sha256-QmSAc2kIaUjleIJ46X7qPW2zrpCbXlMz3YIGgWpQ1Jo="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"imaginezz","repo":"blog_public","client_id":"9c022a847ecc01650469","client_secret":"3c6fae6a3119943e381c2682b0a40f84573463b4","admin_user":"imaginezz","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js","integrity":"sha256-Pmj85ojLaPOWwRtlMJwmezB/Qg8BzvJp5eTzvXaYAfA="},"path_md5":"6f04f013e700d9bd9530c97207d8d47e"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>

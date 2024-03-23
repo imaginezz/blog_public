@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)">
+<meta name="generator" content="Hexo 6.3.0">
+
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/favicon/safari-pinned-tab.svg" color="#222">
+  <link rel="manifest" href="/images/favicon/site.webmanifest">
+  <meta name="baidu-site-verification" content="5x8DHwr7y8">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.bootcdn.net/ajax/libs/pace/1.2.4/pace.min.js"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.zhengi.me","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":true,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":true,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="起因最近在做项目时候遇到了一个问题——将 Unity 开发的游戏合并进入一个 C#写的 UWP 工程。既然 Unity 可以将游戏导出成为 UWP 工程，那么理论上来说，将这个工程合并进入原来的 C#项目也是完全可能的。 Unity 工程导出为 C#项目（UWP）首先下载最新的 Unity 编辑器（至少也要是 5.2 版本以上），才可以支持导出为 UWP 项目。注意在使用安装器安装的时候就要选择">
+<meta property="og:type" content="article">
+<meta property="og:title" content="UWP学习札记——浅析Unity工程">
+<meta property="og:url" content="https://blog.zhengi.me/uwp_unity/index.html">
+<meta property="og:site_name" content="政子的博客">
+<meta property="og:description" content="起因最近在做项目时候遇到了一个问题——将 Unity 开发的游戏合并进入一个 C#写的 UWP 工程。既然 Unity 可以将游戏导出成为 UWP 工程，那么理论上来说，将这个工程合并进入原来的 C#项目也是完全可能的。 Unity 工程导出为 C#项目（UWP）首先下载最新的 Unity 编辑器（至少也要是 5.2 版本以上），才可以支持导出为 UWP 项目。注意在使用安装器安装的时候就要选择">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2016-03-25T18:26:50.000Z">
+<meta property="article:modified_time" content="2024-03-23T06:03:16.947Z">
+<meta property="article:author" content="Jason Bian">
+<meta property="article:tag" content="UWP">
+<meta property="article:tag" content=".Net">
+<meta property="article:tag" content="Unity">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://blog.zhengi.me/uwp_unity/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://blog.zhengi.me/uwp_unity/","path":"uwp_unity/","title":"UWP学习札记——浅析Unity工程"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>UWP学习札记——浅析Unity工程 | 政子的博客</title>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?590a1bfeac720e6a29c58f70ab77a9a3"></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="政子的博客" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">政子的博客</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">技术|学习|随笔</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa  fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+        <li class="menu-item menu-item-书单"><a href="/booklist/" rel="section"><i class="fa fa-book fa-fw"></i>书单</a></li>
+        <li class="menu-item menu-item-算法"><a href="/algorithm/" rel="section"><i class="fa fa-code fa-fw"></i>算法</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B5%B7%E5%9B%A0"><span class="nav-number">1.</span> <span class="nav-text">起因</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Unity-%E5%B7%A5%E7%A8%8B%E5%AF%BC%E5%87%BA%E4%B8%BA-C-%E9%A1%B9%E7%9B%AE%EF%BC%88UWP%EF%BC%89"><span class="nav-number"></span> <span class="nav-text">Unity 工程导出为 C#项目（UWP）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Unity-%E5%AF%BC%E5%87%BA%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%E7%9A%84%E5%86%85%E5%AE%B9"><span class="nav-number"></span> <span class="nav-text">Unity 导出解决方案的内容</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B5%85%E6%8E%A2-App-xaml"><span class="nav-number"></span> <span class="nav-text">浅探 App.xaml</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%86%8D%E6%8E%A2-MainPage-xaml"><span class="nav-number"></span> <span class="nav-text">再探 MainPage.xaml</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BC%80%E5%A7%8B%E5%90%88%E5%B9%B6"><span class="nav-number"></span> <span class="nav-text">开始合并</span></a></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Jason Bian"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Jason Bian</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">86</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">108</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/imaginezz" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;imaginezz" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto://Jason_Bian@outlook.com" title="E-Mail → mailto:&#x2F;&#x2F;Jason_Bian@outlook.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.danmakupie.com/" title="https:&#x2F;&#x2F;www.danmakupie.com&#x2F;" rel="noopener" target="_blank">弹幕派</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.oursparkspace.cn/" title="https:&#x2F;&#x2F;www.oursparkspace.cn&#x2F;" rel="noopener" target="_blank">火花空间</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.joyreserve.com/" title="http:&#x2F;&#x2F;www.joyreserve.com" rel="noopener" target="_blank">乐享其约</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://gaocegege.com/" title="http:&#x2F;&#x2F;gaocegege.com&#x2F;" rel="noopener" target="_blank">高策 江湖小虾米</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://yian.me/blog/" title="https:&#x2F;&#x2F;yian.me&#x2F;blog&#x2F;" rel="noopener" target="_blank">Y!an's Blog</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.cyprestar.com/" title="http:&#x2F;&#x2F;www.cyprestar.com&#x2F;" rel="noopener" target="_blank">Zhilong's Blog</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://yicodes.com/" title="http:&#x2F;&#x2F;yicodes.com&#x2F;" rel="noopener" target="_blank">易极</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://merrier.wang/" title="https:&#x2F;&#x2F;merrier.wang&#x2F;" rel="noopener" target="_blank">Merrier说</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://博客.胡鼎原.中国/" title="https:&#x2F;&#x2F;博客.胡鼎原.中国" rel="noopener" target="_blank">小勤奋爱学习</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://lfhacks.com/" title="https:&#x2F;&#x2F;lfhacks.com" rel="noopener" target="_blank">LFhacks</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://study4.fun/" title="https:&#x2F;&#x2F;study4.fun&#x2F;" rel="noopener" target="_blank">学而时思之</a>
+        </li>
+    </ul>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.zhengi.me/uwp_unity/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Jason Bian">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="政子的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          UWP学习札记——浅析Unity工程
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2016-03-26 02:26:50" itemprop="dateCreated datePublished" datetime="2016-03-26T02:26:50+08:00">2016-03-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/UWP/" itemprop="url" rel="index"><span itemprop="name">UWP</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>4.3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>4 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h2><p>最近在做项目时候遇到了一个问题——将 Unity 开发的游戏合并进入一个 C#写的 UWP 工程。既然 Unity 可以将游戏导出成为 UWP 工程，那么理论上来说，将这个工程合并进入原来的 C#项目也是完全可能的。</p>
+<h1 id="Unity-工程导出为-C-项目（UWP）"><a href="#Unity-工程导出为-C-项目（UWP）" class="headerlink" title="Unity 工程导出为 C#项目（UWP）"></a>Unity 工程导出为 C#项目（UWP）</h1><p>首先<a target="_blank" rel="noopener" href="http://unity3d.com/cn/get-unity/download/archive">下载最新的 Unity 编辑器</a>（至少也要是 5.2 版本以上），才可以支持导出为 UWP 项目。注意在使用安装器安装的时候就要选择 Windows10 的 build 的组件。</p>
+<p>注意：因为之前 Win10 也经历过一次更新，版本号已经从 10240 到了 10586，所以 SDK 也发生了变化，之前的一些 Unity 版本可能会导致一些兼容性的问题，但可以通过更改工程支持的系统版本来修复这个问题，具体可以参考：<a target="_blank" rel="noopener" href="https://blogs.msdn.microsoft.com/windows__windows_game_dev_faq_/2015/08/19/unity-windows10/">Unity 游戏移植到 Windows10 之路 — 环境搭建</a> 。</p>
+<p>注意：安装完最新版本的 Unity 之后，打开项目可能需要进行版本转换，一般转换是不会出问题的。</p>
+<p>打开工程后，点击 File 菜单，选择 Build Settings 选项，在 Scene In Build 里选择需要参与生成的场景。</p>
+<p>接下来，在 Platform 中选择 Windows Store，点击 Switch Platform。接着在右侧的 SDK 中选择 Universal 10，Build Type 选择 XAML。对于 Unity C# Project，如果选择，则会在等下生成的解决方案中多两个未编译的工程，一个是 Unity 的 Script 文件的 Assembly-UnityScript 工程，一个是 Unity 的 Assembly-CSharp 的工程，这两个工程之后由 VS 进行编译，主工程会依赖这两个工程的类库。如果不勾选的化，则会直接编译生成这两个类库，不必使用 VS 对其进行编译。 这里假设没有勾选 Unity C# Project，在设置完成之后，选择 Build，选定目标文件夹，经过一系列编译之后，就在选定的文件夹中形成了一个 C#的解决方案。这时候，就可以关闭 Unity，使用 VS 来打开那个解决方案了。</p>
+<h1 id="Unity-导出解决方案的内容"><a href="#Unity-导出解决方案的内容" class="headerlink" title="Unity 导出解决方案的内容"></a>Unity 导出解决方案的内容</h1><p>打开解决方案，进入工程内部，可以看出，和一般的 UWP 应用非常类似。</p>
+<span id="more"></span>
+
+<p>首先可以看见 App.Xaml 和 ManPage.Xaml，这两个 Xaml 的作用和普通 UWP 应用完全一样，App.Xaml 用来作为启动 UWP 时的引导，MainPage.Xaml 作为引导成功后跳转到的页面。Assets 文件夹用来存放文件夹用于存放项目资产，也和普通应用一样，存放 App 的图标，多出来的是 Data 文件夹和 Unprocessed 文件夹，这两个文件夹是做什么的呢？ Data 文件夹里面会存放经过 Unity 编译之后的游戏工程的文件，这些都是用户文件，不包含可以让程序成功运行的 dll，所以当在 Unity 没有更新的时候，每次重新从 Unity 中生成 UWP 项目只会更改这一个文件夹中的内容。</p>
+<p>Unprocessed 文件夹从字面意义上来看应该是未处理过的一些类库，我也没有找到太多资料，大概理解就是可能包含一些 Unity 的 Unprocessed Plugin，在 Unity 里也有类似选项。而之前提及的 Assembly-UnityScript 和 Assembly-CSharp 两个工程生成的类库也在这里面。 翻开引用选项，可以看见其中有许多和 Unity 相关的引用，已经包含了脚本以及 UnityPlay 和用于和 Unity 和 C#交互的类库。这些类库都有特定的位置。 继续用资源管理器打开解决方案的文件夹探索，发现解决方案中包含的内容不止这些。</p>
+<p>在解决方案中包含了 UnityOverwrite.txt 和 UnityCommon.props 两个 Unity 的配置文件，其中 UnityOverwrite 可以看作是像.gitignore 一类的文件，控制每次 Unity 编译写入时候需要更新的文件列表，默认是都不更新的。而 UnityCommon.props 文件以 XML 形式保存了一些 Unity 的配置信息。除了这些，还有 Unity、Players 和 Obj 几个文件夹，Unity 文件夹可能包含调试工具（只是猜测，不太清楚是干啥的），Players 包含了可以让项目运行的类库，看起来有 X86，X64 和 ARM 的（所以也是项目中最大的一个文件夹），但实际上现在只用过 X86 的，另外两个配置还没有用过（如果要生成针对其他平台的代码，需要将解决方案中的引用项都改为相应的 dll 或者 winmd，这也就是为何在后面在生成时都必须要选 X86 的原因）。而 Obj 文件夹应该存放生成 UWP 项目时候的一些中间文件。</p>
+<p>进入到工程目录下面，还可以发现更多的类库，也都在项目的引用项中有所体现。 OK，项目整体大概就是如此了，接下来谈谈项目所引用的类库的问题。</p>
+<p>浏览项目文件，可以看到类库主要集中在三个地方，解决方案文件夹的 Players 目录下、工程目录下和工程目录的 Unprocessed 目录下。而且有许多类库在不同目录中中包含了不同的版本。翻看项目引用类库的情况，可以看出，和开发者代码有关的类库均来自工程目录下，而和 Unity 引擎有关的类库均来自 Players 目录下。Unprocessed 目录下的类库没有被使用过。所以，基本可以断定 Unprocessed 目录下的类库都是原始未经过处理的，在使用之后会出现各种问题，比如无法调用 Unity 引擎或者引擎初始化失败等等（经过我的验证，的确如此）。关于 Unity 引擎类库的引用位置也就决定了当前的项目只能跑在 X86 环境上（切换成别的环境的类库暂时还没有尝试过，后面会持续更新）。</p>
+<p>这些有关类库的位置对把 Unity 项目移植到一个新项目中是一个很强的指导（简单说吗，就是他们调用哪个库，我们也用哪个）。</p>
+<h1 id="浅探-App-xaml"><a href="#浅探-App-xaml" class="headerlink" title="浅探 App.xaml"></a>浅探 App.xaml</h1><p>进入 App.xaml.cs，可以看见在类中一开始便定义了两个量，AppCallbacks 和 SplashScreen，其中 AppCallbacks 是 UnityPlayer 的一个类，非常重要，是连同 Unity 和 UWP 的通道；而 SplashScreen 是启动屏幕的类，主要用于 Unity 获取窗体位置和大小，以便在正确未知绘图。</p>
+<p>进一步观察，在几个 On 方法中，几乎都调用了 InitializeUnity 的方法，并且把一些参数以字符串的形式传了进去，具体含义可以参考<a target="_blank" rel="noopener" href="https://msdn.microsoft.com/zh-cn/library/windows/apps/mt243287.aspx">应用生命周期-MSDN</a>。</p>
+<p>在 cs 文件末尾，就是 InitializeUnity 方法的实现了，首先设置了一些窗体的属性，接着调用了一个非常重要的方法——appCallbacks.SetAppArguments()，最后创建了 rootFrame 并导航进去，激活窗口，并且防止 appcallbacks 类被重复初始化。</p>
+<p>所以可以判断 AppCallbacks 方法在应用程序生命周期内只能被初始化一次，想要在别的地方调用它的方法需要将其作为一个静态属性或者利用 get/set 访问器将其静态化。</p>
+<p>接下来，来说说这个 SetAppArguments()方法，它的作用是将程序初始化的一些信息传到 Unity 中，为什么在几个 On 方法中调用呢，是因为可以让 Unity 游戏知道现在处于那个生命周期中，以便选择游戏的启动点。但是我们这次的游戏没有这么复杂的根据生命周期启动点设置，所以完全可以利用这个方法给 Unity 内部通信，选择要启动的 Unity 中的游戏（我们将好几个游戏都合并在 Unity 中了）。在 Unity 内部，可以在启动时候使用 Unity 的 API：UnityEngine.WSA.Application.arguments 对传入的字符串进行获取。 Unity 的官方文档，写的不是很详细，把 cs 中的源码直接放上去了，解释也不怎么清楚，不过可以参考：<a target="_blank" rel="noopener" href="http://docs.unity3d.com/Manual/windowsstore-appcallbacks.html">AppCallbacks class</a></p>
+<h1 id="再探-MainPage-xaml"><a href="#再探-MainPage-xaml" class="headerlink" title="再探 MainPage.xaml"></a>再探 MainPage.xaml</h1><p>MainPage.xaml 中主要容器是 DXSwapChainPanel，它是事先 DirectX 和 Xaml 交互的控件，具体可以参考<a target="_blank" rel="noopener" href="https://msdn.microsoft.com/zh-cn/library/windows/apps/windows.ui.xaml.controls.swapchainbackgroundpanel">https://msdn.microsoft.com/zh-cn/library/windows/apps/windows.ui.xaml.controls.swapchainbackgroundpanel</a>。</p>
+<p>在其代码隐藏文件中，WinRTBridge 也是 Unity 写的通 WindowsRT 交互的一个中间程序，但是源码不可知。appCallbacks 类又发挥了强烈作用，进行了游戏的初始化。</p>
+<h1 id="开始合并"><a href="#开始合并" class="headerlink" title="开始合并"></a>开始合并</h1><p>合并的思路有两个，一个是把 UWP 程序的代码拷贝到 Unity 生成的工程（非决绝方案的另一工程）中（需要考虑 namespace 的问 题），另一个是将 Unity 生成的工程拷贝到原来的 UWP 项目中（也非解决方案的另一个工程）中（主要需要考虑引用的问题）。</p>
+<p>采用第一种思路非常简单，只需要在 App.xaml.cs 中将导航到的页面更换，接着让其他的页面导航到 MainPage.xaml（也可以换一个其他的名字）即可。</p>
+<p>第二种思路比较麻烦，需要把 Unity 生成工程中需要的类库都搬移到另一个工程中，然后在项目引用中添加进去，注意 pdb 同名文件的配套。在 App.xaml 中只要将 SplashScreen 和 AppCallbacks 创建，并且给 AppCallbacks 创建一个访问器即可在其他程序中调用它的 SetAppArguments 方法，将所需要的参数传入，然后 Navigate 到 Unity 的 MainPage 中即可。</p>
+<p>注：访问器可以很简单的实现</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> <span class="title">StarrySky</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">sealed</span> <span class="keyword">partial</span> <span class="keyword">class</span> <span class="title">App</span> : <span class="title">Application</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">private</span> AppCallbacks appCallbacks;</span><br><span class="line">        <span class="keyword">public</span> SplashScreen splashScreen;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">static</span> <span class="keyword">public</span> AppCallbacks AppCallBacks</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">private</span> <span class="keyword">set</span>;</span><br><span class="line">            <span class="keyword">get</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">App</span>()</span></span><br><span class="line">        &#123;</span><br><span class="line">          <span class="keyword">this</span>.InitializeComponent();</span><br><span class="line">          appCallbacks = <span class="keyword">new</span> AppCallbacks();</span><br><span class="line">          AppCallBacks = appCallbacks;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>大概这样子就可以了。 最后，想说一下，Unity 的很多资料在百度上很难找到，推荐从 Google 上进行搜索，StackOverflow 上资料也不是很多，遇到问题还是得看自己来解决，在 UWP 上的开发和 Windows8 的开发有共通之处，许多资料也都可以参考。</p>
+<p>参考资料：<a target="_blank" rel="noopener" href="http://www.davebost.com/2013/08/30/creating-a-unity-game-for-windows-8">http://www.davebost.com/2013/08/30/creating-a-unity-game-for-windows-8</a></p>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/hololens_developement/" rel="bookmark">HoloLens开发初体验</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/uwp_hamburger_menu/" rel="bookmark">UWP学习札记--制作一个简单的汉堡包菜单</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/uwp_windows10_style_icon/" rel="bookmark">UWP学习札记——在应用中使用Windows10风格图标</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/c_sharp_uwp_application_data/" rel="bookmark">使用C#封装一个UWP Applicaion Data的结构化存储类</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/c_sharp_uwp_http_get_and_post/" rel="bookmark">使用C#封装一个UWP的HTTP Get和Post的类</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请鼓励我的原创文章</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.png" alt="Jason Bian 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="Jason Bian 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Jason Bian
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://blog.zhengi.me/uwp_unity/" title="UWP学习札记——浅析Unity工程">https://blog.zhengi.me/uwp_unity/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/UWP/" rel="tag"><i class="fa fa-tag"></i> UWP</a>
+              <a href="/tags/Net/" rel="tag"><i class="fa fa-tag"></i> .Net</a>
+              <a href="/tags/Unity/" rel="tag"><i class="fa fa-tag"></i> Unity</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/apache_wsgi_flask/" rel="prev" title="搭建Apache+Wsgi+Flask的环境">
+                  <i class="fa fa-chevron-left"></i> 搭建Apache+Wsgi+Flask的环境
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/centos7_apache_php7/" rel="next" title="CentOS7+Apache配置PHP7">
+                  CentOS7+Apache配置PHP7 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">陇 ICP 备 15003463 号 </a>
+  </div>
+
+<div class="copyright">
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jason Bian</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">235k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">3:33</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/lozad.js/1.16.0/lozad.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/pangu/4.0.7/pangu.min.js"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/pjax.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://cdn.jsdelivr.net/npm/pdfobject@2.2.7/pdfobject.min.js","integrity":"sha256-ph3Dk89VmuTVXG6x/RDzk53SU9LPdAh1tpv0UvnDZ2I="},"url":"/lib/pdf/web/viewer.html"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdn.jsdelivr.net/npm/mermaid@8.13.8/dist/mermaid.min.js","integrity":"sha256-QmSAc2kIaUjleIJ46X7qPW2zrpCbXlMz3YIGgWpQ1Jo="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"imaginezz","repo":"blog_public","client_id":"9c022a847ecc01650469","client_secret":"3c6fae6a3119943e381c2682b0a40f84573463b4","admin_user":"imaginezz","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js","integrity":"sha256-Pmj85ojLaPOWwRtlMJwmezB/Qg8BzvJp5eTzvXaYAfA="},"path_md5":"41ac08ce1918e0c5f6258fadc44e4a19"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>

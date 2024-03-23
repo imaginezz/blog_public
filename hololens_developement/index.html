@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)">
+<meta name="generator" content="Hexo 6.3.0">
+
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/favicon/safari-pinned-tab.svg" color="#222">
+  <link rel="manifest" href="/images/favicon/site.webmanifest">
+  <meta name="baidu-site-verification" content="5x8DHwr7y8">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.bootcdn.net/ajax/libs/pace/1.2.4/pace.min.js"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.zhengi.me","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":true,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":true,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="介绍HoloLens 是微软推出的一款增强现实（AR），也有人称之为混合现实（MR）设备。它的技术非常具有革命性，带上它就可以将虚拟世界叠加在现实世界之中，给人们带来虚拟和现实结合的沉浸体验。这样的交互更加自然便捷，很可能会成为几年后一种常见的人机交互方式。 现在已经发售的开发版参数可以在https:&#x2F;&#x2F;www.microsoft.com&#x2F;microsoft-hololens&#x2F;en-us&#x2F;deve">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HoloLens开发初体验">
+<meta property="og:url" content="https://blog.zhengi.me/hololens_developement/index.html">
+<meta property="og:site_name" content="政子的博客">
+<meta property="og:description" content="介绍HoloLens 是微软推出的一款增强现实（AR），也有人称之为混合现实（MR）设备。它的技术非常具有革命性，带上它就可以将虚拟世界叠加在现实世界之中，给人们带来虚拟和现实结合的沉浸体验。这样的交互更加自然便捷，很可能会成为几年后一种常见的人机交互方式。 现在已经发售的开发版参数可以在https:&#x2F;&#x2F;www.microsoft.com&#x2F;microsoft-hololens&#x2F;en-us&#x2F;deve">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.zhengi.me/wp-content/uploads/2016/08/e1e42585f9ee0d209d54a44e1835aaa9_r-1024x575.png">
+<meta property="article:published_time" content="2016-08-27T17:24:52.000Z">
+<meta property="article:modified_time" content="2024-03-23T06:03:16.943Z">
+<meta property="article:author" content="Jason Bian">
+<meta property="article:tag" content="UWP">
+<meta property="article:tag" content="AR">
+<meta property="article:tag" content="HoloLens">
+<meta property="article:tag" content="MR">
+<meta property="article:tag" content="Unity">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.zhengi.me/wp-content/uploads/2016/08/e1e42585f9ee0d209d54a44e1835aaa9_r-1024x575.png">
+
+
+<link rel="canonical" href="https://blog.zhengi.me/hololens_developement/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://blog.zhengi.me/hololens_developement/","path":"hololens_developement/","title":"HoloLens开发初体验"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>HoloLens开发初体验 | 政子的博客</title>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?590a1bfeac720e6a29c58f70ab77a9a3"></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="政子的博客" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">政子的博客</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">技术|学习|随笔</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa  fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+        <li class="menu-item menu-item-书单"><a href="/booklist/" rel="section"><i class="fa fa-book fa-fw"></i>书单</a></li>
+        <li class="menu-item menu-item-算法"><a href="/algorithm/" rel="section"><i class="fa fa-code fa-fw"></i>算法</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BD%93%E9%AA%8C%E6%84%9F%E5%8F%97"><span class="nav-number">2.</span> <span class="nav-text">体验感受</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BC%80%E5%8F%91%E5%89%8D%E5%87%86%E5%A4%87"><span class="nav-number">3.</span> <span class="nav-text">开发前准备</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BC%80%E5%8F%91%E8%BF%87%E7%A8%8B"><span class="nav-number">4.</span> <span class="nav-text">开发过程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8-Unity-%E4%B8%8A%E8%BF%9B%E8%A1%8C%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91"><span class="nav-number">4.1.</span> <span class="nav-text">在 Unity 上进行游戏开发</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%84%E7%90%86%E6%B8%B8%E6%88%8F%E4%B8%8E-HoloLens-%E7%9A%84%E4%BA%A4%E4%BA%92"><span class="nav-number">4.2.</span> <span class="nav-text">处理游戏与 HoloLens 的交互</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8%E6%A8%A1%E6%8B%9F%E5%99%A8%E5%92%8C%E7%9C%9F%E6%9C%BA%E4%B8%8A%E8%BF%9B%E8%A1%8C%E8%B0%83%E8%AF%95"><span class="nav-number">4.3.</span> <span class="nav-text">在模拟器和真机上进行调试</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BC%80%E5%8F%91%E7%9A%84%E6%9C%80%E7%BB%88%E6%95%88%E6%9E%9C"><span class="nav-number">5.</span> <span class="nav-text">开发的最终效果</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9C%89%E5%B9%B2%E8%B4%A7%E7%9A%84%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-number">6.</span> <span class="nav-text">有干货的参考资料</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Jason Bian"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Jason Bian</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">86</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">108</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/imaginezz" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;imaginezz" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto://Jason_Bian@outlook.com" title="E-Mail → mailto:&#x2F;&#x2F;Jason_Bian@outlook.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.danmakupie.com/" title="https:&#x2F;&#x2F;www.danmakupie.com&#x2F;" rel="noopener" target="_blank">弹幕派</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.oursparkspace.cn/" title="https:&#x2F;&#x2F;www.oursparkspace.cn&#x2F;" rel="noopener" target="_blank">火花空间</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.joyreserve.com/" title="http:&#x2F;&#x2F;www.joyreserve.com" rel="noopener" target="_blank">乐享其约</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://gaocegege.com/" title="http:&#x2F;&#x2F;gaocegege.com&#x2F;" rel="noopener" target="_blank">高策 江湖小虾米</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://yian.me/blog/" title="https:&#x2F;&#x2F;yian.me&#x2F;blog&#x2F;" rel="noopener" target="_blank">Y!an's Blog</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.cyprestar.com/" title="http:&#x2F;&#x2F;www.cyprestar.com&#x2F;" rel="noopener" target="_blank">Zhilong's Blog</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://yicodes.com/" title="http:&#x2F;&#x2F;yicodes.com&#x2F;" rel="noopener" target="_blank">易极</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://merrier.wang/" title="https:&#x2F;&#x2F;merrier.wang&#x2F;" rel="noopener" target="_blank">Merrier说</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://博客.胡鼎原.中国/" title="https:&#x2F;&#x2F;博客.胡鼎原.中国" rel="noopener" target="_blank">小勤奋爱学习</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://lfhacks.com/" title="https:&#x2F;&#x2F;lfhacks.com" rel="noopener" target="_blank">LFhacks</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://study4.fun/" title="https:&#x2F;&#x2F;study4.fun&#x2F;" rel="noopener" target="_blank">学而时思之</a>
+        </li>
+    </ul>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.zhengi.me/hololens_developement/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Jason Bian">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="政子的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          HoloLens开发初体验
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2016-08-28 01:24:52" itemprop="dateCreated datePublished" datetime="2016-08-28T01:24:52+08:00">2016-08-28</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>4.6k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>4 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><p>HoloLens 是微软推出的一款增强现实（AR），也有人称之为混合现实（MR）设备。它的技术非常具有革命性，带上它就可以将虚拟世界叠加在现实世界之中，给人们带来虚拟和现实结合的沉浸体验。这样的交互更加自然便捷，很可能会成为几年后一种常见的人机交互方式。</p>
+<p>现在已经发售的开发版参数可以在<a target="_blank" rel="noopener" href="https://www.microsoft.com/microsoft-hololens/en-us/development-edition">https://www.microsoft.com/microsoft-hololens/en-us/development-edition</a>中查看，简要说一下，它有 64GB Flash 存储空间，2GB RAM ，2GB CPU 和 1GB HPU（我也不知道 HPU 是什么意思，官网上如是写），大约可以持续使用两三个小时，重量是 579g（戴在头上还是有些分量的）。</p>
+<p>更多的官方介绍也可以移步 HoloLens 官网查看<a target="_blank" rel="noopener" href="https://www.microsoft.com/microsoft-hololens/en-us">https://www.microsoft.com/microsoft-hololens/en-us</a>。</p>
+<p>在微软学生夏令营上的 Hackathon 环节中有幸接触到 HoloLens，我们希望开发一个类似于 Ingress 和部落冲突合体的实感游戏，并且可以多玩家互联，让玩家可以体验到兼爱非攻的思维。但是迫于没有 Unity 开发经验和时间限制（36h），我们就将目标定为一个拾取能量和补充能量的 Demo。</p>
+<p>在这里总结一下这次 HoloLens 的大致开发流程，如果没空看这里的瞎扯，请直接看最下面的参考资料，有很多干货和大牛的文章很值得一读。</p>
+<h1 id="体验感受"><a href="#体验感受" class="headerlink" title="体验感受"></a>体验感受</h1><p>官方的话说完了，说说我的感受吧。</p>
+<p>刚拿到 HoloLens 的时候就发现了很多它的局限，没有想象中那么好。第一是它的视野有限（比想象中的还要要小很多，就像在眼前加了一台显示器，根本不够用！希望以后的版本可以解决这个问题），第二是计算能力不够（不过缺点也是优点，它是一台完整的 PC，不必像其他 VR 设备那样受到拖线的叨扰），第三是手势输入很困难，现在只有两个手势，一个是只用食指的点按，一个是五指张开的 Bloom，交互起来不是很方便。剩下的还有只支持英文，画面深度控制不合理会导致眼睛酸痛，机器太沉等等问题。</p>
+<span id="more"></span>
+
+<p>不过随着几天的体验，我发现了使用 HoloLens 的要领——站起来，更要走起来！当你站起来以后会发现整个世界都变了，不再是坐着使用 HoloLens 那种无感的场景。当你站起来的时候，可以看到所有被你钉在墙上，pin 在窗上，甚至浮在空中的窗口，当然你也可以将窗口边走边用手拽到一个合适的地方。现实世界和虚拟世界就这样毫不冲突地结合到了一起，甚至用了一会以后，你会忘记真实世界到底是什么样的，把 HoloLens 摘掉以后会很不适应无法控制窗口的感觉。交互操作也没有那么不堪，Bloom 手势非常漂亮，开始屏幕打开的那一瞬间，简直帅爆了！Cortana 的灵敏度也超乎我想象，我可以用我只有六级英语的水平和她轻松对话。最最值得一提的是，当你把一个物体，比如一个飞机模型或者一个地球，甚至整个银河系放置在桌子上的时候，你可以围着它进行 360° 观察，去看清楚每一个方向的细节，也可以点击某个星球进入那个星球或者将一个飞机放大，让它充满整个屋子。感觉是相当震撼！从来没有一款 VR 产品可以让我有这么真实但又虚幻的震撼感，HoloLens 的确做到了，非常完美！</p>
+<h1 id="开发前准备"><a href="#开发前准备" class="headerlink" title="开发前准备"></a>开发前准备</h1><ol>
+<li> 准备：安装有 Windws10 的 PC，如果需要 HoloLens 模拟器的话需要 4GB 以上的内存和支持虚拟化的 4 核心以上的 CPU。</li>
+<li> 安装 Visual Studio 2015：任何版本都可，推荐使用免费的 community 版本，下载链接 <a target="_blank" rel="noopener" href="https://www.visualstudio.com/">https://www.visualstudio.com/</a></li>
+<li> 安装 Unity For HoloLens：普通的 Unity 版本是不支持 HoloLens 相关设置的，需要使用专门为 HoloLens 定制的 Unity 版本，下载地址 <a target="_blank" rel="noopener" href="http://aka.ms/HoloLensUnity">http://aka.ms/HoloLensUnity</a></li>
+<li> 安装 HoloLens Emulator：如果暂时没有 HoloLens 可以真机调试，可以使用模拟器代为调试，下载地址 <a target="_blank" rel="noopener" href="http://go.microsoft.com/fwlink/?LinkID=823018">http://go.microsoft.com/fwlink/?LinkID=823018</a></li>
+</ol>
+<p>这次开发的目标是一个 3D 游戏，所以使用主要使用 Unity 对游戏进行开发，使用 VS 对代码进行调试以及传输至 HoloLens。</p>
+<p>除了使用 Unity 开发以外，还可以使用 DirectX 进行开发，或者可以直接将开发好的 UWP 程序在 HoloLens 上运行。</p>
+<h1 id="开发过程"><a href="#开发过程" class="headerlink" title="开发过程"></a>开发过程</h1><h2 id="在-Unity-上进行游戏开发"><a href="#在-Unity-上进行游戏开发" class="headerlink" title="在 Unity 上进行游戏开发"></a>在 Unity 上进行游戏开发</h2><p>首先在 HoloLens 定制版的 Unity 新建工程，然后需要改一下设置来适应 HoloLens。具体可以参考：<a target="_blank" rel="noopener" href="https://developer.microsoft.com/zh-cn/windows/holographic/unity_development_overview">https://developer.microsoft.com/zh-cn/windows/holographic/unity_development_overview</a></p>
+<p>由于事件紧张，所以队友们都是在现学现卖，水平都是一天入门的级别，所以游戏效果并不是很好，就不去贴代码啦~大致的效果就是可以通过点击拾取从空中掉落的能量球并将拾取到的能量提供给自己的能量晶体。</p>
+<h2 id="处理游戏与-HoloLens-的交互"><a href="#处理游戏与-HoloLens-的交互" class="headerlink" title="处理游戏与 HoloLens 的交互"></a>处理游戏与 HoloLens 的交互</h2><p>现在，假装在 Unity 上模拟器（或者生成 exe 文件以后）已经可以跑起来啦。但是因为 HoloLens 的交互方式和普通的鼠标键盘交互有很大的区别，所以我们还需要为 HoloLens 的交互进行处理。</p>
+<p>先来说一下 HoloLens 交互的主要类型吧，HoloLens 提供了下面六组 API：</p>
+<ul>
+<li>世界坐标  <a target="_blank" rel="noopener" href="https://dev.windows.com/zh-cn/holographic/coordinate_systems">World coordinates</a></li>
+<li>凝视输入  <a target="_blank" rel="noopener" href="https://dev.windows.com/zh-cn/holographic/gaze">Gaze input</a></li>
+<li>手势输入  <a target="_blank" rel="noopener" href="https://dev.windows.com/zh-cn/holographic/gestures">Gesture input</a></li>
+<li>声音输入  <a target="_blank" rel="noopener" href="https://dev.windows.com/zh-cn/holographic/voice_input">Voice input</a></li>
+<li>空间声音  <a target="_blank" rel="noopener" href="https://dev.windows.com/zh-cn/holographic/spatial_sound">Spatial sound</a></li>
+<li>空间匹配  <a target="_blank" rel="noopener" href="https://dev.windows.com/zh-cn/holographic/spatial_mapping">Spatial mapping</a></li>
+</ul>
+<p>我们这次需要使用的是凝视输入、手势输入和空间匹配。凝视能量球或者能量晶体，然后发射凝视射线，然后检测手势点击，如果检测到跟晶体碰撞并且进行点击，则拾取能量或者补充能量。在放置能量晶体的时候需要扫描整个空间，然后将晶体放置在一个表面上面，在能量球掉落的时候如果掉到地面上就自动消失。</p>
+<p>在直接查看官方文档中的 API 介绍的时候非常晕，也并没有 API 使用的例子，所以直接参考<a target="_blank" rel="noopener" href="https://developer.microsoft.com/zh-cn/windows/holographic/holograms_101">官网给出的 Demo101</a>学习怎么使用这些 API。通过阅读源代码并且理解相关含义以后大致明白其思路，并且加到自己代码中实验，发现可以运行。之后我们又发现了更好的办法——直接使用 Github 上面给出的 SDK 进行开发，步骤简化了不少，但是因为代码版本不匹配，所以很多库根本无法编译通过，只能删掉之。</p>
+<h2 id="在模拟器和真机上进行调试"><a href="#在模拟器和真机上进行调试" class="headerlink" title="在模拟器和真机上进行调试"></a>在模拟器和真机上进行调试</h2><ol>
+<li> 将 Unity 工程导出，使用 Visua Studio（需要设置为 D3D 和 UAP），使用 USB 电缆连接 HoloLens。（也可以使用 WiFi 连接，这时需要主机和 HoloLens 连接到同一个 WiFi，在编译选项中的调试设备中选择 Remote，按照提示进行）</li>
+<li> 调整目标设备：在解决方案管理器中右键<strong>Package.appxmanifest</strong> 文件，选择查看代码，找到<strong>TargetDeviceFamily</strong> 标签，将其中的<strong>Name=”Windows.Universal”<strong>改为</strong>Name=”Windows.Holographic”<strong>，将其中的</strong>MaxVersionTested=”10.0.10240.0”<strong>改为</strong>MaxVersionTested=”10.0.10586.0”。</strong></li>
+<li> 调整编译选项：改变目标为 x86（现在只支持 x86），并且将生成配置从 Debug 切换到 Release，调试设备选择 Device。</li>
+<li> 点击开始，经过编译和远程部署即可在 HoloLens 中打开。</li>
+<li> 具体步骤可以参考：<a target="_blank" rel="noopener" href="https://developer.microsoft.com/zh-cn/windows/holographic/holograms_100">https://developer.microsoft.com/zh-cn/windows/holographic/holograms_100</a></li>
+</ol>
+<p>除了调试代码以外，还可以使用 Device Portal 查看 HoloLens 运行状态并且查看 HoloLens 中的实时画面。</p>
+<ol>
+<li> 首先在 HoloLens 的<strong>Settings</strong>中的<strong>Update</strong>里的<strong>For developers</strong>选项中打开 Device Portal 选项</li>
+<li> 使用 USB 或者 WiFi 连接，如果是 USB 连接的话，在浏览器里输入<a href="http://127.0.0.1:10080，如果是WiFil连接的话，输入HoloLens的https://">http://127.0.0.1:10080，如果是WiFil连接的话，输入HoloLens的https://</a>&lt;HoloLens 的 IP 地址&gt;（可以在设置重的网络设置里查看）即可。如果需要安装安全证书则要进行安装。</li>
+<li> 然后按照提示输入 HoloLens 里显示的 PIN 码，然后设置 Portal 的登陆密码，接下来就可以查看管理 HoloLens 的各个设置了。</li>
+<li> 其实 Portal 也是运用了 HoloLens 提供的 Restful 接口进行编写的，所以可以使用 HoloLens 提供的 Restful 接口自行提取数据。</li>
+</ol>
+<ul>
+<li>关于设置 Portal 的方法可以参考：<a target="_blank" rel="noopener" href="https://developer.microsoft.com/en-us/windows/holographic/using_the_windows_device_portal">https://developer.microsoft.com/en-us/windows/holographic/using_the_windows_device_portal</a></li>
+<li>关于 Restful API 可以参考：<a target="_blank" rel="noopener" href="https://developer.microsoft.com/en-us/windows/holographic/device_portal_api_reference">https://developer.microsoft.com/en-us/windows/holographic/device_portal_api_reference</a></li>
+</ul>
+<h1 id="开发的最终效果"><a href="#开发的最终效果" class="headerlink" title="开发的最终效果"></a>开发的最终效果</h1><p>嗯，不多说了，很多功能都还有 BUG，直接上图。 <a href="/wp-content/uploads/2016/08/e1e42585f9ee0d209d54a44e1835aaa9_r.png"><img data-src="/wp-content/uploads/2016/08/e1e42585f9ee0d209d54a44e1835aaa9_r-1024x575.png" alt="HoloLens效果"></a> 嗯，如果发现这篇文章以后博客停更那一定是被队友打死了。 最后 Tip：由于 HoloLens 的计算能力有限，所以不要放置太复杂的模型上去，否则，后果自负（嗯，其实也没什么后果，就是黑屏而已啦）。</p>
+<p>顺便再宣传一下知乎上面的回答吧：<a target="_blank" rel="noopener" href="http://zhihu.com/question/31743851/answer/59362202">参加微软学生夏令营是一种什么样的体验？ - 回答作者: 政子 http://zhihu.com/question/31743851/answer/59362202</a></p>
+<p>这里还有一个自己录制的 HoloLens 真机使用视频：<a target="_blank" rel="noopener" href="http://v.youku.com/v_show/id_XMTcwMjU0NDEwOA==.html?beta&#paction">http://v.youku.com/v_show/id_XMTcwMjU0NDEwOA==.html?beta&amp;#paction</a></p>
+<h1 id="有干货的参考资料"><a href="#有干货的参考资料" class="headerlink" title="有干货的参考资料"></a>有干货的参考资料</h1><ul>
+<li>HoloLens 官网：<a target="_blank" rel="noopener" href="https://www.microsoft.com/microsoft-hololens/en-us">https://www.microsoft.com/microsoft-hololens/en-us</a>（实用的东西非常多！）</li>
+<li>微软学生俱乐部官网微信开发指南：<a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzA4NzIyMDY0OA==&mid=2655379911&idx=1&sn=723b87293cf14eafa878d72ce80de996&scene=21#wechat_redirect">第一弹</a> ，<a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzA4NzIyMDY0OA==&mid=2655379962&idx=1&sn=942e9c182bba77f5c948f38a43d80b12&scene=21#wechat_redirect">第二弹</a>，<a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzA4NzIyMDY0OA==&mid=2655379978&idx=1&sn=856278ad56011106a0c214908d7b7ed0&scene=4#wechat_redirect">第三弹</a> （干货非常多）</li>
+<li>MSP 的昌伟哥哥的博客：<a target="_blank" rel="noopener" href="http://www.cnblogs.com/mantgh/">http://www.cnblogs.com/mantgh/</a></li>
+<li>微软官方示例：<a target="_blank" rel="noopener" href="https://developer.microsoft.com/zh-cn/windows/holographic/academy">https://developer.microsoft.com/zh-cn/windows/holographic/academy</a>（一定要仔细看，跟着一两个例子做完基本就能入门了）</li>
+<li>微软官方文档：<a target="_blank" rel="noopener" href="https://developer.microsoft.com/zh-cn/windows/holographic/documentation">https://developer.microsoft.com/zh-cn/windows/holographic/documentation</a>（文档就不是很行，很多地方莫名其妙）</li>
+<li>在 Unity 上 HoloLens 的开发 SDK：<a target="_blank" rel="noopener" href="https://github.com/Microsoft/HoloToolkit-Unity">https://github.com/Microsoft/HoloToolkit-Unity</a> 和 <a target="_blank" rel="noopener" href="https://github.com/Microsoft/HoloToolkit">https://github.com/Microsoft/HoloToolkit</a></li>
+<li>HoloLens 文档翻译：<a target="_blank" rel="noopener" href="https://github.com/HoloDocs/HoloLensDocs">https://github.com/HoloDocs/HoloLensDocs</a>（这是 MSP 的昌伟哥哥写的，质量比较高，github 上还有很多，也可以参考其他的）</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/uwp_unity/" rel="bookmark">UWP学习札记——浅析Unity工程</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/c_sharp_uwp_application_data/" rel="bookmark">使用C#封装一个UWP Applicaion Data的结构化存储类</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/c_sharp_uwp_http_get_and_post/" rel="bookmark">使用C#封装一个UWP的HTTP Get和Post的类</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/c_sharp_uwp_toast/" rel="bookmark">使用C#封装一个UWP的Toast通知类</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/cpp_xaml_uwp/" rel="bookmark">使用c++和XAML开发UWP程序</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请鼓励我的原创文章</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.png" alt="Jason Bian 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="Jason Bian 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Jason Bian
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://blog.zhengi.me/hololens_developement/" title="HoloLens开发初体验">https://blog.zhengi.me/hololens_developement/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/UWP/" rel="tag"><i class="fa fa-tag"></i> UWP</a>
+              <a href="/tags/AR/" rel="tag"><i class="fa fa-tag"></i> AR</a>
+              <a href="/tags/HoloLens/" rel="tag"><i class="fa fa-tag"></i> HoloLens</a>
+              <a href="/tags/MR/" rel="tag"><i class="fa fa-tag"></i> MR</a>
+              <a href="/tags/Unity/" rel="tag"><i class="fa fa-tag"></i> Unity</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/scrapy_incremental_crawler/" rel="prev" title="使用Scrapy写个增量式图书爬虫">
+                  <i class="fa fa-chevron-left"></i> 使用Scrapy写个增量式图书爬虫
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/if_theres_no_danmakupie/" rel="next" title="如果弹幕不曾有派">
+                  如果弹幕不曾有派 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">陇 ICP 备 15003463 号 </a>
+  </div>
+
+<div class="copyright">
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jason Bian</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">235k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">3:33</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/lozad.js/1.16.0/lozad.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/pangu/4.0.7/pangu.min.js"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/pjax.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://cdn.jsdelivr.net/npm/pdfobject@2.2.7/pdfobject.min.js","integrity":"sha256-ph3Dk89VmuTVXG6x/RDzk53SU9LPdAh1tpv0UvnDZ2I="},"url":"/lib/pdf/web/viewer.html"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdn.jsdelivr.net/npm/mermaid@8.13.8/dist/mermaid.min.js","integrity":"sha256-QmSAc2kIaUjleIJ46X7qPW2zrpCbXlMz3YIGgWpQ1Jo="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"imaginezz","repo":"blog_public","client_id":"9c022a847ecc01650469","client_secret":"3c6fae6a3119943e381c2682b0a40f84573463b4","admin_user":"imaginezz","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js","integrity":"sha256-Pmj85ojLaPOWwRtlMJwmezB/Qg8BzvJp5eTzvXaYAfA="},"path_md5":"bb87f7fbfc77fdfa07dbadc7577b7db8"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>
